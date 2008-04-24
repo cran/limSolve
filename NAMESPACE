@@ -1,0 +1,4 @@
+useDynLib(limSolve)
+
+export(ldei, ldp, linp, lsei, nnls, resolution, Solve, Solve.banded, Solve.tridiag, varranges, varsample, xranges, xsample)
+
