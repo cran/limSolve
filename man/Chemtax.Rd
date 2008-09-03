@@ -107,7 +107,7 @@ barplot(X,names=rownames(Chemtax$Ratio),col=heat.colors(8),
 
 # 2. Bayesian sampling; 
 # The standard deviation on the field data is assumed to be 0.01
-# jump length not too large
+# jump length not too large or NO solutions aer found!
 xs <- xsample(t(AA),BB,EE,FF,GG,HH, sdB=0.01, jmp=0.025)$X
 pairs(xs, main= "Chemtax, Bayesian sample")}
 \references{\item Mackey MD, Mackey DJ, Higgins HW, Wright SW, 1996. 
@@ -115,7 +115,10 @@ CHEMTAX - A program for estimating class abundances from chemical markers:
 Application to HPLC measurements of phytoplankton. Marine Ecology-Progress Series 144 (1-3): 265-283.
 
 \item Van den Meersche, K., Soetaert, K., Middelburg, J., 2008. 
-A Bayesian compositional estimator for microbial taxonomy based on biomarkers. Limnology and Oceanography Methods, 6, xx-xx.}
+A Bayesian compositional estimator for microbial taxonomy based on biomarkers. Limnology and Oceanography Methods, 6, 190-199.
+
+\item R-package \code{BCE}
+}
 \seealso{\code{\link{lsei}}, the function to solve for the algal composition of the field sample}
 \keyword{datasets}
 

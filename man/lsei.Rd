@@ -13,7 +13,7 @@
 Wx=NULL, Wa=NULL, type=1, tol=sqrt(.Machine$double.eps),
 tolrank=NULL, fulloutput=FALSE, verbose=TRUE)}
 \arguments{
-  \item{A }{numeric matrix containing the coefficients of the quadratic function to be minimised, \eqn{||Ax-B||}; if the columns of A have a names attribute, they will be used to label the output}
+  \item{A }{numeric matrix containing the coefficients of the quadratic function to be minimised, \eqn{||Ax-B||^2}; if the columns of A have a names attribute, they will be used to label the output}
   \item{B }{numeric vector containing the right-hand side of the quadratic function to be minimised}
   \item{E }{numeric matrix containing the coefficients of the equality constraints, \eqn{Ex=F}; if the columns of E have a names attribute, and the columns of A do not, they will be used to label the output}
   \item{F }{numeric vector containing the right-hand side of the equality constraints}
@@ -58,7 +58,20 @@ A <- cbind(A,x^4)
 cf <- lsei(A,B)$X
 curve(cf[1]+cf[2]*x+cf[3]*x^2+cf[4]*x^3+cf[5]*x^4,add=TRUE,lty=4)
 legend("bottomleft",c("1st-order","2nd-order","3rd-order","4th-order"),
-       lty=1:4)}
+       lty=1:4)
+
+# example 2: equalities, approximate equalities and inequalities
+A <- matrix(nrow=4,ncol=3,
+            data=c(3,1,2,0,2,0,0,1,1,0,2,0))
+B <- c(2,1,8,3)
+E <- c(0,1,0)
+F <- 3
+G <- matrix(nrow=2, ncol=3, byrow=TRUE,
+            data=c(-1,2,0,1,0,-1))
+H <- c(-3,2)
+
+lsei(E=E,F=F,A=A,B=B,G=G,H=H)
+       }
 \references{K. H. Haskell and R. J. Hanson, An algorithm for linear least squares problems with equality and
 nonnegativity constraints, Report SAND77-0552, Sandia Laboratories, June 1978.
 \cr K. H. Haskell and R. J. Hanson, Selected algorithms for the linearly constrained least squares problem - a

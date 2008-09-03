@@ -1,6 +1,6 @@
 \name{Solve.banded}
 \alias{Solve.banded}
-\title{Solution of banded system of linear equations}
+\title{Solution of a banded system of linear equations}
 \description{Solves the linear system of equations \deqn{Ax=B} by Gaussion elimination  
  \cr where A has to be square, and \emph{banded}, i.e. with the only nonzero elements in bands near the diagonal. 
  

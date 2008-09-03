@@ -44,7 +44,8 @@ As there are 7 unknowns and only 3 equations, the model is UNDERdetermined, i.e.
 This model can be solved by various techniques:
 \item (1) least distance programming will select the "simplest" solution. See \code{\link{ldei}}.
 \item (2) the remaining uncertainty ranges of the fractions can be estimated using linear programming. See \code{\link{xranges}}
-\item (3) the statistical distribution of the fractions can be estimated using a MCMC algorithm which takes a sample of the solution space. See \code{\link{xsample}}}
+\item (3) the statistical distribution of the fractions can be estimated using a MCMC algorithm which takes a sample of the solution space. See \code{\link{xsample}}
+}
 \usage{Minkdiet}
 \format{a list with matrix \code{Prey} and vector \code{Mink}. 
 \item (*) \code{Prey} contains the isotopic composition (13C and 15N) of the 7 possible food items of Mink
@@ -80,12 +81,12 @@ dotchart(x=as.vector(parsimonious$X),labels=colnames(Minkdiet$A),
           sub="using ldei and xranges",pch=16)
 
 # Ranges of diet composition
-iso   <- xranges(E,F)
+iso   <- xranges(E,F,ispos=TRUE)
 segments(iso[,1],1:ncol(E),iso[,2],1:ncol(E))
 legend  ("topright",pch=c(16,NA),lty=c(NA,1),
           legend=c("parsimonious","range"))
 
-pairs   (xsample(E,F,G=diag(7),H=rep(0,7),iter=2000)$X,
+pairs   (xsample(E=E,F=F,G=diag(7),H=rep(0,7),iter=1000)$X,
          main="Minkdiet 1000 solutions, using xsample")}
 \references{Ben-David M, Hanley TA, Klein DR, Schell DM (1997) Seasonal changes 
 in diets of coastal and riverine mink: the role of spawning Pacific salmon. Canadian Journal of Zoology 75:803-811.}

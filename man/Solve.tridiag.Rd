@@ -1,6 +1,6 @@
 \name{Solve.tridiag}
 \alias{Solve.tridiag}
-\title{Solution of tridiagonal system of linear equations}
+\title{Solution of a tridiagonal system of linear equations}
 \description{Solves the linear system of equations \deqn{Ax=B}
  \cr where A has to be square and \emph{tridiagonal}, i.e with nonzero elements only on, one band above, and one band below the diagonal.}
 \usage{Solve.tridiag(diam1, dia, diap1, rhs=rep(0,times=length(dia)))}

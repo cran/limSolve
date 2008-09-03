@@ -1,6 +1,4 @@
 
-par(ask=TRUE)
-
 # lsei
 example(lsei)
 
@@ -11,3 +9,5 @@ example(varsample)
 # Chemtax by lsei
 example(Chemtax)
 
+# E.coli core metabolism
+example(E_coli)

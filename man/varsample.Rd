@@ -40,7 +40,8 @@ DC <- varsample(X=X,EqA=VarA)
 hist(DC[,1],freq=FALSE,xlab="fraction",
 main="invertebrate food in Mink diet",col="lightblue")}
 \seealso{\code{\link{varranges}}, 
-\cr \code{\link{xsample}}}
+\cr \code{\link{xsample}}
+}
 \keyword{algebra}
 \keyword{array}
 
