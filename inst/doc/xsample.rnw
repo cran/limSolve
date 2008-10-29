@@ -43,8 +43,8 @@ A general linear problem can be written in matrix notation as:
 \begin{equation}
   \label{eq:1}
     \begin{cases}		
-      \mathbf{A}\mathbf{x}=\mathbf{b} \\
-      \mathbf{E}\mathbf{x}\simeq\mathbf{f} \\
+      \mathbf{A}\mathbf{x}\simeq\mathbf{b} \\
+      \mathbf{E}\mathbf{x}=\mathbf{f} \\
       \mathbf{G}\mathbf{x}\geq\mathbf{h}
     \end{cases}
 \end{equation}

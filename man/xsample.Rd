@@ -6,16 +6,16 @@
  
  The monte carlo method produces a sample solution for 
  \deqn{Ex=f}
- \deqn{Ax\simeq B}
+ \deqn{Ax\simeq B}{Ax~=B}
  \deqn{Gx>=h}
- where Ex=F have to be met exactly, and \eqn{Ax\simeq B} approximately.}
+ where \eqn{Ex=F} have to be met exactly, and \eqn{Ax\simeq B}{Ax~=B} approximately.}
 \usage{xsample(A=NULL, B=NULL, E=NULL, F=NULL, 
-G=NULL, H=NULL, sdB=1, iter=3000, outputlength=iter,
+G=NULL, H=NULL, sdB=1, iter=3000, outputlength=iter,burninlength=NULL,
 type = "mirror", jmp = NULL, tol=sqrt(.Machine$double.eps),
 x0=NULL, fulloutput = FALSE, test=TRUE)}
 \arguments{
   \item{A }{numeric matrix containing the coefficients of the
-    (approximate) equality constraints, \eqn{Ax\simeq B}}
+    (approximate) equality constraints, \eqn{Ax\simeq B}{Ax~=B}}
   \item{B }{numeric vector containing the right-hand side of the (approximate) equality constraints}
   \item{E }{numeric matrix containing the coefficients of the (exact) equality constraints, \eqn{Ex=F}}
   \item{F }{numeric vector containing the right-hand side of the (exact) equality constraints}
@@ -24,6 +24,7 @@ x0=NULL, fulloutput = FALSE, test=TRUE)}
   \item{sdB }{vector with standard deviation on B, used for weighing; default = equal weights}
   \item{iter }{integer determining the number of iterations}
   \item{outputlength} { number of iterations kept in the output; at most equal to \code{iter}}
+  \item{burninlength}{a number of extra iterations, performed at first, to "warm up" the algorithm. }
   \item{type }{type of algorithm: one of: "mirror", (mirroring algorithm), "rda" (random directions algorithm) or "cda" (coordinates directions algorithm)}
   \item{jmp }{jump length of the transformed variables q: \eqn{x=x0+Zq} (only if \code{type}=="mirror"); if jmp is NULL, a reasonable value is determined by xsample,
   depending on the size of the NULL space.}
@@ -37,8 +38,11 @@ x0=NULL, fulloutput = FALSE, test=TRUE)}
   a list containing:
   \item{X }{matrix whose rows contain the sampled values of x}
   \item{acceptedratio }{ratio of acceptance (i.e. the ratio of the accepted runs / total iterations)}
-  \item{p }{only outputted if fulloutput is TRUE: probability vector for all samples (e.g. one value for each row of \code{X})}
   \item{Q }{only outputted if fulloutput is TRUE: the transformed samples Q}
+  \item{p }{only outputted if fulloutput is TRUE: probability vector for
+    all samples (e.g. one value for each row of \code{X})}
+  \item{jmp }{the jump length used for the random walk. Can be used to
+    check the automated jump length}
 }
 \author{Karel Van den Meersche<k.vdMeersche@nioo.knaw.nl>
   \cr Karline Soetaert <k.soetaert@nioo.knaw.nl>}
