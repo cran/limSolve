@@ -6,56 +6,70 @@
   Solving Linear Inverse Models
 }
 \description{
-Functions that:
+  Functions that:
 
-(1.) Find the minimum/maximum of a linear or quadratic function: min or max (f(x)), where \eqn{f(x) = ||Ax-b||^2} or \eqn{f(x) = sum(ai*xi)} subject to equality
-constraints \eqn{Ex=f} and/or inequality constraints \eqn{Gx>=h}.
+  (1.) Find the minimum/maximum of a linear or quadratic function:
+   min or max (f(x)), where \eqn{f(x) = ||Ax-b||^2} or \eqn{f(x) = sum(ai*xi)}
+   subject to equality constraints \eqn{Ex=f} and/or inequality constraints
+   \eqn{Gx>=h}.
 
-(2.) Sample an underdetermined- or overdetermined system \eqn{Ex=f} subject to \eqn{Gx>=h}, and if applicable \eqn{Ax~=b}.
+  (2.) Sample an underdetermined- or overdetermined system \eqn{Ex=f}
+  subject to \eqn{Gx>=h}, and if applicable \eqn{Ax~=b}.
 
-(3.) Solve a linear system \eqn{Ax=B} for the unknown x. Includes banded and tridiagonal linear systems.
+  (3.) Solve a linear system \eqn{Ax=B} for the unknown x.
+  Includes banded and tridiagonal linear systems.
 
-The package calls Fortran functions from LINPACK
-
+  The package calls Fortran functions from LINPACK
 }
+
 \details{
   \tabular{ll}{
     Package: \tab limSolve\cr
     Type: \tab Package\cr
-    Version: \tab 1.1-1\cr
-    Date: \tab 2008-07-17\cr
+    Version: \tab 1.4\cr
+    Date: \tab 2004-03-31\cr
     License: \tab GNU Public License 2 or above\cr
   }
 
 
-limSolve is designed for solving linear inverse models (LIM).
+  limSolve is designed for solving linear inverse models (LIM).
 
-These consist of linear equality and, or inequality conditions, which can be solved
-either by least squares or by linear programming techniques.
+  These consist of linear equality and, or inequality conditions,
+  which can be solved either by least squares or by linear programming
+  techniques.
 
-Amongst the possible applications are: food web quantification, flux balance analysis (e.g. metabolic networks),
-compositional estimation, and operations research problems.
+  Amongst the possible applications are: food web quantification,
+  flux balance analysis (e.g. metabolic networks),
+  compositional estimation, and operations research problems.
 
-The package contains several examples to exemplify its use
+  The package contains several examples to exemplify its use
 }
+
 \author{
   Karline Soetaert (Maintainer),
+  
   Karel Van den Meersche
+
   Dick van Oevelen
 }
 %\references{
 %% to be filled
 %}
 \seealso{
- \code{\link{Blending}}, \code{\link{Chemtax}}, \code{\link{RigaWeb}}, \code{\link{E_coli}}, \code{\link{Minkdiet}} the examples.
+ \code{\link{Blending}}, \code{\link{Chemtax}}, \code{\link{RigaWeb}},
+ \code{\link{E_coli}}, \code{\link{Minkdiet}} the examples.
 
- \code{\link{ldei}}, \code{\link{lsei}},\code{\link{linp}}, \code{\link{ldp}}, \code{\link{nnls}} to solve LIM
+ \code{\link{ldei}}, \code{\link{lsei}},\code{\link{linp}}, \code{\link{ldp}},
+ \code{\link{nnls}} to solve LIM
 
- \code{\link{xranges}}, \code{\link{varranges}}  to estimate ranges of unknowns and variables
+ \code{\link{xranges}}, \code{\link{varranges}}  to estimate ranges of
+ unknowns and variables
 
- \code{\link{xsample}}, \code{\link{varsample}} to create a random sample of unknowns and variables
+ \code{\link{xsample}}, \code{\link{varsample}} to create a random sample
+ of unknowns and variables
 
- \code{\link{Solve}}, \code{\link{Solve.banded}}, \code{\link{Solve.tridiag}}, to solve non-square, banded and tridiagonal linear systems of equations.
+ \code{\link{Solve}}, \code{\link{Solve.banded}}, \code{\link{Solve.tridiag}},
+ to solve non-square, banded and tridiagonal linear systems of equations.
  
  \code{\link{resolution}} row and column resolution of a matrix
  

@@ -1,45 +1,93 @@
 \name{linp}
 \alias{linp}
-\title{Linear Programming}
-\description{Solves a linear programming problem,
- \deqn{\min(\sum {Cost_i.x_i})} subject to        
- \deqn{Ex=f}
- \deqn{Gx>=h}
- \deqn{x_i>=0} (optional)
+\title{
+  Linear Programming.
+}
 
+\description{
+  Solves a linear programming problem,
+  \deqn{\min(\sum {Cost_i.x_i})} subject to
+  \deqn{Ex=f}
+  \deqn{Gx>=h}
+  \deqn{x_i>=0} (optional)
 
- This function is simply a wrapper around \code{\link[lpSolve]{lp}} (see note) from package lpSolve, written to be consistent with the
- other functions \code{lsei}, and \code{ldei}.
+  This function provides a wrapper around \code{\link[lpSolve]{lp}} (see note)
+  from package lpSolve, written to be consistent with the functions
+  \code{lsei}, and \code{ldei}.
+  
+  It allows for the x's to be negative (not standard in lp).
 }
 \note{
-If the requirement of nonnegativity are relaxed, then strictly speaking the problem is not a linear programming problem.
+  If the requirement of nonnegativity are relaxed, then strictly speaking the
+  problem is not a linear programming problem.
 
-The function \code{lp} may fail and terminate R for very small problems that are repeated frequently...
+  The function \code{lp} may fail and terminate R for very small problems that
+  are repeated frequently...
 
-Also note that sometimes multiple solutions exist for the same problem.}
-\usage{linp(E=NULL, F=NULL, G=NULL, H=NULL, Cost,
-            ispos = TRUE, int.vec=NULL, verbose=TRUE, ...)}
-\arguments{
-  \item{E }{numeric matrix containing the coefficients of the equality constraints \eqn{Ex=F}; if the columns of E have a names attribute, they will be used to label the output}
-  \item{F }{numeric vector containing the right-hand side of the equality constraints}
-  \item{G }{numeric matrix containing the coefficients of the inequality constraints \eqn{Gx>=H}; if the columns of G have a names attribute, and the columns of E do not, they will be used to label the output}
-  \item{H }{numeric vector containing the right-hand side of the inequality constraints}
-  \item{Cost }{numeric vector containing the coefficients of the cost function; if the Cost a names attribute, and neither the columns of E nor G have a name, they will be used to label the output}
-  \item{ispos}{logical, when TRUE then unknowns must be positive (this is the original linear programming problem)}
-  \item{int.vec} {when not NULL, Numeric vector giving the indices of variables that are required to be integer. The length of this vector will therefore be the number of integer variables.}
-  \item{verbose }{logical to print error messages}
-  \item{... }{extra arguments passed to R-function \code{lp}}
+  Also note that sometimes multiple solutions exist for the same problem.
 }
+
+\usage{
+linp(E=NULL, F=NULL, G=NULL, H=NULL, Cost,
+  ispos = TRUE, int.vec=NULL, verbose=TRUE, ...)
+}
+
+\arguments{
+  \item{E }{numeric matrix containing the coefficients of the equality
+    constraints \eqn{Ex=F}; if the columns of \code{E} have a names attribute,
+    they will be used to label the output.
+  }
+  \item{F }{numeric vector containing the right-hand side of the equality
+    constraints.
+  }
+  \item{G }{numeric matrix containing the coefficients of the inequality
+    constraints \eqn{Gx>=H}; if the columns of \code{G} have a names attribute,
+    and the columns of \code{E} do not, they will be used to label the output.
+  }
+  \item{H }{numeric vector containing the right-hand side of the inequality
+    constraints.
+  }
+  \item{Cost }{numeric vector containing the coefficients of the cost function;
+    if \code{Cost} has a names attribute, and neither the columns of \code{E}
+    nor \code{G} have a name, they will be used to label the output.
+  }
+  \item{ispos}{logical, when \code{TRUE} then the unknowns (x) must be
+    positive (this is consistent with the original definition of a
+    linear programming problem).
+  }
+  \item{int.vec }{when not \code{NULL}, a numeric vector giving the indices
+    of variables that are required to be an integer. The length of this
+    vector will therefore be the number of integer variables.
+  }
+  \item{verbose }{logical to print error messages.
+  }
+  \item{... }{extra arguments passed to R-function \code{lp}.
+  }
+}
+
 \value{
   a list containing:
-  \item{X }{vector containing the solution of the linear programming problem.}
-  \item{residualNorm }{scalar, the sum of absolute values of residuals of equalities and violated inequalities. Should be very small or zero for a feasible linear programming problem}
-  \item{solutionNorm }{scalar, the value of the minimised \code{Cost} function, i.e. the value of \eqn{\sum {Cost_i.x_i}}}
-  \item{IsError }{logical, \code{TRUE} if an error occurred}
-  \item{type }{the string "linp", such that how the solution was obtained can be traced}
+  \item{X }{vector containing the solution of the linear programming problem.
+  }
+  \item{residualNorm }{scalar, the sum of absolute values of residuals of
+    equalities and violated inequalities.
+    Should be very small or zero for a feasible linear programming problem.
+  }
+  \item{solutionNorm }{scalar, the value of the minimised \code{Cost} function,
+    i.e. the value of \eqn{\sum {Cost_i.x_i}}.
+  }
+  \item{IsError }{logical, \code{TRUE} if an error occurred.
+  }
+  \item{type }{the string "linp", such that how the solution was obtained can
+    be traced.
+  }
 }
-\author{Karline Soetaert <k.soetaert@nioo.knaw.nl>}
-\examples{#--------------------------------------------
+
+\author{
+  Karline Soetaert <k.soetaert@nioo.knaw.nl>
+}
+\examples{
+#--------------------------------------------
 # Linear programming problem 1, not feasible
 #--------------------------------------------
 
@@ -94,12 +142,20 @@ H <- c(-1, 2, 1)
 Cost <- c(1,2,-1,4)
 linp(E=E,F=F,G=G,H=H,Cost,ispos=FALSE)
 }
-\seealso{\code{\link{ldei}},  \code{\link{lsei}}, 
-\cr \code{\link[lpSolve]{lp}} the original function from package lpSolve
-\cr \code{\link{Blending}}, a linear programming problem}
-\references{Michel Berkelaar and others (2007).
-lpSolve: Interface to Lpsolve v. 5.5 to solve linear or integer programs. R package version 5.5.8.
+\seealso{
+  \code{\link{ldei}},  \code{\link{lsei}},
+  
+  \code{\link[lpSolve]{lp}} the original function from package lpSolve
+  
+  \code{\link{Blending}}, a linear programming problem.
 }
+
+\references{
+  Michel Berkelaar and others (2007).
+  lpSolve: Interface to Lpsolve v. 5.5 to solve linear or integer programs.
+  R package version 5.5.8.
+}
+
 \keyword{algebra}
 \keyword{array}
 \keyword{optimize}

@@ -1,57 +1,92 @@
 \name{Minkdiet}
 \docType{data}
 \alias{Minkdiet}
-\title{An underdetermined linear inverse problem: estimating diet composition of Southeast Alaskan Mink}
-\description{Input data for assessing the diet composition of mink in southeast Alaska,
-using C and N isotope ratios (d13C and d15N). 
+\title{
+  An underdetermined linear inverse problem: estimating diet composition of
+  Southeast Alaskan Mink.
+}
+\description{
+  Input data for assessing the diet composition of mink in southeast Alaska,
+  using C and N isotope ratios (d13C and d15N).
 
-The data consist of 
-\item 1. the input matrix \code{Prey}, which contains the C (1st row) and N (2nd row) isotopic values of the prey items (columns), corrected for fractionation.
-\item 2. the input vector \code{Mink}, with the C and N isotopic value of the predator, mink 
+  The data consist of
+  \enumerate{
+    \item the input matrix \code{Prey}, which contains the C (1st row) and N
+      (2nd row) isotopic values of the prey items (columns), corrected for
+      fractionation.
+    \item the input vector \code{Mink}, with the C and N isotopic value of
+      the predator, mink
+  }
+  There are seven prey items as food sources:
+  \itemize{
+    \item fish
+    \item mussels
+    \item crabs
+    \item shrimp
+    \item rodents
+    \item amphipods
+    \item ducks
+  }
 
-There are seven prey items as food sources: 
-\item (*) fish
-\item (*) mussels
-\item (*) crabs
-\item (*) shrimp
-\item (*) rodents
-\item (*) amphipods
-\item (*) ducks
+  The d13C and d15N for each of these prey items, and for mink (the predator)
+  was assessed. The isotopic values of the preys were corrected for
+  fractionation.
 
+  The problem is to find the diet composition of mink, e.g. the fraction of
+  each of these food items in the diet.
 
-The d13C and d15N for each of these prey items, and for mink (the predator) was assessed. The isotopic values of the preys were corrected for fractionation.
+  Mathematically this is by solving an lsei (least squares with equalities
+  and inequalities) problem: \eqn{Ex=f} subject to \eqn{Gx>h}.
 
-The problem is to find the diet composition of mink, e.g. the fraction of each of these food items in the diet.
+  The equalities \eqn{Ex=f}:
+   \deqn{d13CMink = p1*d13Cfish+p2*d13Cmussels + .... + p7*d13Cducks}
+   \deqn{d15NMink = p1*d15Nfish+p2*d15Nmussels + .... + p7*d15Nducks}
+   \deqn{1 = p1+p2+p3+p4+p5+p6+p7}
 
-Mathematically this is by solving an lsei (least squares with equalities and inequalities) problem: \eqn{Ex=f} subject to \eqn{Gx>h}.
-
-The equalities \eqn{Ex=f}:
- \deqn{d13CMink = p1*d13Cfish+p2*d13Cmussels + .... + p7*d13Cducks}
- \deqn{d15NMink = p1*d15Nfish+p2*d15Nmussels + .... + p7*d15Nducks}
- \deqn{1 = p1+p2+p3+p4+p5+p6+p7}
-
-and inequalities \eqn{Gx>h}:
- \deqn{pi >= 0}
+  and inequalities \eqn{Gx>h}:
+  \deqn{pi >= 0}
  
-are solved for p1,p2,...p7.  
+  are solved for p1,p2,...p7.
   
 
-The first two equations calculate the isotopic ratio of the consumer (Mink) as a weighted average of the ratio of the food sources
-\cr Equation 3 assures that the sum of all fraction equals 1.
+  The first two equations calculate the isotopic ratio of the consumer (Mink)
+  as a weighted average of the ratio of the food sources
 
-As there are 7 unknowns and only 3 equations, the model is UNDERdetermined, i.e. there exist an infinite amount of solutions.
+  Equation 3 assures that the sum of all fraction equals 1.
 
-This model can be solved by various techniques:
-\item (1) least distance programming will select the "simplest" solution. See \code{\link{ldei}}.
-\item (2) the remaining uncertainty ranges of the fractions can be estimated using linear programming. See \code{\link{xranges}}
-\item (3) the statistical distribution of the fractions can be estimated using a MCMC algorithm which takes a sample of the solution space. See \code{\link{xsample}}
+  As there are 7 unknowns and only 3 equations, the model is UNDERdetermined,
+  i.e. there exist an infinite amount of solutions.
+
+  This model can be solved by various techniques:
+  \enumerate{
+    \item least distance programming will select the "simplest" solution.
+      See \code{\link{ldei}}.
+    \item the remaining uncertainty ranges of the fractions can be estimated
+      using linear programming. See \code{\link{xranges}}
+    \item the statistical distribution of the fractions can be estimated using
+      an MCMC algorithm which takes a sample of the solution space.
+      See \code{\link{xsample}}
+  }
 }
+
 \usage{Minkdiet}
-\format{a list with matrix \code{Prey} and vector \code{Mink}. 
-\item (*) \code{Prey} contains the isotopic composition (13C and 15N) of the 7 possible food items of Mink
-\item (*) \code{Mink} contains the isotopic composition (13C and 15N) of Mink
-\cr columnnames of \code{Prey} are the food items, rownames of \code{Prey} (names of Mink) are the names of the isotopic elements}
-\author{Karline Soetaert <k.soetaert@nioo.knaw.nl>}
+
+\format{
+  a list with matrix \code{Prey} and vector \code{Mink}.
+  \itemize{
+    \item \code{Prey} contains the isotopic composition (13C and 15N) of the
+      7 possible food items of Mink
+    \item \code{Mink} contains the isotopic composition (13C and 15N) of Mink
+  }
+
+  columnnames of \code{Prey} are the food items, rownames of \code{Prey}
+  (=names of Mink) are the names of the isotopic elements.
+}
+
+\author{
+  Karline Soetaert <k.soetaert@nioo.knaw.nl>
+}
+
 \examples{# visualisation of the data
 plot(t(Minkdiet$Prey),xlim=c(-25,-13),xlab="d13C",ylab="d15N",
      main="Minkdiet",sub="Ben-David et al. (1979)")
@@ -87,11 +122,21 @@ legend  ("topright",pch=c(16,NA),lty=c(NA,1),
           legend=c("parsimonious","range"))
 
 pairs   (xsample(E=E,F=F,G=diag(7),H=rep(0,7),iter=1000)$X,
-         main="Minkdiet 1000 solutions, using xsample")}
-\references{Ben-David M, Hanley TA, Klein DR, Schell DM (1997) Seasonal changes 
-in diets of coastal and riverine mink: the role of spawning Pacific salmon. Canadian Journal of Zoology 75:803-811.}
-\seealso{\code{\link{ldei}} to solve for the parsimonious solution
-\cr \code{\link{xranges}} to solve for the uncertainty ranges
-\cr \code{\link{xsample}} to sample the solution space}
+         main="Minkdiet 1000 solutions, using xsample")
+}
+
+\references{
+  Ben-David M, Hanley TA, Klein DR, Schell DM (1997) Seasonal changes
+  in diets of coastal and riverine mink: the role of spawning Pacific salmon.
+  Canadian Journal of Zoology 75:803-811.
+}
+
+\seealso{
+  \code{\link{ldei}} to solve for the parsimonious solution
+
+  \code{\link{xranges}} to solve for the uncertainty ranges
+
+  \code{\link{xsample}} to sample the solution space
+}
 \keyword{datasets}
 
