@@ -117,7 +117,13 @@ pairs(xsample(E=E,F=F,G=diag(7),H=rep(0,7),iter=5000,
       output=1000,type="cda")$X,
       main="Minkdiet 1000 solutions, - cda")
 }
+\references{
+  Van den Meersche K, Soetaert K, Van Oevelen D (2009). xsample(): An R
+  Function for Sampling Linear Inverse Problems.
+  Journal of Statistical Software, Code Snippets, 30(1), 1-15.
 
+\url{http://www.jstatsoft.org/v30/c01/}
+}
 \details{The algorithm proceeds in two steps.
 
   \enumerate{

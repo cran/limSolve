@@ -42,7 +42,8 @@ The Netherlands}
   (cost, profit) function.
   Depending on the determinacy of these models, they can be solved by least
   squares or linear programming techniques, by calculating ranges of unknowns
-  or by randomly sampling the feasible solution space.
+  or by randomly sampling the feasible solution space
+  \citep{Meersche+Soetaert+Oevelen:2009}.
 
   Amongst the possible scientific applications are: food web quantification
   (ecology),
@@ -71,7 +72,10 @@ The Netherlands}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% R/Sweave specific LaTeX commands.
 %% need no \usepackage{Sweave}
-%\VignetteIndexEntry{limSolve}
+%\VignetteIndexEntry{Solving Linear Inverse Models in R}
+%\VignetteDepends{limSolve, quadprog, lpSolve, MASS}
+%\VignetteKeywords{Linear inverse models, linear programming, quadratic programming}
+%\VignettePackage{limSolve}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Begin of the document
 \begin{document}
@@ -294,7 +298,7 @@ lsei(A=A,B=B,G=G,H=H)
       unknown.
     \item \code{xsample} -  randomly samples the solution space in a
       Bayesian way. This method returns the conditional probability density
-      function for each unknown.
+      function for each unknown \citep{Meersche+Soetaert+Oevelen:2009}.
   \end{itemize}
 \subsection{Equalities only}
   We start with an example including only equalities.
@@ -408,7 +412,7 @@ segments(x0=xr[,1],x1=xr[,2],y0=1:nrow(xr),y1=1:nrow(xr))
 \end{figure}
 
   A \textbf{random sample} of the infinite amount of solutions is generated
-  by function \code{xsample}.
+  by function \code{xsample} \citep{Meersche+Soetaert+Oevelen:2009}.
   For small problems, the coordinates directions algorithm ("cda") is a
   good choice.
 <<>>=
@@ -483,7 +487,7 @@ lsei(E,F,G=G,H=H,A=A,B=B)$X
   (using the metropolis algorithm), selecting likely values given the
   approximate equations. The probability distribution of the latter is
   assumed Gaussian, with given standard deviation (argument \code{sdB},
-  here assumed 1).
+  here assumed 1). \citep{Meersche+Soetaert+Oevelen:2009}
 
   The jump length (argument \code{jmp}) is finetuned such that a sufficient
   number of trials (\~ ~30\%), but not too many, is accepted. Note how the
@@ -633,9 +637,10 @@ print(system.time(Full <- solve(A,B))*1000)
 print(system.time(Band <- Solve.banded(abd,nup=1,nlow=1,B))*1000)
 print(system.time(tri  <- Solve.tridiag(aa,bb,cc,B))*1000)
 @
-The solvers return 10 solution vectors X, one for each right-hand side:
+The solvers return 10 solution vectors X, one for each right-hand side; we show
+the first 5:
 <<>>=
-Full[1:10,]
+Full[1:5,1:5]
 @
   Comparison of the different solutions (here only for the second vector) show
   that they yield the same result.
@@ -647,6 +652,26 @@ A block diagonal system is one where the nonzero elements are in "blocks"
 near the diagonal.
 
 For the following A-matrix:
+
+  \[
+    \left[ {
+      \begin{array}{*{13}c}
+  0.0  &-0.98& -0.79& -0.15&      &      &      &      &      &      &      &      &  Top \\
+ -1.00 & 0.25& -0.87&  0.35&      &      &      &      &      &      &      &      &  Top \\
+  0.78 & 0.31& -0.85&  0.89& -0.69& -0.98& -0.76& -0.82&      &      &      &      &  blk1\\
+  0.12 &-0.01&  0.75&  0.32& -1.00& -0.53& -0.83& -0.98&      &      &      &      &      \\
+ -0.58 & 0.04&  0.87&  0.38& -1.00& -0.21& -0.93& -0.84&      &      &      &      &      \\
+ -0.21 &-0.91& -0.09& -0.62& -1.99& -1.12& -1.21&  0.07&      &      &      &      &      \\
+       &     &      &      &  0.78& -0.93& -0.76&  0.48& -0.87& -0.14& -1.00& -0.59&  blk2\\
+       &     &      &      & -0.99&  0.21& -0.73& -0.48& -0.93& -0.91&  0.10& -0.89&      \\
+       &     &      &      & -0.68& -0.09& -0.58& -0.21&  0.85& -0.39&  0.79& -0.71&      \\
+       &     &      &      &  0.39& -0.99& -0.12& -0.75& -0.68& -0.99&  0.50& -0.88&      \\
+       &     &      &      &      &      &      &      &  0.71& -0.64&  0.0 &  0.48&  Bot \\
+       &     &      &      &      &      &      &      &  0.08& 100.0& 50.00& 15.00&  Bot \\
+     \end{array}
+     }
+    \right]
+  \]
 <<>>=
 #  0.0  -0.98 -0.79 -0.15                                                  Top
 # -1.00  0.25 -0.87  0.35                                                  Top
