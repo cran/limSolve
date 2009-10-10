@@ -34,8 +34,8 @@ Journal of Statistical Software, Code Snippets, 30(1), 1-15.
   \tabular{ll}{
     Package: \tab limSolve\cr
     Type: \tab Package\cr
-    Version: \tab 1.4\cr
-    Date: \tab 2004-03-31\cr
+    Version: \tab 1.5.1\cr
+    Date: \tab 2009-10-10\cr
     License: \tab GNU Public License 2 or above\cr
   }
 

@@ -17,8 +17,9 @@ Solve.banded <- function(abd, nup, nlow,
     A <- abd
     if (nrow(abd) != ncol(abd))
       stop("cannot solve banded problem - nrows and ncols of abd are not the same, while the input matrix is said to be full")
-    Aext <- rbind(matrix(nc=ncol(A),nr=nup,0),A,matrix(nc=ncol(A),nr=nlow,0))
-    abd  <- matrix(nr=nup+nlow+1,nc=Nmx,data=
+    Aext <- rbind(matrix(data=0,nrow=nup,ncol=ncol(A)),
+               A,matrix(data=0,nrow=nlow,ncol=ncol(A)))
+    abd  <- matrix(nrow=nup+nlow+1,ncol=Nmx,data=
               Aext[(col(Aext))<=row(Aext)&col(Aext)>=row(Aext)-nlow-nup])
     nr   <- nrow(abd)
   }
@@ -30,7 +31,7 @@ Solve.banded <- function(abd, nup, nlow,
   if (NROW(B) != Nmx)
     stop("cannot solve banded problem - B and abd not compatible")
 
-  ABD <- rbind(matrix(nr=nlow,nc=Nmx,0),abd)
+  ABD <- rbind(matrix(data=0,nrow=nlow,ncol=Nmx),abd)
   IsError <- FALSE
 
     sol <-.Fortran("dgbsv",Nmx,as.integer(nlow),as.integer(nup),as.integer(Nb),

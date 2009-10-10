@@ -12,7 +12,7 @@
   \deqn{Gx>=h}
  
   Uses either subroutine lsei (FORTRAN) from the LINPACK package, or
-  \code{\link[quadprog]{solve.QP}} from \R-package quadprog.
+  \code{solve.QP} from \R-package \code{quadprog}.
 
   In case the equality constraints \eqn{Ex=f} cannot be satisfied, a
   generalized inverse solution residual vector length is obtained for \eqn{f-Ex}.
@@ -159,7 +159,7 @@ lsei(E=E,F=F,A=A,B=B,G=G,H=H)
 \seealso{
   \code{\link{ldei}}, \code{\link{linp}},
 
-  \code{\link[quadprog]{solve.QR}} the original function from package quadprog.
+  \code{solve.QR} the original function from package \code{quadprog}.
 }
 
 \note{

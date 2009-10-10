@@ -78,7 +78,7 @@ ldei <- function(E, F, G=NULL, H=NULL,
     LDPNx   <-unsolvable
 
    ## Construct an orthogonal basis of V2 = (I-V*VT)*Random
-    rnd     <- matrix(runif(Nx*unsolvable),nrow=Nx,ncol=unsolvable)
+    rnd     <- matrix(data=runif(Nx*unsolvable),nrow=Nx,ncol=unsolvable)
     V2      <- diag(1,Nx) - S$v[,1:solvable]%*%t(S$v[,1:solvable])
     V2      <- V2 %*% rnd
 

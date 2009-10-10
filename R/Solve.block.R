@@ -14,7 +14,7 @@ Solve.block <- function(Top,AR,Bot,B,overlap) {
   N <- Nbloks*NrwBlk + overlap
   if (N != rB)
     stop(paste("AR and B not compatible: nrow B should be: ",N))
-  X <- matrix(nr=N,nc=cB,as.double(0.))
+  X <- matrix(data=as.double(0.), nrow=N, ncol=cB)
 
 
   sol <- .Fortran("block", N=as.integer(N), TOP=Top, NRWTOP=NrowTop,

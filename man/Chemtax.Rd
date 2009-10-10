@@ -79,6 +79,12 @@
   and the inequalities ensure that fractions are positive numbers
   \deqn{p_{A} > 0}
   \deqn{p_{B} > 0}
+  
+  It should be noted that in the actual \emph{Chemtax} programme the problem
+  is solved in a more complex way. In Chemtoz, the A-coefficients are also
+  allowed to vary, while here they are taken as they are (constant).
+  Chemtax then finds the "best fit" by fitting both the fractions, and the
+  non-zero coefficients in A.
 }
 
 \usage{Chemtax}

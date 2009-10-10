@@ -1,6 +1,6 @@
 Package: limSolve
-Version: 1.5
-Date: 2009-04-17
+Version: 1.5.1
+Date: 2009-10-10
 Title: Solving Linear Inverse Models
 Author: Karline Soetaert <k.soetaert@nioo.knaw.nl>, Karel Van den
         Meersche <k.vdMeersche@nioo.knaw.nl>, Dick van Oevelen
@@ -15,8 +15,8 @@ Description: Functions that (1.) Find the minimum/maximum of a linear
         Gx>=h, and if applicable Ax~=b. (3.) Solve a linear system Ax=B
         for the unknown x. Includes banded and tridiagonal linear
         systems. The package calls Fortran functions from LINPACK
-License: GPL
+License: GPL (>= 2)
 LazyData: yes
-Packaged: Sun Apr 19 00:46:54 2009; zeileis
+Packaged: Sun Oct 11 16:55:41 2009; KarlineS
 Repository: CRAN
-Date/Publication: 2009-04-20 20:33:54
+Date/Publication: 2009-10-11 15:02:48

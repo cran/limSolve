@@ -9,7 +9,7 @@ Solve <- function(A, B=diag(nrow=nrow(A)),
   M <-ginv(A,tol)
   if (is.null(M))
     return(NULL)
-  B <- matrix(nrow=nrow(A),data=B)
+  B <- matrix(data=B, nrow=nrow(A))
   X <- M %*% B
   if (ncol(B) == 1)  {
     xnames <- colnames(A)

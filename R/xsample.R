@@ -234,6 +234,7 @@ xsample <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
     if (estimate_sdB)    {
       q0 <- lsei(a,b)$X
       SS0 <- sum((a%*%q0-b)^2)
+      S <- lb/SS0
     } else {
       S <- 1
     }
@@ -254,14 +255,14 @@ xsample <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
   ou <- ceiling(iter/outputlength)
 
   q1 <- rep(0,k)
-  x <- matrix(ncol=lx,nrow=outputlength,dimnames=list(NULL,colnames(A)))
+  x <- matrix(nrow=outputlength,ncol=lx,dimnames=list(NULL,colnames(A)))
   x[1,] <- x0
   naccepted <- 1
   p <- vector(length=outputlength) # probability distribution
   p[1] <- prob(q1)
 
   if (fulloutput)   {
-    q <- matrix(ncol=k,nrow=outputlength)
+    q <- matrix(nrow=outputlength, ncol=k)
     q[1,] <- q1
   }
     

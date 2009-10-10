@@ -145,7 +145,7 @@ linp <- function(E=NULL, F=NULL, G=NULL, H=NULL, Cost,
   if (is.null(xnames))
     xnames <- colnames(G)
   if (is.null(xnames))
-    xnames <- names(Cost)
+    xnames <- names(Cost[1:Nx])
   names (X) <- xnames
 
   return(list(X=X,                        # vector containing the solution of the linear programming problem.

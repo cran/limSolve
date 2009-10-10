@@ -39,10 +39,10 @@ lsei <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
   if (is.null(A) && is.null (E)) {
     if(is.null(G))
       stop("cannot solve least squares problem - A, E AND G are NULL")
-    A <- matrix(nrow=1,ncol=ncol(G),0)
+    A <- matrix(data=0, nrow=1,ncol=ncol(G))
     B <- 0
   }  else if (is.null(A)) {
-    A <- matrix(nrow=1,data=E[1,])
+    A <- matrix(data=E[1,], nrow=1)
     B<-F[1]
   }
 
@@ -73,7 +73,7 @@ lsei <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
   }
 
   if (is.null(G))
-    G <- matrix(nrow=1,ncol=Nx,0)
+    G <- matrix(data=0, nrow=1,ncol=Nx)
   if (is.null(H))
     H <- 0
 
@@ -146,14 +146,14 @@ lsei <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
              NApproximate=Napp,A=A,B=B,E=E,F=F,G=G,H=H,X=as.vector(rep(0,Nx)),
              mIP=as.integer(mIP),mdW=as.integer(mdW),mWS=as.integer(mWS),
              IP=as.integer(rep(0,mIP)),
-             W=as.double(matrix(nrow=mdW,ncol=Nx+1,0.)),
+             W=as.double(matrix(data=0., nrow=mdW, ncol=Nx+1)),
              WS=as.double(rep(0.,mWS)),
              lpr=as.integer(lpr),ProgOpt=as.double(ProgOpt),
              verbose=as.logical(verbose),IsError=as.logical(IsError))
     if (any(is.infinite(sol$nX)))
       sol$IsError<-TRUE
     if (fulloutput) {
-      covar<-matrix(nrow=mdW,ncol=Nx+1,data=sol$W)[1:Nx,1:Nx]
+      covar<-matrix(data=sol$W,nrow=mdW,ncol=Nx+1)[1:Nx,1:Nx]
       RankEq <- sol$IP[1]
       RankApp <- sol$IP[2]
     }
