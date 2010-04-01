@@ -54,7 +54,7 @@ The Netherlands}
   Package \ls contains examples of these four application domains.
 
   In addition, \ls also contains special-purpose solvers for sparse
-  linear equations (banded, tridiagonal, block diagonal)
+  linear equations (banded, tridiagonal, block diagonal).
   
 }
 
@@ -809,7 +809,7 @@ X[,c(1,10,100,1000)]
 
   More examples can be found in the demo of package \ls ("demo(limSolve)")
 
-  Another \R-package, \pkg{LIM} \citep{LIM}
+  Another \R-package, \pkg{LIM} \citep{LIM, oevelen09}
   is designed for reading and solving linear inverse models (LIM). The model
   problem is formulated in text files in a way that is natural and
   comprehensible. \pkg{LIM} then converts this input into the required
