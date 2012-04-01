@@ -21,11 +21,11 @@
 }
 
 \usage{
-xsample(A=NULL, B=NULL, E=NULL, F=NULL, 
-  G=NULL, H=NULL, sdB=NULL, W=1, iter=3000, outputlength=iter,
-  burninlength=NULL,type = "mirror", jmp = NULL,
-  tol=sqrt(.Machine$double.eps), x0=NULL, fulloutput = FALSE,
-  test=TRUE)
+xsample(A = NULL, B = NULL, E = NULL, F =NULL, 
+        G = NULL, H = NULL, sdB = NULL, W = 1, 
+        iter = 3000, outputlength = iter, burninlength = NULL, 
+        type = "mirror", jmp = NULL, tol = sqrt(.Machine$double.eps), 
+        x0 = NULL, fulloutput = FALSE, test = TRUE)
 }
 
 \arguments{
@@ -106,16 +106,36 @@ xsample(A=NULL, B=NULL, E=NULL, F=NULL,
 \author{
   Karel Van den Meersche<k.vdMeersche@nioo.knaw.nl>
 
-  Karline Soetaert <k.soetaert@nioo.knaw.nl>
+  Karline Soetaert <karline.soetaert@nioz.nl>
 }
 
-\examples{# Sample the underdetermined Mink diet problem
-E <- rbind(Minkdiet$Prey,rep(1,7))
-F <- c(Minkdiet$Mink,1)
+\examples{
+#-------------------------------------------------------------------------------
+# A simple problem
+#-------------------------------------------------------------------------------
+# Sample the probability density function of x1,...x4
+# subject to:
+# x1 + x2       + x4 = 3
+#      x2  -x3  + x4 = -1
+# xi   > 0
 
-pairs(xsample(E=E,F=F,G=diag(7),H=rep(0,7),iter=5000,
-      output=1000,type="cda")$X,
-      main="Minkdiet 1000 solutions, - cda")
+E <- matrix(nrow = 2, byrow = TRUE, data = c(1, 1, 0,  1,
+                                             0, 1, -1, 1))
+F   <- c(3, -1)
+G   <- diag (nrow = 4)
+H   <- rep(0, times = 4)
+xs  <- xsample(E = E, F = F, G = G, H = H)
+pairs(xs)
+
+#-------------------------------------------------------------------------------
+# Sample the underdetermined Mink diet problem
+#-------------------------------------------------------------------------------
+E <- rbind(Minkdiet$Prey, rep(1, 7))
+F <- c(Minkdiet$Mink, 1)
+
+pairs(xsample(E = E, F = F, G = diag(7), H = rep(0, 7), iter = 5000,
+      output = 1000, type = "cda")$X,
+      main = "Minkdiet 1000 solutions, - cda")
 }
 \references{
   Van den Meersche K, Soetaert K, Van Oevelen D (2009). xsample(): An R
@@ -195,6 +215,17 @@ pairs(xsample(E=E,F=F,G=diag(7),H=rep(0,7),iter=5000,
 
   See \code{\link{E_coli}} for an example where a relatively large problem
   is sampled.
+}
+\seealso{
+  \code{\link{Minkdiet}}, for a description of the Mink diet example.
+
+  \code{\link{ldei}}, to find the least distance solution
+
+  \code{\link{lsei}}, to find the least squares solution
+
+  \code{\link{varsample}}, to randomly sample variables of an lsei problem.
+
+  \code{\link{varranges}}, to estimate ranges of inverse variables.
 }
 
 \keyword{algebra}

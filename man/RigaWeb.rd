@@ -51,7 +51,7 @@
 }
 
 \author{
-  Karline Soetaert <k.soetaert@nioo.knaw.nl>
+  Karline Soetaert <karline.soetaert@nioz.nl>
 }
 \examples{
 
@@ -61,32 +61,33 @@ G <- RigaWeb$G
 H <- RigaWeb$H
 
 # 1. parsimonious (simplest) solution
-pars <- lsei(E=E,F=F,G=G,H=H)$X
+pars <- lsei(E = E, F = F, G = G, H = H)$X
 
 # 2.ranges of all unknowns, including the central value
-xr   <- xranges(E=E,F=F,G=G,H=H,central=TRUE)
+xr   <- xranges(E = E, F = F, G = G, H = H, central = TRUE)
 
 # the central point is a valid solution:
 X <- xr[,"central"]
-max(abs(E\%*\%X-F))
-min(G\%*\%X-H)
+max(abs(E\%*\%X - F))
+min(G\%*\%X - H)
 
 # 3. Sample solution space; the central value is a good starting point
 #   for algorithms cda and rda - but these need many iterations
-xs<-xsample(E=E,F=F,G=G,H=H,
-            iter=50000,out=1000,type="rda",x0=X)$X
-pairs(xs,pch=".",cex=2,gap=0,upper.panel=NULL)
+xs  <- xsample(E = E, F = F, G = G, H = H,
+               iter = 50000, out = 1000, type = "rda", x0 = X)$X
+pairs(xs, pch = ".", cex = 2, gap = 0, upper.panel = NULL)
 
 
 # using mirror algorithm takes less iterations,
 # but an iteration takes more time ; it is better to start in a corner...
 # (i.e. no need to use X as starting value)
-xs<-xsample(E=E,F=F,G=G,H=H,
-            iter=2000,output=1000,type="mirror")$X
-pairs(xs,pch=".",cex=2,gap=0,upper.panel=NULL,yaxt="n",xaxt="n")
+xs  <- xsample(E = E, F = F, G = G, H = H,
+               iter = 2000, output = 1000, type = "mirror")$X
+pairs(xs, pch = ".", cex = 2, gap = 0, upper.panel = NULL, 
+      yaxt = "n", xaxt = "n")
 
 # Print results:
-data.frame(pars=pars,xr[,1:2],Mean=colMeans(xs),sd=sd(xs))
+data.frame(pars = pars, xr[ ,1:2], Mean = colMeans(xs), sd = apply(xs, 2, sd))
 }
 \references{
   Donali, E., Olli, K., Heiskanen, A.S., Andersen, T., 1999. Carbon flow

@@ -21,9 +21,9 @@
 }
 
 \usage{
-lsei ( A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
-  Wx=NULL, Wa=NULL, type=1, tol=sqrt(.Machine$double.eps),
-  tolrank=NULL, fulloutput=FALSE, verbose=TRUE)}
+lsei (A = NULL, B = NULL, E = NULL, F = NULL, G = NULL, H = NULL,
+      Wx = NULL, Wa = NULL, type = 1, tol = sqrt(.Machine$double.eps),
+      tolrank = NULL, fulloutput = FALSE, verbose = TRUE)}
 
 \arguments{
   \item{A }{numeric matrix containing the coefficients of the quadratic
@@ -98,40 +98,56 @@ lsei ( A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
   }
 }
 \author{
-  Karline Soetaert <k.soetaert@nioo.knaw.nl>
+  Karline Soetaert <karline.soetaert@nioz.nl>
 }
 
-\examples{x <- 1:5
-y <- c(9,8,6,7,5)
-plot(x,y,main="Polynomial fitting, using lsei",cex=1.5,pch=16,
-     ylim=c(4,10))
-A <- cbind(rep(1,5),x)
+\examples{
+# ------------------------------------------------------------------------------
+# example 1: polynomial fitting
+# ------------------------------------------------------------------------------
+x <- 1:5
+y <- c(9, 8, 6, 7, 5)
+plot(x, y, main = "Polynomial fitting, using lsei", cex = 1.5, 
+     pch = 16, ylim = c(4, 10))
+
+# 1-st order
+A <- cbind(rep(1, 5), x)
 B <- y
-cf <- lsei(A,B)$X
-abline(coef=cf)
-A <- cbind(A,x^2)
-cf <- lsei(A,B)$X
-curve(cf[1]+cf[2]*x+cf[3]*x^2,add=TRUE,lty=2)
-A <- cbind(A,x^3)
-cf <- lsei(A,B)$X
-curve(cf[1]+cf[2]*x+cf[3]*x^2+cf[4]*x^3,add=TRUE,lty=3)
-A <- cbind(A,x^4)
-cf <- lsei(A,B)$X
-curve(cf[1]+cf[2]*x+cf[3]*x^2+cf[4]*x^3+cf[5]*x^4,add=TRUE,lty=4)
-legend("bottomleft",c("1st-order","2nd-order","3rd-order","4th-order"),
-       lty=1:4)
+cf <- lsei(A, B)$X
+abline(coef = cf)
 
+# 2-nd order
+A <- cbind(A, x^2)
+cf <- lsei(A, B)$X
+curve(cf[1] + cf[2]*x + cf[3]*x^2, add = TRUE, lty = 2)
+
+# 3-rd order
+A <- cbind(A, x^3)
+cf <- lsei(A, B)$X
+curve(cf[1] + cf[2]*x + cf[3]*x^2 + cf[4]*x^3, add = TRUE, lty = 3)
+
+# 4-th order
+A <- cbind(A, x^4)
+cf <- lsei(A, B)$X
+curve(cf[1] + cf[2]*x + cf[3]*x^2 + cf[4]*x^3 + cf[5]*x^4, 
+      add = TRUE, lty = 4)
+legend("bottomleft", c("1st-order", "2nd-order","3rd-order","4th-order"),
+       lty = 1:4)
+
+# ------------------------------------------------------------------------------
 # example 2: equalities, approximate equalities and inequalities
-A <- matrix(nrow=4,ncol=3,
-            data=c(3,1,2,0,2,0,0,1,1,0,2,0))
-B <- c(2,1,8,3)
-E <- c(0,1,0)
-F <- 3
-G <- matrix(nrow=2, ncol=3, byrow=TRUE,
-            data=c(-1,2,0,1,0,-1))
-H <- c(-3,2)
+# ------------------------------------------------------------------------------
 
-lsei(E=E,F=F,A=A,B=B,G=G,H=H)
+A <- matrix(nrow = 4, ncol = 3,
+            data = c(3, 1, 2, 0, 2, 0, 0, 1, 1, 0, 2, 0))
+B <- c(2, 1, 8, 3)
+E <- c(0, 1, 0)
+F <- 3
+G <- matrix(nrow = 2, ncol = 3, byrow = TRUE,
+            data = c(-1, 2, 0, 1, 0, -1))
+H <- c(-3, 2)
+
+lsei(E = E, F = F, A = A, B = B, G = G, H = H)
 }
 
 \references{
@@ -152,7 +168,7 @@ lsei(E=E,F=F,A=A,B=B,G=G,H=H)
   September 1982.
 
   Berwin A. Turlach R and Andreas Weingessel (2007). quadprog: Functions to
-  solve Quadratic Programming Problems.. R package version 1.4-11. S original
+  solve Quadratic Programming Problems. R package version 1.4-11. S original
   by Berwin A. Turlach R port by Andreas Weingessel.
 }
 

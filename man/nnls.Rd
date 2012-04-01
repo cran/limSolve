@@ -12,13 +12,13 @@
 }
 
 \usage{
-nnls(A, B, tol=sqrt(.Machine$double.eps), verbose=TRUE)
+nnls(A, B, tol = sqrt(.Machine$double.eps), verbose = TRUE)
 }
 
 \arguments{
   \item{A }{numeric matrix containing the coefficients of the equality
-    constraints \eqn{Ax~=B}; if the columns of A have a names attribute,
-    they will be used to label the output.
+    constraints \eqn{Ax~=B}; if the columns of \code{A} have a \code{names} 
+    attribute, the names will be used to label the output.
   }
   \item{B }{numeric vector containing the right-hand side of the
     equality constraints.
@@ -50,13 +50,13 @@ nnls(A, B, tol=sqrt(.Machine$double.eps), verbose=TRUE)
 }
 
 \author{
-  Karline Soetaert <k.soetaert@nioo.knaw.nl>
+  Karline Soetaert <karline.soetaert@nioz.nl>
 }
 
 \examples{
-A <- matrix(nr=2,nc=3,data=c(3,2,2,4,2,1))
-B <- c(-4,3)
-nnls(A,B)
+A <- matrix(nrow = 2, ncol = 3, data = c(3, 2, 2, 4, 2, 1))
+B <- c(-4, 3)
+nnls(A, B)
 }
 
 \references{

@@ -27,11 +27,11 @@ Solve.tridiag ( diam1, dia, diap1, B=rep(0,times=length(dia)))
   }
 }
 \value{
-  matrix with the solution, X, of the tridiagonal system of equations Ax=B,
-  the number of columns of this matrix = number of columns of B.
+  matrix with the solution, \code{X}, of the tridiagonal system of equations Ax=B.
+  The number of columns of this matrix equals the number of columns of B.
 }
 \author{
-  Karline Soetaert <k.soetaert@nioo.knaw.nl>
+  Karline Soetaert <karline.soetaert@nioz.nl>
 }
 
 \examples{# create tridagonal system: bands on diagonal, above and below
@@ -39,30 +39,30 @@ nn   <- 20                          # nr rows and columns of A
 aa   <- runif(nn)
 bb   <- runif(nn)
 cc   <- runif(nn)
+
 # full matrix
-A                       <- matrix(nrow=nn,ncol=nn,data=0)
-diag(A)                 <- bb
-A[cbind(1:(nn-1),2:nn)] <- cc[-nn]
-A[cbind(2:nn,1:(nn-1))] <- aa[-1]
-B<-runif(nn)
+A                        <- matrix(nrow = nn, ncol = nn, data = 0)
+diag(A)                  <- bb
+A[cbind(1:(nn-1), 2:nn)] <- cc[-nn]
+A[cbind(2:nn, 1:(nn-1))] <- aa[-1]
+B <- runif(nn)
 
 # solve as full matrix
-solve(A,B)                           
+solve(A, B)                           
 
 # same,  now using tridiagonal algorithm
-as.vector(Solve.tridiag(aa[-1],bb,cc[-nn],B))
+as.vector(Solve.tridiag(aa[-1], bb, cc[-nn], B))
 
 # same, now with 3 different right hand sides
 B3 <- cbind(B, B*2, B*3)
-Solve.tridiag(aa[-1],bb,cc[-nn],B3)
+Solve.tridiag(aa[-1], bb, cc[-nn], B3)
 
 }
 
 \details{
-  If the length of the vector \code{dia} is N, then the lengths of \code{diam1}
-  and \code{diap1} should be equal to N-1
+  If the length of the vector \code{dia} is equal to N, then the lengths of 
+  \code{diam1} and \code{diap1} should be equal to N-1
 }
-
 \seealso{
   \code{\link{Solve.banded}}, the function to solve a banded system of
   linear equations.

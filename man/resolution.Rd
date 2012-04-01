@@ -11,7 +11,7 @@
 }
 
 \usage{
-resolution ( s, tol=sqrt(.Machine$double.eps))
+resolution (s, tol = sqrt(.Machine$double.eps))
 }
 
 \arguments{
@@ -32,16 +32,16 @@ resolution ( s, tol=sqrt(.Machine$double.eps))
 }
 
 \author{
-  Karline Soetaert <k.soetaert@nioo.knaw.nl>
+  Karline Soetaert <karline.soetaert@nioz.nl>
 
-  Dick van Oevelen<d.vanoevelen@nioo.knaw.nl>
+  Dick van Oevelen<dick.vanoevelen@nioz.nl>
 }
 
 \examples{
-resolution(matrix(nr=3,runif(9)))  #3rows,3columns
-resolution(matrix(nr=3,runif(12))) #3rows,4columns
-resolution(matrix(nr=3,runif(6)))  #3rows,2columns
-resolution(cbind(c(1,2,3),c(2,3,4),c(3,5,7))) # r3=r1+r2,c3=c1+c2
+resolution (matrix(nrow = 3, runif(9)))  #3rows,3columns
+resolution (matrix(nrow = 3, runif(12))) #3rows,4columns
+resolution (matrix(nrow = 3, runif(6)))  #3rows,2columns
+resolution (cbind(c(1, 2, 3), c(2, 3, 4), c(3, 5, 7))) # r3=r1+r2,c3=c1+c2
 }
 \references{
   Menke, W., 1989. Geophysical Data Analysis: Discrete Inverse Theory.

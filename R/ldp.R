@@ -21,6 +21,8 @@ ldp <- function(G, H, tol=sqrt(.Machine$double.eps),   verbose=TRUE)  {
 
   IsError <- FALSE
   NW      <- (Nx+1)*(Nin+2) +2*Nin
+  storage.mode(G) <- storage.mode(H) <- "double"
+  
   sol  <-.Fortran("ldp",G=G,H=H,
          NUnknowns=as.integer(Nx),NConstraints=as.integer(Nin),
          NW=as.integer(NW),X=as.vector(rep(0,Nx)),XNorm=0.,

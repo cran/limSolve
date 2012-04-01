@@ -22,10 +22,12 @@ nnls <- function(A, B, tol=sqrt(.Machine$double.eps), verbose=TRUE) {
   if (length(B) != Neq)
     stop("cannot solve nnls problem - A and B not compatible")
 
-  sol  <-.Fortran("xnnls",A=A,MDA=as.integer(Neq),M=as.integer(Neq),
-                  N=as.integer(Nx),B=B,X=as.vector(rep(0,Nx)),RNorm=0.,
-                  W=as.double(rep(0.,Nx)),ZZ=as.double(rep(0.,Neq)),
-                  Index=as.integer(rep(0,Nx)), Mode=as.integer(0))
+  sol  <-.Fortran("xnnls", A = as.double(A), MDA = as.integer(Neq),
+                  M = as.integer(Neq),
+                  N = as.integer(Nx), B = as.double(B), 
+                  X = as.vector(rep(0,Nx)), RNorm = 0.,
+                  W = as.double(rep(0.,Nx)),ZZ = as.double(rep(0.,Neq)),
+                  Index = as.integer(rep(0,Nx)), Mode = as.integer(0))
   IsError <- FALSE
   Mode <- sol$Mode
 

@@ -17,8 +17,8 @@
 }
 
 \usage{
-ldei(E, F, G=NULL, H=NULL,
-  tol=sqrt(.Machine$double.eps), verbose=TRUE)
+ldei(E, F, G = NULL, H = NULL,
+     tol = sqrt(.Machine$double.eps), verbose = TRUE)
 }
 
 \arguments{
@@ -65,19 +65,43 @@ ldei(E, F, G=NULL, H=NULL,
 }
 
 \author{
-  Karline Soetaert <k.soetaert@nioo.knaw.nl>.
+  Karline Soetaert <karline.soetaert@nioz.nl>.
 }
 
-\examples{# parsimonious (simplest) solution of the mink diet problem
-A <- rbind(Minkdiet$Prey,rep(1,7))
-B <- c(Minkdiet$Mink,1)
+\examples{
+#-------------------------------------------------------------------------------
+# A simple problem
+#-------------------------------------------------------------------------------
+# minimise x1^2 + x2^2 + x3^2 + x4^2 + x5^2 + x6^2
+# subject to:
+#-x1            + x4 + x5      = 0
+#    - x2       - x4      + x6 = 0
+# x1 + x2 + x3                 > 1
+#           x3       + x5 + x6 < 1
+# xi > 0
 
-parsimonious <- ldei(A,B,G=diag(7),H=rep(0,7))
-data.frame(food=colnames(Minkdiet$Prey),fraction=parsimonious$X)
-dotchart(x=as.vector(parsimonious$X),
-         labels=colnames(Minkdiet$Prey),
-         main="Diet composition of Mink extimated using ldei",
-         xlab="fraction")
+E <- matrix(nrow = 2, byrow = TRUE, data = c(-1, 0, 0, 1, 1, 0,
+                                              0,-1, 0, -1, 0, 1))
+F <- c(0, 0)
+G <- matrix(nrow = 2, byrow = TRUE, data = c(1, 1, 1, 0, 0, 0,
+                                             0, 0, -1, 0, -1, -1))
+H    <- c(1, -1)
+ldei(E, F, G, H)
+
+#-------------------------------------------------------------------------------
+# parsimonious (simplest) solution of the mink diet problem
+#-------------------------------------------------------------------------------
+E <- rbind(Minkdiet$Prey, rep(1, 7))
+F <- c(Minkdiet$Mink, 1)
+
+parsimonious <- ldei(E, F, G = diag(7), H = rep(0, 7))
+data.frame(food = colnames(Minkdiet$Prey),
+           fraction = parsimonious$X)
+dotchart(x = as.vector(parsimonious$X),
+         labels = colnames(Minkdiet$Prey),
+         main = "Diet composition of Mink extimated using ldei",
+         xlab = "fraction")
+         
 }
 
 \references{
@@ -88,6 +112,8 @@ dotchart(x=as.vector(parsimonious$X),
 }
 
 \seealso{
+  \code{\link{Minkdiet}}, for a description of the Mink diet example.
+
   \code{\link{lsei}}, \code{\link{linp}}
 
   \code{\link{ldp}}

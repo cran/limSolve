@@ -34,8 +34,8 @@ Journal of Statistical Software, Code Snippets, 30(1), 1-15.
   \tabular{ll}{
     Package: \tab limSolve\cr
     Type: \tab Package\cr
-    Version: \tab 1.5.2\cr
-    Date: \tab 2010-04-01\cr
+    Version: \tab 1.5.3\cr
+    Date: \tab 2011-09-05\cr
     License: \tab GNU Public License 2 or above\cr
   }
 
@@ -103,7 +103,6 @@ vignette("xsample")
 
 ## show main package vignette
 vignette("limSolve")
-browseURL(paste(system.file(package="limSolve"), "/doc", sep=""))
 }
 }
 

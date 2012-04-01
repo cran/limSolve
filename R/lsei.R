@@ -141,7 +141,9 @@ lsei <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
     if (fulloutput)
       mdW <- max(mdW, Nx)
     mWS <- 2*(Neq+Nx)+max(Napp+ineq,Nx)+(ineq+2)*(Nx+7)
-
+    storage.mode(A) <- storage.mode(B)  <- "double"
+    storage.mode(E) <- storage.mode(F)  <- "double"
+    storage.mode(G) <- storage.mode(H) <- "double"
     sol <-.Fortran("lsei",NUnknowns=Nx,NEquations=Neq,NConstraints=Nin,
              NApproximate=Napp,A=A,B=B,E=E,F=F,G=G,H=H,X=as.vector(rep(0,Nx)),
              mIP=as.integer(mIP),mdW=as.integer(mdW),mWS=as.integer(mWS),

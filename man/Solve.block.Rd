@@ -28,19 +28,20 @@
 }
 
 \usage{
-Solve.block(Top,AR,Bot,B,overlap)
+Solve.block(Top, AR, Bot, B, overlap)
 }
 
 \arguments{
-  \item{Top }{the first block of the almost block diagonal matrix A.
+  \item{Top }{the first block of the almost block diagonal matrix \code{A}.
   }
-  \item{AR }{intermediary blocks; AR(.,.,K) contains the kth block of
-    matrix A.
+  \item{AR }{intermediary blocks; \code{AR}(.,.,K) contains the kth block of
+    matrix \code{A}.
   }
-  \item{Bot }{the last block of the almost block diagonal matrix A.
+  \item{Bot }{the last block of the almost block diagonal matrix \code{A}.
   }
   \item{B }{Right-hand side of the equations, a vector with length = number
-   of rows of A, or a matrix with number of rows = number of rows of A.
+   of rows of \code{A}, 
+   or a matrix with number of rows = number of rows of \code{A}.
   }
   \item{overlap }{the number of columns in which successive blocks
     overlap, and where \code{overlap = nrow(Top) + nrow(Bot)}.
@@ -53,7 +54,11 @@ Solve.block(Top,AR,Bot,B,overlap)
 }
 
 \author{
-  Karline Soetaert <k.soetaert@nioo.knaw.nl>
+  Karline Soetaert <karline.soetaert@nioz.nl>
+}
+
+\note{A similar function but that requires a totally different input can now 
+  also be found in the \code{Matrix} package
 }
 
 \examples{
@@ -73,9 +78,10 @@ Solve.block(Top,AR,Bot,B,overlap)
 #                                                  0.08 100.0 50.00 15.00  Bot
 
 
-B <- c(-1.92,-1.27,-2.12,-2.16,-2.27,-6.08,-3.03,-4.62,-1.02,-3.52,0.55,165.08)
+B <- c(-1.92, -1.27, -2.12, -2.16, -2.27,  -6.08,
+       -3.03, -4.62, -1.02, -3.52,  0.55, 165.08)
 
-AA<- matrix (nr= 12, nc=12, 0)
+AA         <- matrix (nrow = 12, ncol = 12, 0)
 AA[1,1:4]  <- c( 0.0,  -0.98, -0.79, -0.15)
 AA[2,1:4]  <- c(-1.00,  0.25, -0.87,  0.35)
 AA[3,1:8]  <- c( 0.78,  0.31, -0.85,  0.89, -0.69, -0.98, -0.76, -0.82)
@@ -90,20 +96,20 @@ AA[11,9:12]<- c( 0.71, -0.64,   0.0,  0.48)
 AA[12,9:12]<- c( 0.08, 100.0, 50.00, 15.00)
 
 ## Block diagonal input.
-Top  <- matrix(nr=2, nc=4, data=AA[1:2,1:4])
-Bot  <- matrix(nr=2, nc=4, data=AA[11:12,9:12])
-Blk1 <- matrix(nr=4, nc=8, data=AA[3:6,1:8])
-Blk2 <- matrix(nr=4, nc=8, data=AA[7:10,5:12])
+Top  <- matrix(nrow = 2, ncol = 4, data = AA[1:2  , 1:4] )
+Bot  <- matrix(nrow = 2, ncol = 4, data = AA[11:12, 9:12])
+Blk1 <- matrix(nrow = 4, ncol = 8, data = AA[3:6  , 1:8] )
+Blk2 <- matrix(nrow = 4, ncol = 8, data = AA[7:10 , 5:12])
 
-AR <- array(dim=c(4,8,2),data=c(Blk1,Blk2))
+AR <- array(dim = c(4, 8, 2), data = c(Blk1, Blk2))
 overlap <- 4
 
 # answer = (1, 1,....1)
-Solve.block(Top,AR,Bot,B,overlap=4)
+Solve.block(Top, AR, Bot, B, overlap = 4)
 
 # Now with 3 different B values
 B3 <- cbind(B, 2*B, 3*B)
-Solve.block(Top,AR,Bot,B3,overlap=4)
+Solve.block(Top, AR, Bot, B3, overlap = 4)
 
 }
 

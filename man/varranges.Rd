@@ -1,7 +1,7 @@
 \name{varranges}
 \alias{varranges}
 \title{
-  Calculates ranges of inverse variables
+  Calculates ranges of inverse variables in a linear inverse problem
 }
 \description{
   Given the linear constraints
@@ -13,8 +13,6 @@
   finds the minimum and maximum values of the variables
   by successively minimising and maximising each variable equation
 
-  uses linear programming function \code{\link[lpSolve]{lp}} from package
-  \code{lpSolve}.
 }
 \usage{
 varranges(E=NULL, F=NULL, G=NULL, H=NULL, EqA, EqB=NULL, 
@@ -51,18 +49,35 @@ varranges(E=NULL, F=NULL, G=NULL, H=NULL, EqA, EqB=NULL,
   (variable)
 }
 \author{
-  Karline Soetaert <k.soetaert@nioo.knaw.nl>
+  Karline Soetaert <karline.soetaert@nioz.nl>
 }
-\examples{# Ranges in the contribution of food 3+4+5 in the diet of Mink
+\examples{
+# Ranges in the contribution of food 3+4+5 in the diet of Mink (try ?Minkdiet)
 
-A <- rbind(Minkdiet$Prey,rep(1,7))
-B <- c(Minkdiet$Mink,1)
-EqA   <- c(0,0,1,1,1,0,0)                 # sum of food 3,4,5
-(isoA<-varranges(A,B,EqA=EqA,ispos=TRUE)) # ranges of part of food 3+4+5
-varranges(A,B,EqA=EqA,G=diag(7),H=rep(0,7)) 
+E     <- rbind(Minkdiet$Prey, rep(1, 7))
+F     <- c(Minkdiet$Mink, 1)
+EqA   <- c(0, 0, 1, 1, 1, 0, 0)                    # sum of food 3,4,5
+(isoA <- varranges(E, F, EqA = EqA, ispos = TRUE)) # ranges of part of food 3+4+5
+
+# The same, but explicitly imposing positivity
+varranges(E, F, EqA = EqA, G = diag(7), H = rep(0, 7)) 
+}
+\note{
+  uses linear programming function \code{\link[lpSolve]{lp}} from package
+  \code{lpSolve}.
+}
+\references{
+Michel Berkelaar and others (2010). lpSolve:
+  Interface to Lp_solve v. 5.5 to solve linear/integer
+  programs. R package version 5.6.5.
+  http://CRAN.R-project.org/package=lpSolve
 }
 \seealso{
-  \code{\link{xranges}},
+  \code{\link{Minkdiet}}, for a description of the Mink diet example.
+
+  \code{\link{xranges}}, to estimate ranges of inverse unknowns.
+
+  \code{\link{xsample}}, to randomly sample the lsei problem
 
   \code{\link[lpSolve]{lp}}: linear programming function from package lpSolve.
 }

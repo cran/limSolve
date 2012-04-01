@@ -1,3 +1,7 @@
+C Karline: removed the write statement; where they also passed an integer value, 
+C this no long is the case. Each removed statement is preceded by:
+C KARLINE: REMOVED WRITE		 
+
 
 C*********************************************************************
 C LEAST DISTANCE SUBROUTINE
@@ -425,8 +429,9 @@ C     ------------------------------------------------------------------
 C     integer INDEX(N)  
 C     double precision A(MDA,N), B(M), W(N), X(N), ZZ(M)   
       integer INDEX(*)  
-      double precision A(MDA,*), B(*), W(*), X(*), ZZ(*)   
-      double precision ALPHA, ASAVE, CC, xDIFF, DUMMY, FACTOR, RNORM
+      double precision A(MDA,*), B(*), W(*), X(*), ZZ(*)
+C Karline: changed dummy -> dummy(1) to avoid warining line 495         
+      double precision ALPHA, ASAVE, CC, xDIFF, DUMMY(1), FACTOR, RNORM
       double precision SM, SS, T, TEMP, TWO, UNORM, UP, WMAX
       double precision ZERO, ZTEST
       parameter(FACTOR = 0.01d0)
@@ -1973,7 +1978,7 @@ c
       EXTERNAL D1MACH, xDASUM, xDAXPY, xDCOPY,xDDOT,xDH12,DLSI,xDNRM2,               &
      &   xDSCAL, xDSWAP, xXERMSG
       DOUBLE PRECISION D1MACH, xDASUM, xDDOT, xDNRM2
-c
+c KARLINE: 
       DOUBLE PRECISION DRELPR, ENORM, FNORM, GAM, RB, RN, RNMAX, SIZE,             &
      &   SN, SNMAX, T, TAU, UJ, UP, VJ, XNORM, XNRME
       INTEGER I, IMAX, J, JP1, K, KEY, KRANKE, LAST, LCHK, LINK, M,                &
@@ -1997,25 +2002,29 @@ c     Check that enough storage was allocated in WS(*) and IP(*).
 c
       MODE = 4
       IF (MIN(N,ME,MA,MG) .LT. 0) THEN
-         WRITE (XERN1, '(I8)') N
-         WRITE (XERN2, '(I8)') ME
-         WRITE (XERN3, '(I8)') MA
-         WRITE (XERN4, '(I8)') MG
-         CALL xXERMSG ('SLATEC', 'LSEI', 'ALL OF THE VARIABLES N, ME,'//            &
-     &      ' MA, MG MUST BE .GE. 0 ENTERED ROUTINE WITH' //                        &
-     &      ' N  = ' // XERN1 //                                                    &
-     &      ' ME = ' // XERN2 //                                                    &
-     &      ' MA = ' // XERN3 //                                                    &
-     &      ' MG = ' // XERN4, 2, 1)
+c         WRITE (XERN1, '(I8)') N
+c         WRITE (XERN2, '(I8)') ME
+c         WRITE (XERN3, '(I8)') MA
+c         WRITE (XERN4, '(I8)') MG
+C KARLINE: REMOVED WRITE		 
+         CALL rwarn ('LSEI: THE VARIABLES N, ME,MA, MG MUST BE>0')
+c         CALL xXERMSG ('SLATEC', 'LSEI', 'ALL OF THE VARIABLES N, ME,'//            &
+c     &      ' MA, MG MUST BE .GE. 0 ENTERED ROUTINE WITH' //                        &
+c     &      ' N  = ' // XERN1 //                                                    &
+c     &      ' ME = ' // XERN2 //                                                    &
+c     &      ' MA = ' // XERN3 //                                                    &
+c     &      ' MG = ' // XERN4, 2, 1)
          RETURN
       ENDIF
 c
       IF (IP(1).GT.0) THEN
          LCHK = 2*(ME+N) + MAX(MA+MG,N) + (MG+2)*(N+7)
          IF (IP(1).LT.LCHK) THEN
-            WRITE (XERN1, '(I8)') LCHK
-            CALL xXERMSG ('SLATEC', 'xDLSEI', 'INSUFFICIENT STORAGE ' //             &
-     &         'ALLOCATED FOR WS(*), NEED LW = ' // XERN1, 2, 1)
+C KARLINE: REMOVED WRITE		 
+         CALL rwarn ('LSEI: insufficient storage')
+c            WRITE (XERN1, '(I8)') LCHK
+c            CALL xXERMSG ('SLATEC', 'xDLSEI', 'INSUFFICIENT STORAGE ' //             &
+c     &         'ALLOCATED FOR WS(*), NEED LW = ' // XERN1, 2, 1)
             RETURN
          ENDIF
       ENDIF
@@ -2023,9 +2032,11 @@ c
       IF (IP(2).GT.0) THEN
          LCHK = MG + 2*N + 2
          IF (IP(2).LT.LCHK) THEN
-            WRITE (XERN1, '(I8)') LCHK
-            CALL xXERMSG ('SLATEC', 'xDLSEI', 'INSUFFICIENT STORAGE ' //             &
-     &         'ALLOCATED FOR IP(*), NEED LIP = ' // XERN1, 2, 1)
+C KARLINE: REMOVED WRITE		 
+         CALL rwarn ('LSEI: insufficient storage')
+c            WRITE (XERN1, '(I8)') LCHK
+c            CALL xXERMSG ('SLATEC', 'xDLSEI', 'INSUFFICIENT STORAGE ' //             &
+c     &         'ALLOCATED FOR IP(*), NEED LIP = ' // XERN1, 2, 1)
             RETURN
          ENDIF
       ENDIF
@@ -2057,7 +2068,7 @@ c
 c     The nominal column scaling used in the code is
 c     the identity scaling.
 c
-      CALL xDCOPY (N, 1.D0, 0, WS(N1), 1)
+      CALL XDCOPYSC (N, 1.D0, WS(N1), 1)
 c
 c     No covariance matrix is nominally computed.
 c
@@ -2208,7 +2219,7 @@ c
          SN = xDDOT(KRANKE,W(I,1),MDW,W(I,1),MDW)
          RN = xDDOT(N-KRANKE,W(I,KRANKE+1),MDW,W(I,KRANKE+1),MDW)
          IF (RN.LE.SN*TAU**2 .AND. KRANKE.LT.N)                                     &
-     &      CALL xDCOPY (N-KRANKE, 0.D0, 0, W(I,KRANKE+1), MDW)
+     &      CALL XDCOPYSC (N-KRANKE, 0.D0, W(I,KRANKE+1), MDW)
   190 CONTINUE
 c
 c     Compute equality constraint equations residual length.
@@ -2377,9 +2388,9 @@ c   891214  Prologue converted to Version 4.0 format.  (BAB)
 c   900328  Added TYPE section.  (WRB)
 c   900604  DP version created from SP version.  (RWC)
 c   920422  Changed CALL to xDHFTI to include variable MA.  (WRB)
-c***END PROLOGUE  DLSI
+c***END PROLOGUE  DLSI  - karline: added RNORMV(1) to avoid warning when calling xdhfti     
       INTEGER IP(*), MA, MDW, MG, MODE, N
-      DOUBLE PRECISION PRGOPT(*), RNORM, W(MDW,*), WS(*), X(*)
+      DOUBLE PRECISION PRGOPT(*), RNORM, W(MDW,*),WS(*),X(*),RNORMV(1)
 c
       EXTERNAL D1MACH, xDASUM,xDAXPY,xDCOPY,xDDOT,xDH12,xDHFTI,DLPDP,               &
      &   xDSCAL, xDSWAP
@@ -2439,18 +2450,19 @@ c
 c
 c     Compute Householder orthogonal decomposition of matrix.
 c
-      CALL xDCOPY (N, 0.D0, 0, WS, 1)
+      CALL XDCOPYSC (N, 0.D0, WS, 1)
       CALL xDCOPY (MA, W(1, NP1), 1, WS, 1)
       K = MAX(M,N)
       MINMAN = MIN(MA,N)
       N1 = K + 1
       N2 = N1 + N
-c      CALL xDHFTI (W, MDW, MA, N, WS, MA, 1, TAU, KRANK, RNORM, WS(N2),              &
-c     &           WS(N1), IP)
-c KARLINE:ADDED THAT ...
+c      CALL xDHFTI (W, MDW, MA, N, WS, MA, 1, TAU, KRANK, RNORM, WS(N2),  WS(N1), IP)
+c KARLINE:ADDED both next sentences ...
+        RNORMV(1) = RNORM       
         MDB = MAX(MA,N)
-      CALL xDHFTI (W, MDW, MA, N, WS, MDB, 1, TAU, KRANK, RNORM, WS(N2),              &
+      CALL xDHFTI (W, MDW, MA, N, WS, MDB, 1,TAU,KRANK, RNORMV, WS(N2),             &
      &           WS(N1), IP)   
+      RNORM = RNORMV(1)   ! and this one added as well
 c and changed that...
       FAC = 1.D0
       GAM = MA - KRANK
@@ -2583,7 +2595,7 @@ c
   260    CONTINUE
 c
          DO 270 I = KRP1,N
-            CALL xDCOPY (I, 0.D0, 0, W(I,1), MDW)
+            CALL XDCOPYSC (I, 0.D0, W(I,1), MDW)
   270    CONTINUE
 c
 c        Apply right side transformations to lower triangle.
@@ -2601,7 +2613,7 @@ c
 c
 c              Store unscaled rank one Householder update in work array.
 c
-               CALL xDCOPY (N, 0.D0, 0, WS(N3), 1)
+               CALL XDCOPYSC (N, 0.D0, WS(N3), 1)
                L = N1 + I
                K = N3 + I
                WS(K-1) = WS(L-1)
@@ -2801,7 +2813,7 @@ c
   190 IF (KRANK.LT.ME) THEN
          FACTOR = ALSQ
          DO 200 I=KRANK+1,ME
-            CALL xDCOPY (L, 0.D0, 0, W(I,1), MDW)
+            CALL XDCOPYSC (L, 0.D0, W(I,1), MDW)
   200    CONTINUE
 c
 c        Determine the rank of the remaining equality constraint
@@ -2841,7 +2853,7 @@ c
             IF (.NOT.DWNLT2(ME, MEND, IR, FACTOR,TAU,SCALE,W(1,I))) THEN
                JJ = IR
                DO 260 IR=JJ,ME
-                  CALL xDCOPY (N, 0.D0, 0, W(IR,1), MDW)
+                  CALL XDCOPYSC (N, 0.D0, W(IR,1), MDW)
                   RNORM = RNORM + (SCALE(IR)*W(IR,N+1)/ALSQ)*W(IR,N+1)
                   W(IR,N+1) = 0.D0
                   SCALE(IR) = 1.D0
@@ -3076,7 +3088,7 @@ c
 c     The nominal column scaling used in the code is
 c     the identity scaling.
 c
-      CALL xDCOPY (N, 1.D0, 0, D, 1)
+      CALL XDCOPYSC (N, 1.D0, D, 1)
 c
 c     Define bound for number of options to change.
 c
@@ -3182,7 +3194,7 @@ c
 c     Set the solution vector X(*) to zero and the column interchange
 c     matrix to the identity.
 c
-      CALL xDCOPY (N, 0.D0, 0, X, 1)
+      CALL XDCOPYSC (N, 0.D0, X, 1)
       DO 150 I = 1,N
          IPIVOT(I) = I
   150 CONTINUE
@@ -3192,7 +3204,7 @@ c     corresponding to the unconstrained variables.
 c     Set first L components of dual vector to zero because
 c     these correspond to the unconstrained variables.
 c
-      CALL xDCOPY (L, 0.D0, 0, WD, 1)
+      CALL XDCOPYSC (L, 0.D0, WD, 1)
 c
 c     The arrays IDOPE(*) and DOPE(*) are used to pass
 c     information to DWNLIT().  This was done to avoid
@@ -3398,7 +3410,7 @@ c
 c        To perform multiplier test and drop a constraint.
 c
          CALL xDCOPY (NSOLN, Z, 1, X, 1)
-         IF (NSOLN.LT.N) CALL xDCOPY (N-NSOLN, 0.D0, 0, X(NSOLN+1), 1)
+         IF (NSOLN.LT.N) CALL XDCOPYSC (N-NSOLN, 0.D0, X(NSOLN+1), 1)
 c
 c        Reclassify least squares equations as equalities as necessary.
 c
@@ -3577,7 +3589,7 @@ c
 c
 c     Fill in trailing zeroes for constrained variables not in solution.
 c
-      IF (NSOLN.LT.N) CALL xDCOPY (N-NSOLN, 0.D0, 0, X(NSOLN+1), 1)
+      IF (NSOLN.LT.N) CALL XDCOPYSC (N-NSOLN, 0.D0, X(NSOLN+1), 1)
 c
 c     Permute solution vector to natural order.
 c
@@ -4070,9 +4082,12 @@ c
       IF (IWORK(1).GT.0) THEN
          LW = ME + MA + 5*N
          IF (IWORK(1).LT.LW) THEN
-            WRITE (XERN1, '(I8)') LW
-            CALL xXERMSG ('SLATEC', 'DWNNLS', 'INSUFFICIENT STORAGE ' //            &
-     &         'ALLOCATED FOR WORK(*), NEED LW = ' // XERN1, 2, 1)
+C KARLINE: REMOVED WRITE		 
+         CALL rwarn ('LSEI: insufficient storage')
+		 
+C            WRITE (XERN1, '(I8)') LW
+C            CALL xXERMSG ('SLATEC', 'DWNNLS', 'INSUFFICIENT STORAGE ' //            &
+C     &         'ALLOCATED FOR WORK(*), NEED LW = ' // XERN1, 2, 1)
             MODE = 2
             RETURN
          ENDIF
@@ -4081,9 +4096,12 @@ c
       IF (IWORK(2).GT.0) THEN
          LIW = ME + MA + N
          IF (IWORK(2).LT.LIW) THEN
-            WRITE (XERN1, '(I8)') LIW
-            CALL xXERMSG ('SLATEC', 'DWNNLS', 'INSUFFICIENT STORAGE ' //            &
-     &         'ALLOCATED FOR IWORK(*), NEED LIW = ' // XERN1, 2, 1)
+C KARLINE: REMOVED WRITE		 
+         CALL rwarn ('LSEI: insufficient storage')
+		 
+C            WRITE (XERN1, '(I8)') LIW
+C            CALL xXERMSG ('SLATEC', 'DWNNLS', 'INSUFFICIENT STORAGE ' //            &
+C     &         'ALLOCATED FOR IWORK(*), NEED LIW = ' // XERN1, 2, 1)
             MODE = 2
             RETURN
          ENDIF
@@ -5117,4 +5135,26 @@ c
       END
 
 
+
+C***********************************************************************
+C Karline: added as adaptation from xdcopy, to avoid warning of rank mismatch
+C***********************************************************************
+      SUBROUTINE XDCOPYSC(N,DX,DY,INCY)
+C
+C     COPIES A scalar, X, TO A VECTOR, Y. 
+C
+      DOUBLE PRECISION DX, DY(*)
+      INTEGER I,INCY,IY,N
+C
+      IF(N.LE.0)RETURN
+
+      IY = 1
+      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
+
+      DO 10 I = 1,N
+        DY(IY) = DX
+        IY = IY + INCY
+   10 CONTINUE
+      RETURN
+      END
 

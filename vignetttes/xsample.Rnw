@@ -5,17 +5,20 @@
 \usepackage{mathptmx}
 \usepackage[latin1]{inputenc}      % á,é,ë,...
 
-
-\author{Karel Van den Meersche\\ NIOO-CEME Yerseke, Universiteit Gent \And Karline
-  Soetaert\\NIOO-CEME Yerseke \And Dick Van Oevelen\\NIOO-CEME Yerseke}
 \title{\code{xsample()}: an \proglang{R} Function for Sampling Linear Inverse Problems}
-
-%% for pretty printing and a nice hypersummary also set:
-\Plainauthor{Karel Van den Meersche, Karline Soetaert, Dick Van Oevelen} %% comma-separated
 \Plaintitle{xsample(): an R Function for Sampling Linear Inverse Problems}
 \Shorttitle{Sampling Linear Inverse Problems} %% a short title (if necessary)
 
-% an abstract and keywords
+
+\Keywords{linear modeling, underdetermined systems, Markov chain, \proglang{R}}
+\Plainkeywords{linear modeling, underdetermined systems, Markov chain, R}
+
+
+\author{Karel Van den Meersche\\ Universiteit Gent \And Karline
+  Soetaert\\NIOZ Yerseke \And Dick Van Oevelen\\NIOZ Yerseke}
+
+\Plainauthor{Karel Van den Meersche, Karline Soetaert, Dick Van Oevelen} %% comma-separated
+
 \Abstract{The \proglang{R} function \code{xsample()} uses Markov
   Chain Monte Carlo (MCMC) algorithms to uniformly sample the feasible region
   of constrained linear problems. It contains two hit-and-run sampling
@@ -23,17 +26,12 @@
   MCMC step reflects on the inequality constraints.   }
 
 
-\Keywords{linear modeling, underdetermined systems, Markov chain, \proglang{R}}
-\Plainkeywords{linear modeling, underdetermined systems, Markov
-  chain, R}
-
 \Address{
-  Karel Van den Meersche\\
-  Centre for Estuarine and Marine Ecology (CEME)\\
-  Netherlands Institute for Ecology (NIOO)\\
-  4401 NT Yerseke, Netherlands\\
-  E-mail: \email{k.vdmeersche@nioo.knaw.nl}\\
-  URL: \url{http://www.nioo.knaw.nl/users/kvdmeersche}
+  Karline Soetaert, Karel Van den Meersche, Dick van Oevelen\\
+  Royal Netherlands Institute of Sea Research (NIOZ)\\
+  4401 NT Yerseke, Netherlands
+  E-mail: \email{karline.soetaert@nioz.nl}\\
+  URL: \url{http://www.nioz.nl}\\
 }
 
 
@@ -45,14 +43,17 @@
 %\VignettePackage{limSolve}
 
 \begin{document}
+\SweaveOpts{engine=R,eps=FALSE}
+\SweaveOpts{keep.source=TRUE}
 
+<<preliminaries,echo=FALSE,results=hide>>=
+library("limSolve")
+options(prompt = "> ")
 
-% \begin{frontmatter}
+@
 
-\title{xsample: an R function for sampling underdetermined linear
-  inverse problems}
+\begin{frontmatter}
 
-\author{Karel Van den Meersche}
 
 \maketitle
 

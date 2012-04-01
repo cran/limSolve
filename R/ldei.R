@@ -95,6 +95,9 @@ ldei <- function(E, F, G=NULL, H=NULL,
    ## call the DLL with the least distance programming routine ldp
     IsError <- FALSE
     NW      <- (LDPNx+1)*(Nin+2) +2*Nin
+
+    storage.mode(LDPG) <- storage.mode(LDPH) <- "double"
+    
     sol  <-.Fortran("ldp",G=LDPG,H=LDPH,
              NUnknowns=as.integer(LDPNx),NConstraints=as.integer(Nin),
              NW=as.integer(NW),X=as.vector(rep(0,LDPNx)),XNorm=0.,

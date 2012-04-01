@@ -1,7 +1,7 @@
 \name{xranges}
 \alias{xranges}
 \title{
-  Calculates ranges of inverse unknowns
+  Calculates ranges of the unknowns of a linear inverse problem
 }
 \description{
   Given the linear constraints
@@ -9,14 +9,13 @@
   \deqn{Gx>=h}
   finds the minimum and maximum values of all elements of vector \eqn{x}
 
-  by successively minimising and maximising each \code{x}, using linear programming
-
-  uses linear programming function \code{lp} from package lpSolve.
+  This is done by successively minimising and maximising each \code{x}, 
+  using linear programming. 
 }
 
 \usage{
-xranges(E=NULL, F=NULL, G=NULL, H=NULL, ispos=FALSE, tol=1e-8,
-  central = FALSE, full=FALSE)}
+xranges(E = NULL, F = NULL, G = NULL, H = NULL, 
+        ispos = FALSE, tol = 1e-8, central = FALSE, full=FALSE)}
 
 \arguments{
   \item{E }{numeric matrix containing the coefficients of the equalities
@@ -39,7 +38,7 @@ xranges(E=NULL, F=NULL, G=NULL, H=NULL, ispos=FALSE, tol=1e-8,
   }
   \item{full }{if \code{TRUE}, all range solutions are also outputted.
   }
-  }
+}
 \value{
   a matrix with at least two columns:
 
@@ -50,23 +49,29 @@ xranges(E=NULL, F=NULL, G=NULL, H=NULL, ispos=FALSE, tol=1e-8,
   if \code{full} is TRUE: next columns contain all valid range solutions
 }
 \author{
-  Karline Soetaert <k.soetaert@nioo.knaw.nl>
+  Karline Soetaert <karline.soetaert@nioz.nl>
 }
 
-\examples{# Estimate the ranges in the Diet Composition of Mink
-A <- rbind(Minkdiet$Prey,rep(1,7))
-B <- c(Minkdiet$Mink,1)
-(DC<-xranges(A,B,ispos=TRUE))
-(DC<-xranges(A,B,G=diag(7),H=rep(0,7)))
+\examples{
+# Estimate the ranges in the Diet Composition of Mink
+E <- rbind(Minkdiet$Prey, rep(1, 7))
+F <- c(Minkdiet$Mink, 1)
+(DC <- xranges(E, F, ispos = TRUE))
+
+# The same, but explicitly imposing positivity
+(DC <- xranges(E, F, G = diag(7), H = rep(0, 7)))
+
 }
 \details{
   The ranges are estimated by successively minimising and maximising each
-  unknown, and using linear programming.
+  unknown, and using linear programming (based on function \code{lp} from 
+  R-package \code{lpSolve}.
 
-  by default linear programming assumes that all unknowns are positive.
-  If this is the case, set \code{ispos} equal to TRUE; the function will
-  execute faster then. If \code{ispos} is \code{FALSE}, then a system double
-  the size of the original system must be solved.
+  By default linear programming assumes that all unknowns are positive.
+  If all unknowns are indeed to be positive, then it will generally be faster
+  to set \code{ispos} equal to TRUE
+  If \code{ispos} is \code{FALSE}, then a system double the size of the 
+  original system must be solved.
 
   \code{xranges} outputs only the minimum and maximum value of each flow unless:
 
@@ -84,8 +89,15 @@ B <- c(Minkdiet$Mink,1)
   and \eqn{Gx>=H}. This is not the case for the first two columns (with
   the minimal and maximal values).
 }
-
+\references{
+Michel Berkelaar and others (2010). lpSolve:
+  Interface to Lp_solve v. 5.5 to solve linear/integer
+  programs. R package version 5.6.5.
+  http://CRAN.R-project.org/package=lpSolve
+}
 \seealso{
+  \code{\link{Minkdiet}}, for a description of the Mink diet example.
+
   \code{\link{varranges}}, for range estimation of variables,
 
   \code{\link{xsample}}, to randomly sample the lsei problem
