@@ -104,7 +104,7 @@ xsample(A = NULL, B = NULL, E = NULL, F =NULL,
 }
 
 \author{
-  Karel Van den Meersche<k.vdMeersche@nioo.knaw.nl>
+  Karel Van den Meersche
 
   Karline Soetaert <karline.soetaert@nioz.nl>
 }

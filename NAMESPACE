@@ -1,5 +1,8 @@
 useDynLib(limSolve)
-
+importFrom(lpSolve, lp)
+importFrom(quadprog, solve.QP)
+importFrom(MASS, ginv)
+importFrom(MASS, Null)
 export(ldei, ldp, linp, lsei, nnls, resolution,
        Solve, Solve.banded, Solve.tridiag, Solve.block,
        varranges, varsample, xranges, xsample)

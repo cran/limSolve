@@ -350,8 +350,8 @@ c-------------------------------------------------------------------*
 c Subroutine obtained from LINPACK (ftp-site netlib.att.com)        *
 c-------------------------------------------------------------------*
 
-      integer lda,n,ml,mu,ipvt(1),job
-      double precision abd(lda,1),b(1)
+      integer lda,n,ml,mu,ipvt(*),job
+      double precision abd(lda,*),b(*)
 c
 c     xdgbsl solves the double precision band system
 c     a * x = b  or  trans(a) * x = b
@@ -494,8 +494,8 @@ c-------------------------------------------------------------------*
 c Subroutine obtained from LINPACK (ftp-site netlib.att.com)        *
 c-------------------------------------------------------------------*
 
-      integer lda,n,ml,mu,ipvt(1),info
-      double precision abd(lda,1)
+      integer lda,n,ml,mu,ipvt(*),info
+      double precision abd(lda,*)
 c
 c     xdgbfa factors a double precision band matrix by elimination.
 c
@@ -670,8 +670,8 @@ c
 
 
       subroutine dgefa(a,lda,n,ipvt,info)
-      integer lda,n,ipvt(1),info
-      double precision a(lda,1)
+      integer lda,n,ipvt(*),info
+      double precision a(lda,*)
 c
 c     dgefa factors a double precision matrix by gaussian elimination.
 c
@@ -773,8 +773,8 @@ c
       return
       end
       subroutine dgesl(a,lda,n,ipvt,b,job)
-      integer lda,n,ipvt(1),job
-      double precision a(lda,1),b(1)
+      integer lda,n,ipvt(*),job
+      double precision a(lda,*),b(*)
 c
 c     dgesl solves the double precision system
 c     a * x = b  or  trans(a) * x = b

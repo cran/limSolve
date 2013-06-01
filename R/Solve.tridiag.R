@@ -26,7 +26,7 @@ Solve.tridiag  <- function(diam1, dia, diap1,
 
 #DGTSV( N, NB, DL, D, DU, B, LDB, INFO )
   sol <-.Fortran("dgtsv",N=Nmx,nrhs=Nb,DL=as.double(diam1),
-        D=as.double(dia),DU=as.double(diap1),B=B,LDB=Nmx,
+        D=as.double(dia),DU=as.double(diap1),B=as.double(B),LDB=Nmx,
         INFO=as.integer(0) )
   return(sol$B)
 }
