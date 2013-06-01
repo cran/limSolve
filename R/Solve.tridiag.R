@@ -28,5 +28,6 @@ Solve.tridiag  <- function(diam1, dia, diap1,
   sol <-.Fortran("dgtsv",N=Nmx,nrhs=Nb,DL=as.double(diam1),
         D=as.double(dia),DU=as.double(diap1),B=as.double(B),LDB=Nmx,
         INFO=as.integer(0) )
-  return(sol$B)
+  result <- matrix(nrow = nrow(B), data = sol$B)
+  return(result)
 }

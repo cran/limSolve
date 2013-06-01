@@ -103,7 +103,7 @@ pairs(xs[ ,10:20], pch = ".", cex = 2, main = "sampling, using rda")
 # but an iteration takes more time ; it is better to start in a corner...
 # (i.e. no need to use X as starting value)
 xs <- xsample(E = E_coli$A, F = E_coli$B, G = E_coli$G, H = E_coli$H,
-              iter = 5000, out = 1000, jmp = 50, type = "mirror")$X
+              iter = 2000, out = 500, jmp = 50, type = "mirror")$X
 pairs(xs[ ,10:20], pch = ".", cex = 2, main = "sampling, using mirror")
 
 # Print results:

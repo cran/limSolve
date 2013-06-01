@@ -72,9 +72,15 @@ max(abs(E\%*\%X - F))
 min(G\%*\%X - H)
 
 # 3. Sample solution space; the central value is a good starting point
-#   for algorithms cda and rda - but these need many iterations
+#   for algorithms cda and rda - but these need many iterations   
+xs  <- xsample(E = E, F = F, G = G, H = H,
+               iter = 10000, out = 1000, type = "rda", x0 = X)$X
+# better convergence using 50000 iterations, but this takes a while
+\dontrun{
 xs  <- xsample(E = E, F = F, G = G, H = H,
                iter = 50000, out = 1000, type = "rda", x0 = X)$X
+}
+
 pairs(xs, pch = ".", cex = 2, gap = 0, upper.panel = NULL)
 
 
@@ -82,7 +88,7 @@ pairs(xs, pch = ".", cex = 2, gap = 0, upper.panel = NULL)
 # but an iteration takes more time ; it is better to start in a corner...
 # (i.e. no need to use X as starting value)
 xs  <- xsample(E = E, F = F, G = G, H = H,
-               iter = 2000, output = 1000, type = "mirror")$X
+               iter = 1500, output = 500, type = "mirror")$X
 pairs(xs, pch = ".", cex = 2, gap = 0, upper.panel = NULL, 
       yaxt = "n", xaxt = "n")
 
