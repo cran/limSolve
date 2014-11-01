@@ -241,7 +241,7 @@ A <- matrix(nrow = 4, ncol = 3,
             data = c(3, 1, 2, 0, 2, 0, 0, 1, 1, 0, 2, 0))
 B <- c(2, 1, 8, 3)
 
-lsei(A = A, B = B, fulloutput = TRUE)
+lsei(A = A, B = B, fulloutput = TRUE, verbose = FALSE)
 @
   Here the \emph{residualNorm} is the sum of absolute values of the residuals of
   the equalities that have to be met exactly
@@ -276,7 +276,7 @@ G <- matrix(nrow = 2, ncol = 3, byrow = TRUE,
             data = c(-1, 2, 0, 1, 0, -1))
 H <- c(-3, 2)
 
-lsei(A = A, B = B, G = G, H = H)
+lsei(A = A, B = B, G = G, H = H, verbose = FALSE)
 @
 
 \section{Underdetermined systems}
@@ -329,7 +329,7 @@ ldei(E = E, F = F)$X
   Here the approximate equations (\textbf{A}, the identity matrix, and
   \textbf{b}) have to be specified.
 <<>>=
-lsei(E = E, F = F, A = diag(3), B = rep(0, 3))$X
+lsei(E = E, F = F, A = diag(3), B = rep(0, 3), verbose = FALSE)$X
 @
 
 

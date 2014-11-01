@@ -165,8 +165,8 @@ lsei <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
     if (! is.null(Wa))
       stop ("cannot solve least squares problem - weights not implemented for type 2")
 
-    dvec  <- t(A) %*% B
-    Dmat  <- t(A) %*% A
+    dvec  <- crossprod(A, B) # was: t(A)%*%B
+    Dmat  <- crossprod(A, A) # t(A) %*% A
     diag(Dmat) <- diag(Dmat)+1e-8
     Amat  <- t(rbind(E,G))
     bvec  <- c(F,H)
