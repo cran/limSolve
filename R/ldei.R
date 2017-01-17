@@ -72,6 +72,7 @@ ldei <- function(E, F, G=NULL, H=NULL,
   if (all(CC > -tol)) {
      X    <- Xb
      IsError <-FALSE
+     numiter <- 0
   } else   {
 
    ## Number of unknowns to be solved by the least distance programming
@@ -103,10 +104,11 @@ ldei <- function(E, F, G=NULL, H=NULL,
              NW=as.integer(NW),X=as.vector(rep(0,LDPNx)),XNorm=0.,
              W=as.double(rep(0.,NW)),xIndex=as.integer(rep(0,Nin)),
              Mode=as.integer(0),
-             verbose=as.logical(verbose),IsError=as.logical(IsError))
+             verbose=as.logical(verbose),IsError=as.logical(IsError),
+             iter = as.integer(0))
 
     IsError<-sol$IsError
-
+    numiter <- sol$iter
    ## The solution, corrected for weights
     X    <- ortho[,1:unsolvable] %*% as.matrix(sol$X) + Xb
     X[which(abs(X)<tol)] <- 0         ## zero very tiny values
@@ -134,6 +136,7 @@ ldei <- function(E, F, G=NULL, H=NULL,
               residualNorm=residual,
               solutionNorm=solution,
               IsError=IsError,
-              type="ldei"))
+              type="ldei",
+              numiter = numiter))
 
 }

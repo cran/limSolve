@@ -71,15 +71,14 @@ X <- xr[,"central"]
 max(abs(E\%*\%X - F))
 min(G\%*\%X - H)
 
+\dontrun{   # this does not work on windows i386!
 # 3. Sample solution space; the central value is a good starting point
 #   for algorithms cda and rda - but these need many iterations   
 xs  <- xsample(E = E, F = F, G = G, H = H,
                iter = 10000, out = 1000, type = "rda", x0 = X)$X
 # better convergence using 50000 iterations, but this takes a while
-\dontrun{
 xs  <- xsample(E = E, F = F, G = G, H = H,
                iter = 50000, out = 1000, type = "rda", x0 = X)$X
-}
 
 pairs(xs, pch = ".", cex = 2, gap = 0, upper.panel = NULL)
 
@@ -94,6 +93,7 @@ pairs(xs, pch = ".", cex = 2, gap = 0, upper.panel = NULL,
 
 # Print results:
 data.frame(pars = pars, xr[ ,1:2], Mean = colMeans(xs), sd = apply(xs, 2, sd))
+}
 }
 \references{
   Donali, E., Olli, K., Heiskanen, A.S., Andersen, T., 1999. Carbon flow

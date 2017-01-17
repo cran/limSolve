@@ -28,7 +28,8 @@ ldp <- function(G, H, tol=sqrt(.Machine$double.eps),   verbose=TRUE)  {
          NW=as.integer(NW),X=as.vector(rep(0,Nx)),XNorm=0.,
          W=as.double(rep(0.,NW)),xIndex=as.integer(rep(0,Nin)),
          Mode=as.integer(0),
-         verbose=as.logical(verbose),IsError=as.logical(IsError))
+         verbose=as.logical(verbose),IsError=as.logical(IsError),
+         iter=as.integer(0))
   IsError<-sol$IsError 
   
   ## The solution
@@ -50,6 +51,7 @@ ldp <- function(G, H, tol=sqrt(.Machine$double.eps),   verbose=TRUE)  {
               residualNorm=residual,          # scalar, the sum of residuals of violated inequalities
               solutionNorm=solution,          # scalar, the value of the quadratic function at the solution
               IsError=IsError,                # if an error occurred
-              type="ldp"))
+              type="ldp",
+              numiter = sol$iter))
 
 }

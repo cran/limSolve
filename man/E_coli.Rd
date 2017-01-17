@@ -10,7 +10,7 @@
   Input matrices and vectors for performing Flux Balance Analysis of the
   E.coli metabolism
 
-  (as from \url{http://gcrg.ucsd.edu/Downloads/Flux_Balance_Analysis}).
+  (as from \code{http://gcrg.ucsd.edu/Downloads/Flux_Balance_Analysis}).
 
   The original input file can be found in the package subdirectory
   \url{/inst/docs/E_coli.input}
@@ -126,8 +126,7 @@ mtext(side = 3, cex = 1.5, outer = TRUE, line = -1.5,
 }
 
 \references{
-  \url{http://gcrg.ucsd.edu/Downloads/Flux_Balance_Analysis
-}
+originated from the urlhttp://gcrg.ucsd.edu/Downloads/Flux_Balance_Analysis
 
 Edwards,J.S., Covert, M., and Palsson, B., (2002)
 Metabolic Modeling of Microbes: the Flux Balance Approach,

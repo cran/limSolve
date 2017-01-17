@@ -27,7 +27,8 @@ nnls <- function(A, B, tol=sqrt(.Machine$double.eps), verbose=TRUE) {
                   N = as.integer(Nx), B = as.double(B), 
                   X = as.vector(rep(0,Nx)), RNorm = 0.,
                   W = as.double(rep(0.,Nx)),ZZ = as.double(rep(0.,Neq)),
-                  Index = as.integer(rep(0,Nx)), Mode = as.integer(0))
+                  Index = as.integer(rep(0,Nx)), Mode = as.integer(0),
+                  iter = as.integer(0))
   IsError <- FALSE
   Mode <- sol$Mode
 
@@ -57,6 +58,7 @@ nnls <- function(A, B, tol=sqrt(.Machine$double.eps), verbose=TRUE) {
               residualNorm=residual,   # sum of violated inequalities
               solutionNorm=solution,   # the quadratic function
               IsError=IsError,
-              type="nnls"))
+              type="nnls",
+              numiter = sol$iter))     # Number of iterations - since version 1.5.5.2
 
 }

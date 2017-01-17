@@ -45,6 +45,8 @@ ldp(G, H, tol = sqrt(.Machine$double.eps), verbose = TRUE)
   \item{type }{the string "ldp", such that how the solution was obtained
     can be traced.
   }
+  \item{numiter }{the number of iterations.
+  }
 }
 \author{
   Karline Soetaert <karline.soetaert@nioz.nl>

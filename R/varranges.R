@@ -70,9 +70,14 @@ varranges <- function(E=NULL, F=NULL, G=NULL, H=NULL,
     ## First test if problem is solvable...
     Sol <- lsei(E=E,F=F,G=G,H=H)
     if (Sol$residualNorm > tol)  {
+      Sol <- ldei(E=E,F=F,G=G,H=H)
+        if (Sol$residualNorm > tol)  {
+
       warning (paste("cannot proceed: problem not solvable at requested tolerance",tol))
       return(Range)
+      }
     }
+    
     ## double the number of unknowns: x -> x1 -x2, x1>0 and x2>0
     con <- cbind(con,-1*con)
     EqA <- cbind(EqA,-1*EqA)

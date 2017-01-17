@@ -79,8 +79,13 @@ xranges  <-  function (E = NULL, F = NULL, G = NULL, H = NULL,
     ## First test if problem is solvable...
     Sol <- lsei(E=E,F=F,G=G,H=H)
     if (Sol$residualNorm > tol)  {
+      Sol <- linp(E=E,F=F,G=G,H=H,Cost=rep(1, Nx))
+        if (Sol$residualNorm > tol)  {
+
       warning (paste("cannot proceed: problem not solvable at requested tolerance",tol))
+      colnames(Range) <- c("min", "max")
       return(Range)
+      }
     }
 
     ## double the number of unknowns: x -> x1 -x2, where x1>0 and x2>0

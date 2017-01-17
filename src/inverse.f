@@ -8,7 +8,7 @@ C LEAST DISTANCE SUBROUTINE
 C*********************************************************************
 
       SUBROUTINE ldp(G,H,NUnknowns,NConstraints,NW,X,XNorm,W,xIndex,           &
-     &               Mode,verbose, IsError)
+     &               Mode,verbose, IsError, Iter)
 
 
       INTEGER           :: NUnknowns,NConstraints,NW
@@ -22,7 +22,7 @@ C*********************************************************************
 
       DOUBLE PRECISION  :: W(NW)
       INTEGER           :: xIndex(NConstraints)
-      INTEGER           :: Mode
+      INTEGER           :: Mode, Iter
       INTEGER :: xLDPSucces,xLDPNoUnknownsOrEquations,                         &
      &       xLDPToomanyIterations,xLDPIncompatibleConstraints,                &
      &       xLDPUnsolvable
@@ -34,7 +34,7 @@ C*********************************************************************
 
 
       CALL xLDP(G,NConstraints,NConstraints,NUnknowns,H,X,Xnorm,W,             &
-     &          xINdex,Mode)
+     &          xINdex,Mode,Iter)
 
       IsError=.TRUE.
       if (mode == xLDPSucces) IsError = .FALSE.
@@ -237,7 +237,7 @@ C LEAST DISTANCE SUBROUTINE
 C*************************************************************************C
 
 
-      SUBROUTINE xLDP (G,MDG,M,N,H,X,XNORM,W,xINDEX,MODE)     
+      SUBROUTINE xLDP (G,MDG,M,N,H,X,XNORM,W,xINDEX,MODE,ITER)     
 C
 C  Algorithm LDP: LEAST DISTANCE PROGRAMMING
 C
@@ -246,6 +246,7 @@ C  Charles L. Lawson and Richard J. Hanson at Jet Propulsion Laboratory
 C  1974 MAR 1, and published in the book
 C  "SOLVING LEAST SQUARES PROBLEMS", Prentice-HalL, 1974.
 C  Revised FEB 1995 to accompany reprinting of the book by SIAM.
+C Karline: added ITER
 C     ------------------------------------------------------------------
 
       IMPLICIT NONE
@@ -259,7 +260,7 @@ C     ------------------------------------------------------------------
 C Number of unknowns
       INTEGER  :: M, MDG,N         
 C Succes or failure
-      INTEGER  :: MODE             
+      INTEGER  :: MODE, ITER             
       INTEGER  :: xINDEX(*)  
 C Constraints G*X>H ; W=workarray; xnorm=residual norm
       DOUBLE PRECISION :: G(MDG,*), H(*), X(*)
@@ -322,7 +323,7 @@ C
       IWDUAL=IY+M   
 C   
       CALL xNNLS (W,NP1,NP1,M,W(JF),W(IY),RNORM,W(IWDUAL),W(IZ),         &
-     &  xINDEX,MODE)  
+     &  xINDEX,MODE,ITER)  
 C                      USE THE FOLLOWING RETURN IF UNSUCCESSFUL IN NNLS.
       IF (MODE.NE.xLDPSucces) RETURN 
 
@@ -373,7 +374,7 @@ C                               HERE WE ARE USING THE SOLUTION VECTOR Y.
 
 C*************************************************************************C
 
-C     SUBROUTINE NNLS  (A,MDA,M,N,B,X,RNORM,W,ZZ,INDEX,MODE)
+C     SUBROUTINE NNLS  (A,MDA,M,N,B,X,RNORM,W,ZZ,INDEX,MODE,ITER)
 C   
 C  Algorithm NNLS: NONNEGATIVE LEAST SQUARES
 C   
@@ -382,7 +383,7 @@ C  Charles L. Lawson and Richard J. Hanson at Jet Propulsion Laboratory
 C  1973 JUN 15, and published in the book
 C  "SOLVING LEAST SQUARES PROBLEMS", Prentice-HalL, 1974.
 C  Revised FEB 1995 to accompany reprinting of the book by SIAM.
-C
+C  Karline:added iter as a request by Judy Wang
 C     GIVEN AN M BY N MATRIX, A, AND AN M-VECTOR, B,  COMPUTE AN
 C     N-VECTOR, X, THAT SOLVES THE LEAST SQUARES PROBLEM   
 C   
@@ -422,7 +423,7 @@ C                   EITHER M .LE. 0 OR N .LE. 0.
 C             3    ITERATION COUNT EXCEEDED.  MORE THAN 3*N ITERATIONS. 
 C   
 C     ------------------------------------------------------------------
-      SUBROUTINE xnnls (A,MDA,M,N,B,X,RNORM,W,ZZ,INDEX,MODE) 
+      SUBROUTINE xnnls (A,MDA,M,N,B,X,RNORM,W,ZZ,INDEX,MODE,ITER) 
 C     ------------------------------------------------------------------
       integer I, II, IP, ITER, ITMAX, IZ, IZ1, IZ2, IZMAX, J, JJ, JZ, L
       integer M, MDA, MODE,N, NPP1, NSETP, RTNKEY
@@ -707,7 +708,12 @@ C
          ZZ(IP)=ZZ(IP)/A(IP,JJ)    
       ENDDO
 C
-      go to (200, 320), RTNKEY
+      IF (RTNKEY .EQ. 1) THEN
+        GOTO 200
+      ELSE IF (RTNKEY .EQ. 2) THEN
+        GOTO 320
+      ENDIF    
+C      go to (200, 320), RTNKEY
       END SUBROUTINE xNNLS
 
 
@@ -1985,7 +1991,7 @@ c KARLINE:
      &   MAPKE1, MDEQC, MEND, MEP1, N1, N2, NEXT, NLINK, NOPT, NP1,                &
      &   NTIMES
       LOGICAL COV, FIRST
-      CHARACTER*8 XERN1, XERN2, XERN3, XERN4
+      CHARACTER(LEN=8) XERN1, XERN2, XERN3, XERN4
       SAVE FIRST, DRELPR
 c
       DATA FIRST /.TRUE./
@@ -4074,7 +4080,7 @@ c***END PROLOGUE  DWNNLS
       INTEGER IWORK(*), L, L1, L2, L3, L4, L5, LIW, LW, MA, MDW, ME,                &
      &     MODE, N
       DOUBLE PRECISION  PRGOPT(*), RNORM, W(MDW,*), WORK(*), X(*)
-      CHARACTER*8 XERN1
+      CHARACTER(LEN=8) XERN1
 c***FIRST EXECUTABLE STATEMENT  DWNNLS
       MODE = 0
       IF (MA+ME.LE.0 .OR. N.LE.0) RETURN
@@ -4168,7 +4174,14 @@ c
           IF(.NOT.(INCX.EQ.INCY.AND. INCX .GT.0)) GO TO 70
 c
                NSTEPS=N*INCX
-               IF(DFLAG) 50,10,30
+               IF (DFLAG .LT. 0) THEN
+                 GOTO 50
+               ELSE IF (DFLAG .EQ. 0) THEN
+                 GOTO 10
+               ELSE
+                 GOTO 30
+               ENDIF                    
+C               IF(DFLAG) 50,10,30
    10          CONTINUE
                DH12=DPARAM(4)
                DH21=DPARAM(3)
@@ -4207,7 +4220,15 @@ c
           IF(INCX .LT. 0) KX=1+(1-N)*INCX
           IF(INCY .LT. 0) KY=1+(1-N)*INCY
 c
-          IF(DFLAG)120,80,100
+          IF (DFLAG .LT. 0) THEN
+             GOTO 120
+          ELSE IF (DFLAG .EQ. 0) THEN
+             GOTO 80
+          ELSE
+             GOTO 100
+          ENDIF                    
+
+C          IF(DFLAG)120,80,100
    80     CONTINUE
           DH12=DPARAM(4)
           DH21=DPARAM(3)
@@ -4425,7 +4446,15 @@ c              FIX-H..
                DH22=DH22*GAM
           GO TO 200
   220 CONTINUE
-          IF(DFLAG)250,230,240
+          IF (DFLAG .LT. 0) THEN
+             GOTO 250
+          ELSE IF (DFLAG .EQ. 0) THEN
+             GOTO 230
+          ELSE
+             GOTO 240
+          ENDIF                    
+
+C          IF(DFLAG)250,230,240
   230     CONTINUE
                DPARAM(3)=DH21
                DPARAM(4)=DH12

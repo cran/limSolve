@@ -47,6 +47,8 @@ nnls(A, B, tol = sqrt(.Machine$double.eps), verbose = TRUE)
   \item{type }{the string "nnls", such that how the solution was obtained
     can be traced.
   }
+  \item{numiter }{the number of iterations.
+  }
 }
 
 \author{
