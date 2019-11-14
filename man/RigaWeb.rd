@@ -12,7 +12,7 @@
   (as in Donali et al. (1999)).
 
   The original input file can be found in the package subdirectory
-  \url{/inst/docs/RigaSpring.input}
+  \code{/inst/docs/RigaSpring.input}
 
   There are 7 functional compartments:
   P1,P2,B,N,Z,D,OC

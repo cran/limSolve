@@ -1106,10 +1106,10 @@ C       IF LKNTRL IS POSITIVE, WRITE THE ERROR NUMBER AND REQUEST A
 C          TRACEBACK.
 C
       IF (LKNTRL .GT. 0) THEN
-C KARLINE: REMOVED WRITE		 
+C KARLINE: REMOVED WRITE         
          CALL rwarn ('An error occurred')
 
-C	  WRITE (TEMP, '(''ERROR NUMBER = '', I8)') NERR
+C         WRITE (TEMP, '(''ERROR NUMBER = '', I8)') NERR
 C         DO 10 I=16,22
 C            IF (TEMP(I:I) .NE. ' ') GO TO 20
 C   10    CONTINUE
@@ -3386,18 +3386,18 @@ C         END IF
 *
       RETURN
 *
- 9999 FORMAT( / / ' WARNING. The value EMIN may be incorrect:-',
-     $      '  EMIN = ', I8, /
-     $      ' If, after inspection, the value EMIN looks',
-     $      ' acceptable please comment out ',
-     $      / ' the IF block as marked within the code of routine',
-     $      ' DLAMC2,', / ' otherwise supply EMIN explicitly.', / )
+* 9999 FORMAT( / / ' WARNING. The value EMIN may be incorrect:-',
+*     $      '  EMIN = ', I8, /
+*     $      ' If, after inspection, the value EMIN looks',
+*     $      ' acceptable please comment out ',
+*     $      / ' the IF block as marked within the code of routine',
+*     $      ' DLAMC2,', / ' otherwise supply EMIN explicitly.', / )
 *
 *     End of DLAMC2
 *
       END
 
-	      SUBROUTINE DLAMC1( BETA, T, RND, IEEE1 )
+      SUBROUTINE DLAMC1( BETA, T, RND, IEEE1 )
 *
 *  -- LAPACK auxiliary routine (version 3.0) --
 *     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
@@ -3520,7 +3520,7 @@ C         END IF
          QTR = ONE / 4
          SAVEC = C
          C = DLAMC3( C, -A )
-         LBETA = C + QTR
+         LBETA = INT(C + QTR)
 *
 *        Now determine whether rounding or chopping occurs,  by adding a
 *        bit  less  than  beta/2  and a  bit  more  than  beta/2  to  a.

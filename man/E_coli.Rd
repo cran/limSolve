@@ -13,7 +13,7 @@
   (as from \code{http://gcrg.ucsd.edu/Downloads/Flux_Balance_Analysis}).
 
   The original input file can be found in the package subdirectory
-  \url{/inst/docs/E_coli.input}
+  \code{/inst/docs/E_coli.input}
 
   There are 53 substances:
 

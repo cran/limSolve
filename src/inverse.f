@@ -1,6 +1,6 @@
 C Karline: removed the write statement; where they also passed an integer value, 
 C this no long is the case. Each removed statement is preceded by:
-C KARLINE: REMOVED WRITE		 
+C KARLINE: REMOVED WRITE         
 
 
 C*********************************************************************
@@ -8,7 +8,7 @@ C LEAST DISTANCE SUBROUTINE
 C*********************************************************************
 
       SUBROUTINE ldp(G,H,NUnknowns,NConstraints,NW,X,XNorm,W,xIndex,           &
-     &               Mode,verbose, IsError, Iter)
+     &               Mode, verboseInt, IsErrorInt, Iter)
 
 
       INTEGER           :: NUnknowns,NConstraints,NW
@@ -27,11 +27,17 @@ C*********************************************************************
      &       xLDPToomanyIterations,xLDPIncompatibleConstraints,                &
      &       xLDPUnsolvable
 
-
+      INTEGER           :: verboseInt, IsErrorInt
       PARAMETER (xLDPSucces = 1,xLDPNoUnknownsOrEquations     = 2,             &
      &       xLDPToomanyIterations= 3,xLDPIncompatibleConstraints   = 4,       &
      &       xLDPUnsolvable  = -1)
 
+
+      IsError = .FALSE.
+      IF (IsErrorInt > 0) IsError = .TRUE.
+
+      verbose = .FALSE.
+      IF (verboseInt > 0) verbose = .TRUE.
 
       CALL xLDP(G,NConstraints,NConstraints,NUnknowns,H,X,Xnorm,W,             &
      &          xINdex,Mode,Iter)
@@ -74,7 +80,7 @@ C----------------------------------------------------------------------------
 
       SUBROUTINE lsei (NUnknowns,NEquations,NConstraints,NApproximate,         &
      &          A,B,E,F,G,H,X,mIP,mdW,mWS,IP,W,WS,lpr,ProgOpt,                 &
-     &          verbose,IsError)
+     &          verboseInt,IsErrorInt)
  
       IMPLICIT NONE
 
@@ -82,6 +88,7 @@ C The arrays and dimensions for the mass balance inversion
 
       INTEGER          :: NUnknowns,NEquations,NConstraints,NApproximate
       INTEGER          :: mIP,mdW,mWS,lpr
+      INTEGER          :: verboseInt, isErrorInt
       LOGICAL          :: IsError, verbose
       DOUBLE PRECISION  ::  A (NApproximate,NUnknowns),                        &
      &                      B (NApproximate)          ,                        &
@@ -106,6 +113,11 @@ C and where
 C    E*x=F, G*X>H
 C    x> 0
 C---------------------------------------------------------------------
+      IsError = .FALSE.
+      IF (IsErrorInt > 0) IsError = .TRUE.
+
+      verbose = .FALSE.
+      IF (verboseInt > 0) verbose = .TRUE.
 
       N  = NUnknowns
       ME = NEquations
@@ -1991,7 +2003,7 @@ c KARLINE:
      &   MAPKE1, MDEQC, MEND, MEP1, N1, N2, NEXT, NLINK, NOPT, NP1,                &
      &   NTIMES
       LOGICAL COV, FIRST
-      CHARACTER(LEN=8) XERN1, XERN2, XERN3, XERN4
+C      CHARACTER(LEN=8) XERN1, XERN2, XERN3, XERN4
       SAVE FIRST, DRELPR
 c
       DATA FIRST /.TRUE./
@@ -2012,7 +2024,7 @@ c         WRITE (XERN1, '(I8)') N
 c         WRITE (XERN2, '(I8)') ME
 c         WRITE (XERN3, '(I8)') MA
 c         WRITE (XERN4, '(I8)') MG
-C KARLINE: REMOVED WRITE		 
+C KARLINE: REMOVED WRITE         
          CALL rwarn ('LSEI: THE VARIABLES N, ME,MA, MG MUST BE>0')
 c         CALL xXERMSG ('SLATEC', 'LSEI', 'ALL OF THE VARIABLES N, ME,'//            &
 c     &      ' MA, MG MUST BE .GE. 0 ENTERED ROUTINE WITH' //                        &
@@ -2026,7 +2038,7 @@ c
       IF (IP(1).GT.0) THEN
          LCHK = 2*(ME+N) + MAX(MA+MG,N) + (MG+2)*(N+7)
          IF (IP(1).LT.LCHK) THEN
-C KARLINE: REMOVED WRITE		 
+C KARLINE: REMOVED WRITE         
          CALL rwarn ('LSEI: insufficient storage')
 c            WRITE (XERN1, '(I8)') LCHK
 c            CALL xXERMSG ('SLATEC', 'xDLSEI', 'INSUFFICIENT STORAGE ' //             &
@@ -2038,7 +2050,7 @@ c
       IF (IP(2).GT.0) THEN
          LCHK = MG + 2*N + 2
          IF (IP(2).LT.LCHK) THEN
-C KARLINE: REMOVED WRITE		 
+C KARLINE: REMOVED WRITE         
          CALL rwarn ('LSEI: insufficient storage')
 c            WRITE (XERN1, '(I8)') LCHK
 c            CALL xXERMSG ('SLATEC', 'xDLSEI', 'INSUFFICIENT STORAGE ' //             &
@@ -2090,7 +2102,7 @@ c     Define bound for positive values of LINK.
 c
       NLINK = 100000
       LAST = 1
-      LINK = PRGOPT(1)
+      LINK = INT(PRGOPT(1))
       IF (LINK.EQ.0 .OR. LINK.GT.NLINK) THEN
          CALL xXERMSG('SLATEC','xDLSEI','THE OPTION VECTOR IS UNDEFINED'            &
      &   ,2,1)
@@ -2105,7 +2117,7 @@ c
             RETURN
          ENDIF
 c
-         KEY = PRGOPT(LAST+1)
+         KEY = INT(PRGOPT(LAST+1))
          IF (KEY.EQ.1) THEN
             COV = PRGOPT(LAST+2) .NE. 0.D0
          ELSEIF (KEY.EQ.2 .AND. PRGOPT(LAST+2).NE.0.D0) THEN
@@ -2120,7 +2132,7 @@ c
             TAU = MAX(DRELPR,PRGOPT(LAST+2))
          ENDIF
 c
-         NEXT = PRGOPT(LINK)
+         NEXT = INT(PRGOPT(LINK))
          IF (NEXT.LE.0 .OR. NEXT.GT.NLINK) THEN
          CALL xXERMSG ('SLATEC', 'xDLSEI',                                           &
      &      'THE OPTION VECTOR IS UNDEFINED', 2, 1)
@@ -2430,14 +2442,14 @@ c
       COV = .FALSE.
       SCLCOV = .TRUE.
       LAST = 1
-      LINK = PRGOPT(1)
+      LINK = INT(PRGOPT(1))
 c
   100 IF (LINK.GT.1) THEN
-         KEY = PRGOPT(LAST+1)
+         KEY = INT(PRGOPT(LAST+1))
          IF (KEY.EQ.1) COV = PRGOPT(LAST+2) .NE. 0.D0
          IF (KEY.EQ.10) SCLCOV = PRGOPT(LAST+2) .EQ. 0.D0
          IF (KEY.EQ.5) TOL = MAX(DRELPR,PRGOPT(LAST+2))
-         NEXT = PRGOPT(LINK)
+         NEXT = INT(PRGOPT(LINK))
          LAST = LINK
          LINK = NEXT
          GO TO 100
@@ -3105,7 +3117,7 @@ c
       NLINK = 100000
       NTIMES = 0
       LAST = 1
-      LINK = PRGOPT(1)
+      LINK = INT(PRGOPT(1))
       IF (LINK.LE.0 .OR. LINK.GT.NLINK) THEN
          CALL xXERMSG ('SLATEC', 'DWNLSM',                                          &
      &      'IN DWNNLS, THE OPTION VECTOR IS UNDEFINED', 3, 1)
@@ -3121,7 +3133,7 @@ c
             RETURN
          ENDIF
 c
-         KEY = PRGOPT(LAST+1)
+         KEY = INT(PRGOPT(LAST+1))
          IF (KEY.EQ.6 .AND. PRGOPT(LAST+2).NE.0.D0) THEN
             DO 110 J = 1,N
                T = xDNRM2(M,W(1,J),1)
@@ -3134,7 +3146,7 @@ c
          IF (KEY.EQ.8) TAU = MAX(DRELPR,PRGOPT(LAST+2))
          IF (KEY.EQ.9) BLOWUP = MAX(DRELPR,PRGOPT(LAST+2))
 c
-         NEXT = PRGOPT(LINK)
+         NEXT = INT(PRGOPT(LINK))
          IF (NEXT.LE.0 .OR. NEXT.GT.NLINK) THEN
             CALL xXERMSG ('SLATEC', 'DWNLSM',                                       &
      &         'IN DWNNLS, THE OPTION VECTOR IS UNDEFINED', 3, 1)
@@ -4080,7 +4092,7 @@ c***END PROLOGUE  DWNNLS
       INTEGER IWORK(*), L, L1, L2, L3, L4, L5, LIW, LW, MA, MDW, ME,                &
      &     MODE, N
       DOUBLE PRECISION  PRGOPT(*), RNORM, W(MDW,*), WORK(*), X(*)
-      CHARACTER(LEN=8) XERN1
+C      CHARACTER(LEN=8) XERN1
 c***FIRST EXECUTABLE STATEMENT  DWNNLS
       MODE = 0
       IF (MA+ME.LE.0 .OR. N.LE.0) RETURN
@@ -4088,9 +4100,9 @@ c
       IF (IWORK(1).GT.0) THEN
          LW = ME + MA + 5*N
          IF (IWORK(1).LT.LW) THEN
-C KARLINE: REMOVED WRITE		 
+C KARLINE: REMOVED WRITE         
          CALL rwarn ('LSEI: insufficient storage')
-		 
+  
 C            WRITE (XERN1, '(I8)') LW
 C            CALL xXERMSG ('SLATEC', 'DWNNLS', 'INSUFFICIENT STORAGE ' //            &
 C     &         'ALLOCATED FOR WORK(*), NEED LW = ' // XERN1, 2, 1)
@@ -4102,9 +4114,9 @@ c
       IF (IWORK(2).GT.0) THEN
          LIW = ME + MA + N
          IF (IWORK(2).LT.LIW) THEN
-C KARLINE: REMOVED WRITE		 
+C KARLINE: REMOVED WRITE         
          CALL rwarn ('LSEI: insufficient storage')
-		 
+
 C            WRITE (XERN1, '(I8)') LIW
 C            CALL xXERMSG ('SLATEC', 'DWNNLS', 'INSUFFICIENT STORAGE ' //            &
 C     &         'ALLOCATED FOR IWORK(*), NEED LIW = ' // XERN1, 2, 1)

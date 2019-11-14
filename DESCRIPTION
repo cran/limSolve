@@ -1,16 +1,20 @@
 Package: limSolve
-Version: 1.5.5.3
+Version: 1.5.6
 Title: Solving Linear Inverse Models
-Author: Karline Soetaert [aut, cre],  
-        Karel Van den Meersche [aut],  
-        Dick van Oevelen [aut], 
-        LAPACK authors [cph]
 Authors@R: c(person("Karline","Soetaert", role = c("aut","cre"), 
                      email = "karline.soetaert@nioz.nl"),
              person("Karel","Van den Meersche", role = "aut"),
              person("Dick","van Oevelen", role = "aut", 
                      email = "dick.vanoevelen@nioz.nl"),
-             person("LAPACK authors", role = "cph"))
+             person("Charles L.","Lawson", role = "ctb", 
+                     comment = "file inverse.f"),
+             person("Richard J.","Hanson", role = "ctb", 
+                     comment = "file inverse.f"),
+             person("Jack","Dongarra", role = "ctb", 
+                     comment = "files solve.f, inverse.f"),
+             person("Cleve","Moler", role = "ctb", 
+                     comment = "file solve.f")
+            )
 Maintainer: Karline Soetaert <karline.soetaert@nioz.nl>
 Depends: R (>= 2.10)
 Imports: quadprog, lpSolve, MASS
@@ -19,14 +23,20 @@ Description: Functions that (1) find the minimum/maximum of a linear or quadrati
   subject to equality constraints Ex=f and/or inequality constraints Gx>=h,
   (2) sample an underdetermined- or overdetermined system Ex=f subject to Gx>=h, and if applicable Ax~=b,      
   (3) solve a linear system Ax=B for the unknown x. It includes banded and tridiagonal linear systems. 
-  The package calls Fortran functions from 'LINPACK'.
 License: GPL
 Copyright: inst/COPYRIGHTS
 LazyData: yes
+Author: Karline Soetaert [aut, cre],
+  Karel Van den Meersche [aut],
+  Dick van Oevelen [aut],
+  Charles L. Lawson [ctb] (file inverse.f),
+  Richard J. Hanson [ctb] (file inverse.f),
+  Jack Dongarra [ctb] (files solve.f, inverse.f),
+  Cleve Moler [ctb] (file solve.f)
 Repository: CRAN
 Repository/R-Forge/Project: limsolve
-Repository/R-Forge/Revision: 115
-Repository/R-Forge/DateTimeStamp: 2017-08-14 11:40:30
-Date/Publication: 2017-08-14 15:14:43 UTC
+Repository/R-Forge/Revision: 119
+Repository/R-Forge/DateTimeStamp: 2019-11-14 06:43:07
+Date/Publication: 2019-11-14 11:10:06 UTC
 NeedsCompilation: yes
-Packaged: 2017-08-14 11:45:20 UTC; rforge
+Packaged: 2019-11-14 06:50:27 UTC; rforge
