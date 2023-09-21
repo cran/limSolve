@@ -7,7 +7,7 @@ xsample <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
         sdB=NULL, W=1, iter=3000, outputlength = iter,
         burninlength = NULL, type="mirror", jmp=NULL,
         tol=sqrt(.Machine$double.eps), x0=NULL,
-        fulloutput=FALSE, test=TRUE)   {
+        fulloutput=FALSE, test=TRUE,verbose=TRUE,lower=NULL, upper=NULL)   {
 
  #####   1. definition of internal functions    #####
 
@@ -108,9 +108,11 @@ xsample <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
     s[s>tol^-2] <- NA
     if (any (is.na(s)))  {
       if (all(is.na(s)))  {
+      if (verbose) 
         warning(" problem is unbounded - all jump lengths are set to 1")
         s[] <- 1
       } else {
+      if (verbose) 
         warning(" problem is unbounded - some jump lengths are set arbitrarily")
         s[is.na(s)] <- mean(s,na.rm=T)*100
       }
@@ -129,6 +131,14 @@ xsample <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
   if (is.vector(E)) E <- t(E)
   if (is.vector(G)) G <- t(G)
 
+  Nx  <- ncol(E)
+  if (is.null(Nx)) Nx <- ncol(G)
+
+  ## Check for presence of upper and lower bounds and extend inequalities
+  GH <- CheckBounds(G, H, lower, upper, Nx, verbose=verbose)
+  G <- GH$G
+  H <- GH$H
+
   if ( !is.null(A) )   {
     lb <- length(B)
     lx <- ncol(A)
@@ -137,7 +147,8 @@ xsample <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
     overdetermined <- !qr(M)$rank<=lx
 
     if (overdetermined & is.null(sdB)) {
-      warning("The given linear problem is overdetermined. A standard deviation for the data vector B is incorporated in the MCMC as a model parameter.")
+      if (verbose) 
+        warning("The given linear problem is overdetermined. A standard deviation for the data vector B is incorporated in the MCMC as a model parameter.")
       estimate_sdB=TRUE
       A <- A*W
       B <- B*W

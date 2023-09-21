@@ -29,7 +29,8 @@
 
 \usage{
 linp(E = NULL, F = NULL, G = NULL, H = NULL, Cost,
-     ispos = TRUE, int.vec = NULL, verbose = TRUE, ...)
+     ispos = TRUE, int.vec = NULL, verbose = TRUE, 
+     lower = NULL, upper = NULL, ...)
 }
 
 \arguments{
@@ -59,7 +60,13 @@ linp(E = NULL, F = NULL, G = NULL, H = NULL, Cost,
     of variables that are required to be an integer. The length of this
     vector will therefore be the number of integer variables.
   }
-  \item{verbose }{logical to print error messages.
+  \item{verbose }{logical to print warnings and messages.
+  }
+  \item{upper, lower }{vector containing upper and lower bounds 
+    on the unknowns. If one value, it is assumed to apply to all unknowns.
+    If a vector, it should have a length equal to the number of unknowns; this
+    vector can contain NA for unbounded variables. 
+    The upper and lower bounds are added to the inequality conditions G*x>=H.
   }
   \item{... }{extra arguments passed to R-function \code{lp}.
   }
@@ -125,6 +132,9 @@ H    <- c(1, -1)
 Cost <- c(1, 8, 9, 2, 7, 3)
 (L <- linp(E = E, F = F, Cost = Cost, G = G, H = H))
 L$residualNorm
+
+# Including a lower bound:
+linp(E = E, F = F, Cost = Cost, G = G, H = H, lower = 0.25)
 
 #-------------------------------------------------------------------------------
 # Linear programming problem 3, no positivity

@@ -25,7 +25,8 @@ xsample(A = NULL, B = NULL, E = NULL, F =NULL,
         G = NULL, H = NULL, sdB = NULL, W = 1, 
         iter = 3000, outputlength = iter, burninlength = NULL, 
         type = "mirror", jmp = NULL, tol = sqrt(.Machine$double.eps), 
-        x0 = NULL, fulloutput = FALSE, test = TRUE)
+        x0 = NULL, fulloutput = FALSE, test = TRUE, verbose=TRUE,
+        lower = NULL, upper = NULL)
 }
 
 \arguments{
@@ -83,6 +84,14 @@ xsample(A = NULL, B = NULL, E = NULL, F =NULL,
     details). This may be necessary for large problems, but slows down
     execution a bit.
   }
+  \item{verbose }{logical to print warnings and messages.
+  }
+  \item{upper, lower }{vector containing upper and lower bounds 
+    on the unknowns. If one value, it is assumed to apply to all unknowns.
+    If a vector, it should have a length equal to the number of unknowns; this
+    vector can contain NA for unbounded variables. 
+    The upper and lower bounds are added to the inequality conditions G*x>=H.
+  }
 
 }
 \value{
@@ -122,9 +131,8 @@ xsample(A = NULL, B = NULL, E = NULL, F =NULL,
 E <- matrix(nrow = 2, byrow = TRUE, data = c(1, 1, 0,  1,
                                              0, 1, -1, 1))
 F   <- c(3, -1)
-G   <- diag (nrow = 4)
-H   <- rep(0, times = 4)
-xs  <- xsample(E = E, F = F, G = G, H = H)
+
+xs  <- xsample(E = E, F = F, lower = 0)
 pairs(xs)
 
 #-------------------------------------------------------------------------------
@@ -133,6 +141,7 @@ pairs(xs)
 E <- rbind(Minkdiet$Prey, rep(1, 7))
 F <- c(Minkdiet$Mink, 1)
 
+# Here the Requirement x > 0 is been inposed in G and H.
 pairs(xsample(E = E, F = F, G = diag(7), H = rep(0, 7), iter = 5000,
       output = 1000, type = "cda")$X,
       main = "Minkdiet 1000 solutions, - cda")
@@ -142,7 +151,7 @@ pairs(xsample(E = E, F = F, G = diag(7), H = rep(0, 7), iter = 5000,
   Function for Sampling Linear Inverse Problems.
   Journal of Statistical Software, Code Snippets, 30(1), 1-15.
 
-\url{http://www.jstatsoft.org/v30/c01/}
+\url{https://www.jstatsoft.org/v30/c01/}
 }
 \details{The algorithm proceeds in two steps.
 

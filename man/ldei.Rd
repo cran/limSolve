@@ -18,7 +18,8 @@
 
 \usage{
 ldei(E, F, G = NULL, H = NULL,
-     tol = sqrt(.Machine$double.eps), verbose = TRUE)
+     tol = sqrt(.Machine$double.eps), verbose = TRUE,
+     lower = NULL, upper = NULL)
 }
 
 \arguments{
@@ -39,7 +40,13 @@ ldei(E, F, G = NULL, H = NULL,
   \item{tol }{tolerance (for singular value decomposition, equality and
     inequality constraints).
   }
-  \item{verbose }{logical to print \code{ldei} error messages.
+  \item{verbose }{logical to print warnings and messages.
+  }
+  \item{upper, lower }{vector containing upper and lower bounds 
+    on the unknowns. If one value, it is assumed to apply to all unknowns.
+    If a vector, it should have a length equal to the number of unknowns; this
+    vector can contain NA for unbounded variables. 
+    The upper and lower bounds are added to the inequality conditions G*x>=H.
   }
 }
 \value{
@@ -97,6 +104,13 @@ G <- matrix(nrow = 2, byrow = TRUE, data = c(1, 1, 1, 0, 0, 0,
                                              0, 0, -1, 0, -1, -1))
 H    <- c(1, -1)
 ldei(E, F, G, H)
+
+#-------------------------------------------------------------------------------
+# Imposing bounds
+#-------------------------------------------------------------------------------
+
+ldei(E, F, G, H, lower = 0.25)
+ldei(E, F, G, H, lower = c(0.25, 0.25, 0.25, NA, NA, 0.5))
 
 #-------------------------------------------------------------------------------
 # parsimonious (simplest) solution of the mink diet problem

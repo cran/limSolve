@@ -7,12 +7,13 @@
 ##                        G*x>=h
 ##
 ## Note: uses lp from package lpSolve
-## This R-code sometimes fails and terminates R
+## This R-code sometimes fails 
 ##      for very small problems that are repeated frequently...
 ##==============================================================================
 
 linp <- function(E=NULL, F=NULL, G=NULL, H=NULL, Cost,
-                 ispos=TRUE, int.vec=NULL, verbose=TRUE, ...)  {
+                 ispos=TRUE, int.vec=NULL, verbose=TRUE, 
+                 lower = NULL, upper = NULL, ...)  {
 
   ## input consistency
   if (! is.matrix(E) & ! is.null(E))
@@ -20,10 +21,16 @@ linp <- function(E=NULL, F=NULL, G=NULL, H=NULL, Cost,
   if (! is.matrix(G) & ! is.null(G))
     G <- t(as.matrix(G))
 
-
+  
   ## problem dimension
   Neq  <- nrow(E)   # Number equalities
   Nx   <- ncol(E)   # Number unknowns
+  
+  ## Check for presence of upper and lower bounds and extend inequalities
+  GH <- CheckBounds(G, H, lower, upper, Nx, verbose)
+  G <- GH$G
+  H <- GH$H
+  
   Nin  <- nrow(G)   # Number inequalities
 
   if (is.null(Nx )) Nx  <- ncol(G)

@@ -1,5 +1,5 @@
 Package: limSolve
-Version: 1.5.6
+Version: 1.5.7
 Title: Solving Linear Inverse Models
 Authors@R: c(person("Karline","Soetaert", role = c("aut","cre"), 
                      email = "karline.soetaert@nioz.nl"),
@@ -15,6 +15,13 @@ Authors@R: c(person("Karline","Soetaert", role = c("aut","cre"),
              person("Cleve","Moler", role = "ctb", 
                      comment = "file solve.f")
             )
+Author: Karline Soetaert [aut, cre],
+  Karel Van den Meersche [aut],
+  Dick van Oevelen [aut],
+  Charles L. Lawson [ctb] (file inverse.f),
+  Richard J. Hanson [ctb] (file inverse.f),
+  Jack Dongarra [ctb] (files solve.f, inverse.f),
+  Cleve Moler [ctb] (file solve.f)
 Maintainer: Karline Soetaert <karline.soetaert@nioz.nl>
 Depends: R (>= 2.10)
 Imports: quadprog, lpSolve, MASS
@@ -26,17 +33,7 @@ Description: Functions that (1) find the minimum/maximum of a linear or quadrati
 License: GPL
 Copyright: inst/COPYRIGHTS
 LazyData: yes
-Author: Karline Soetaert [aut, cre],
-  Karel Van den Meersche [aut],
-  Dick van Oevelen [aut],
-  Charles L. Lawson [ctb] (file inverse.f),
-  Richard J. Hanson [ctb] (file inverse.f),
-  Jack Dongarra [ctb] (files solve.f, inverse.f),
-  Cleve Moler [ctb] (file solve.f)
-Repository: CRAN
-Repository/R-Forge/Project: limsolve
-Repository/R-Forge/Revision: 119
-Repository/R-Forge/DateTimeStamp: 2019-11-14 06:43:07
-Date/Publication: 2019-11-14 11:10:06 UTC
 NeedsCompilation: yes
-Packaged: 2019-11-14 06:50:27 UTC; rforge
+Packaged: 2023-09-21 14:28:31 UTC; karlines
+Repository: CRAN
+Date/Publication: 2023-09-21 19:10:02 UTC

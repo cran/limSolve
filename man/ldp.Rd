@@ -13,7 +13,8 @@
 }
 
 \usage{
-ldp(G, H, tol = sqrt(.Machine$double.eps), verbose = TRUE)
+ldp(G, H, tol = sqrt(.Machine$double.eps), verbose = TRUE, 
+    lower = NULL, upper = NULL)
 }
 
 \arguments{
@@ -26,7 +27,13 @@ ldp(G, H, tol = sqrt(.Machine$double.eps), verbose = TRUE)
   }
   \item{tol }{tolerance (for inequality constraints).
   }
-  \item{verbose }{logical to print \code{ldp} error messages.
+  \item{verbose }{logical to print warnings and messages.
+  }
+  \item{upper, lower }{vector containing upper and lower bounds 
+    on the unknowns. If one value, it is assumed to apply to all unknowns.
+    If a vector, it should have a length equal to the number of unknowns; this
+    vector can contain NA for unbounded variables. 
+    The upper and lower bounds are added to the inequality conditions G*x>=H.
   }
 }
 \value{
@@ -58,6 +65,9 @@ G <- matrix(nrow = 2, ncol = 2, data = c(3, 2, 2, 4))
 H <- c(3, 2)
 
 ldp(G, H)
+
+# imposing bounds on the first unknown
+ldp(G, H, lower = c(1, NA))
 }
 
 \references{

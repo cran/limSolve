@@ -16,7 +16,7 @@
 }
 \usage{
 varranges(E=NULL, F=NULL, G=NULL, H=NULL, EqA, EqB=NULL, 
-  ispos=FALSE, tol=1e-8)
+  ispos=FALSE, tol=1e-8, verbose=TRUE, lower=NULL, upper=NULL)
 }
 
 \arguments{
@@ -43,6 +43,14 @@ varranges(E=NULL, F=NULL, G=NULL, H=NULL, EqA, EqB=NULL,
   }
   \item{tol }{tolerance for equality and inequality constraints.
   }
+  \item{verbose }{logical to print warnings and messages.
+  }
+  \item{upper, lower }{vector containing upper and lower bounds 
+    on the unknowns. If one value, it is assumed to apply to all unknowns.
+    If a vector, it should have a length equal to the number of unknowns; this
+    vector can contain NA for unbounded variables. 
+    The upper and lower bounds are added to the inequality conditions G*x>=H.
+  }
 }
 \value{
   a 2-column matrix with the minimum and maximum value of each equation
@@ -61,6 +69,10 @@ EqA   <- c(0, 0, 1, 1, 1, 0, 0)                    # sum of food 3,4,5
 
 # The same, but explicitly imposing positivity
 varranges(E, F, EqA = EqA, G = diag(7), H = rep(0, 7)) 
+
+# The same, but shorter - using lower bound:
+varranges(E, F, EqA = EqA, lower=0) 
+
 }
 \note{
   uses linear programming function \code{\link[lpSolve]{lp}} from package

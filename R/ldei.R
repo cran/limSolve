@@ -5,7 +5,8 @@
 ##==============================================================================
 
 ldei <- function(E, F, G=NULL, H=NULL,
-  tol=sqrt(.Machine$double.eps), verbose=TRUE) {
+  tol=sqrt(.Machine$double.eps), verbose=TRUE,
+  lower=NULL, upper=NULL) {
 
 ## input consistency
   if (! is.matrix(E) & ! is.null(E))
@@ -22,6 +23,11 @@ ldei <- function(E, F, G=NULL, H=NULL,
   ## Problem dimension
   Neq    <- nrow(E)   # number of equations
   Nx     <- ncol(E)   # number of unknowns
+
+  ## Check for presence of upper and lower bounds and extend inequalities
+  GH <- CheckBounds(G, H, lower, upper, Nx, verbose)
+  G <- GH$G
+  H <- GH$H
   Nin    <- nrow(G)   # number of inequalities
 
   ## copies

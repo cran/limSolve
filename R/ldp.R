@@ -3,7 +3,8 @@
 ## ldp         : Solves Least Distance Programming
 ##==============================================================================
 
-ldp <- function(G, H, tol=sqrt(.Machine$double.eps),   verbose=TRUE)  {
+ldp <- function(G, H, tol=sqrt(.Machine$double.eps), 
+                verbose=TRUE, lower=NULL, upper=NULL)  {
 
   ##------------------------------------------------------------------------
   ## 0. Setup problem
@@ -15,6 +16,11 @@ ldp <- function(G, H, tol=sqrt(.Machine$double.eps),   verbose=TRUE)  {
 
   ## Problem dimension
   Nx     <- ncol(G)   # number of unknowns
+  ## Check for presence of upper and lower bounds and extend inequalities
+  GH <- CheckBounds(G, H, lower, upper, Nx, verbose)
+  G <- GH$G
+  H <- GH$H
+  
   Nin    <- nrow(G)   # number of inequalities
   if (length(H) != Nin)
     stop("cannot solve least distance problem - G and H not compatible")

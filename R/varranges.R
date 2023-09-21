@@ -13,7 +13,8 @@
 ##==============================================================================
 
 varranges <- function(E=NULL, F=NULL, G=NULL, H=NULL,
-    EqA, EqB=NULL, ispos=FALSE, tol=1e-8)  {
+    EqA, EqB=NULL, ispos=FALSE, tol=1e-8, verbose=TRUE,
+    lower=NULL, upper=NULL)  {
 
   ## input consistency
   if (! is.matrix(E) & ! is.null(E))
@@ -26,6 +27,12 @@ varranges <- function(E=NULL, F=NULL, G=NULL, H=NULL,
   ## Dimensions of the problem
   Neq    <- nrow(E)    # number of equations
   Nx     <- ncol(E)    # number of unknowns
+
+  ## Check for presence of upper and lower bounds and extend inequalities
+  GH <- CheckBounds(G, H, lower, upper, Nx, verbose = verbose)
+  G <- GH$G
+  H <- GH$H
+  
   Nineq  <- nrow(G)    # number of inequalities
 
   if (is.null(Nineq))
@@ -39,7 +46,7 @@ varranges <- function(E=NULL, F=NULL, G=NULL, H=NULL,
 
   con   <- E
   rhs   <- F
-  dir   <- rep("==",Neq)
+  dir   <- rep("==", Neq)
   if (Nineq > 0) {
     con   <- rbind(con,G)
     rhs   <- c(rhs,H)

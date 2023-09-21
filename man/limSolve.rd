@@ -27,18 +27,10 @@ Van den Meersche K, Soetaert K, Van Oevelen D (2009). xsample(): An R Function f
 Sampling Linear Inverse Problems.
 Journal of Statistical Software, Code Snippets, 30(1), 1-15.
 
-\url{http://www.jstatsoft.org/v30/c01/}
+\url{https://www.jstatsoft.org/v30/c01/}
 }
 
 \details{
-  \tabular{ll}{
-    Package: \tab limSolve\cr
-    Type: \tab Package\cr
-    Version: \tab 1.5.4\cr
-    Date: \tab 2013-23-01\cr
-    License: \tab GNU Public License 2 or above\cr
-  }
-
 
   limSolve is designed for solving linear inverse models (LIM).
 

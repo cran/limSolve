@@ -7,11 +7,43 @@
 ## subject to             E*X=F
 ##                        G*X>=H
 ## uses either the LINPACK package lsei or solve.QP from package quadprog
+## karline: added upper and lower, november 2019
 ##==============================================================================
+
+# Function to extend G and H (inequalities with upper and lower bounds.)
+CheckBounds <- function(G, H, lower, upper, Nx, verbose){
+  if (! is.null(lower)){
+    if (length(lower) == 1)
+      lower <- rep(lower, length.out = Nx)
+    else if (length(lower) != Nx)
+      stop ("lower bounds should be of size = 1 or = the number of unknowns")
+    Nlower <- ! is.na(lower)         
+    if (verbose )
+      warning("lower bounds imposed - number of inequalities increased with ", 
+              sum(Nlower))
+    G <- rbind(G, diag(Nx)[Nlower,])
+    H <- c(H, lower[Nlower])      
+  }
+  if (! is.null(upper)){
+    if (length(upper) == 1)
+      upper <- rep(upper, length.out = Nx)
+    else if (length(upper) != Nx)
+      stop ("upper bounds should be of size = 1 or = the number of unknowns")
+    Nupper <- ! is.na(upper)         
+    if (verbose )
+      warning("upper bounds imposed - number of inequalities increased with ", 
+              sum(Nupper))
+    G <- rbind(G, -diag(Nx)[Nupper,])
+    H <- c(H, -upper[Nupper])      
+  }
+  list(G = G, H = H) 
+}
+
 
 lsei <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
     Wx=NULL, Wa=NULL, type = 1, tol=sqrt(.Machine$double.eps),
-    tolrank=NULL, fulloutput = FALSE, verbose=TRUE)  {
+    tolrank=NULL, fulloutput = FALSE, verbose=TRUE, 
+    lower=NULL, upper=NULL)  {
 
   ##------------------------------------------------------------------------
   ## Setup problem
@@ -49,14 +81,12 @@ lsei <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
   ## Problem dimension
   Neq  <- nrow(E)
   Napp <- nrow(A)
-  Nx   <- ncol(A)
-  Nin  <- nrow(G)
+  Nx   <- ncol(A) 
+
   if (is.null (Nx))
     Nx  <- ncol(E)
   if (is.null (Nx))
-     Nx  <- ncol(G)
-  if (is.null (Nin))
-    Nin  <- 1
+    Nx  <- ncol(G)
 
   ## If equalities/inequalities absent: use type=2 instead
   if (is.null (Neq)) {
@@ -71,11 +101,17 @@ lsei <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
     if (length(F) != Neq)
       stop("cannot solve least squares problem - E and F not compatible")
   }
-
+  
+  ## Check for presence of upper and lower bounds and extend inequalities
+  GH <- CheckBounds(G, H, lower, upper, Nx, verbose)
+  G <- GH$G
+  H <- GH$H
+  
   if (is.null(G))
     G <- matrix(data=0, nrow=1,ncol=Nx)
   if (is.null(H))
     H <- 0
+  Nin  <- nrow(G)
 
   if (ncol(G)   != Nx)
     stop("cannot solve least squares problem - A and G not compatible")
@@ -155,7 +191,7 @@ lsei <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
     if (any(is.infinite(sol$nX)))
       sol$IsError<-TRUE
     if (fulloutput) {
-      covar<-matrix(data=sol$W,nrow=mdW,ncol=Nx+1)[1:Nx,1:Nx]
+      covar <- matrix(data=sol$W,nrow=mdW,ncol=Nx+1)[1:Nx,1:Nx]
       RankEq <- sol$IP[1]
       RankApp <- sol$IP[2]
     }
@@ -218,11 +254,10 @@ lsei <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
               type="lsei")
 
   if (fulloutput && type == 1)  {
-    res$covar<-covar
-    res$RankEq <- sol$IP[1]
+    res$covar   <- covar
+    res$RankEq  <- sol$IP[1]
     res$RankApp <- sol$IP[2]
   }
-
   return(res)
 
 }

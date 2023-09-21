@@ -23,7 +23,9 @@
 \usage{
 lsei (A = NULL, B = NULL, E = NULL, F = NULL, G = NULL, H = NULL,
       Wx = NULL, Wa = NULL, type = 1, tol = sqrt(.Machine$double.eps),
-      tolrank = NULL, fulloutput = FALSE, verbose = TRUE)}
+      tolrank = NULL, fulloutput = FALSE, verbose = TRUE, 
+      lower = NULL, upper = NULL)
+      }
 
 \arguments{
   \item{A }{numeric matrix containing the coefficients of the quadratic
@@ -69,7 +71,13 @@ lsei (A = NULL, B = NULL, E = NULL, F = NULL, G = NULL, H = NULL,
     the solution and the rank of the equality constraints - only used
     if \code{type} = 1.
   }
-  \item{verbose }{logical to print error messages.
+  \item{verbose }{logical to print warnings and messages.
+  }
+  \item{upper, lower }{vector containing upper and lower bounds 
+    on the unknowns. If one value, it is assumed to apply to all unknowns.
+    If a vector, it should have a length equal to the number of unknowns; this
+    vector can contain NA for unbounded variables. 
+    The upper and lower bounds are added to the inequality conditions G*x>=H.
   }
 }
 \value{
@@ -148,6 +156,16 @@ G <- matrix(nrow = 2, ncol = 3, byrow = TRUE,
 H <- c(-3, 2)
 
 lsei(E = E, F = F, A = A, B = B, G = G, H = H)
+
+# ------------------------------------------------------------------------------
+# example 3: bounds added
+# ------------------------------------------------------------------------------
+
+lsei(E = E, F = F, A = A, B = B, G = G, H = H, 
+     lower = c(2, NA, 0))
+lsei(E = E, F = F, A = A, B = B, G = G, H = H, 
+     upper = 2)
+
 }
 
 \references{

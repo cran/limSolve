@@ -13,7 +13,8 @@
 ##==============================================================================
 
 xranges  <-  function (E = NULL, F = NULL, G = NULL, H = NULL,
-    ispos=FALSE, tol = 1e-8, central = FALSE, full=FALSE)  {
+    ispos=FALSE, tol = 1e-8, central = FALSE, full=FALSE,
+    verbose=TRUE, lower=NULL, upper=NULL)  {
 
   ## input consistency
   if (!is.matrix(E) & !is.null(E))
@@ -24,6 +25,11 @@ xranges  <-  function (E = NULL, F = NULL, G = NULL, H = NULL,
   Neq <- nrow(E)
   Nx  <- ncol(E)
   if (is.null(Nx)) Nx <- ncol(G)
+  ## Check for presence of upper and lower bounds and extend inequalities
+  GH <- CheckBounds(G, H, lower, upper, Nx, verbose)
+  G <- GH$G
+  H <- GH$H
+  
   Nineq <- nrow(G)
   if (is.null(Nineq))
     Nineq <- 0
