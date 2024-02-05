@@ -187,7 +187,8 @@ lsei <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
              W=as.double(matrix(data=0., nrow=mdW, ncol=Nx+1)),
              WS=as.double(rep(0.,mWS)),
              lpr=as.integer(lpr),ProgOpt=as.double(ProgOpt),
-             verbose=as.logical(verbose),IsError=as.logical(IsError))
+             verbose=as.logical(verbose),IsError=as.logical(IsError), 
+             PACKAGE='limSolve')
     if (any(is.infinite(sol$nX)))
       sol$IsError<-TRUE
     if (fulloutput) {

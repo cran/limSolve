@@ -21,7 +21,7 @@ Solve.block <- function(Top,AR,Bot,B,overlap) {
     NOVRLP=as.integer(overlap),AR=AR,NRWBLK=NrwBlk,NCLBLK=NclBlk,NBLOKS=Nbloks,
     BOT=Bot,NRWBOT=NrowBot,PIVOT=as.integer(rep(0,N)),rB=rB,
     cB=cB, B=as.double(B), X=X, IFLAG=as.integer(0),
-    Tmp1=rep(0.,rB),Tmp2=rep(0.,N))
+    Tmp1=rep(0.,rB),Tmp2=rep(0.,N), PACKAGE='limSolve')
 
   return(sol$X)
 }

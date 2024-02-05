@@ -28,7 +28,7 @@ nnls <- function(A, B, tol=sqrt(.Machine$double.eps), verbose=TRUE) {
                   X = as.vector(rep(0,Nx)), RNorm = 0.,
                   W = as.double(rep(0.,Nx)),ZZ = as.double(rep(0.,Neq)),
                   Index = as.integer(rep(0,Nx)), Mode = as.integer(0),
-                  iter = as.integer(0))
+                  iter = as.integer(0), PACKAGE='limSolve')
   IsError <- FALSE
   Mode <- sol$Mode
 

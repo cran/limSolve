@@ -36,7 +36,8 @@ Solve.banded <- function(abd, nup, nlow,
 
     sol <-.Fortran("dgbsv",Nmx,as.integer(nlow),as.integer(nup),as.integer(Nb),
                    AB=ABD,LDAB=as.integer(nrow(ABD)),
-                    ipiv=as.integer(rep(0,Nmx)),B=B,LDB=Nmx,info=as.integer(0))
+                   ipiv=as.integer(rep(0,Nmx)),B=B,LDB=Nmx,info=as.integer(0), 
+                   PACKAGE='limSolve')
   return(sol$B)
 
 }

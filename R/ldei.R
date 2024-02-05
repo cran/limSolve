@@ -111,7 +111,7 @@ ldei <- function(E, F, G=NULL, H=NULL,
              W=as.double(rep(0.,NW)),xIndex=as.integer(rep(0,Nin)),
              Mode=as.integer(0),
              verbose=as.logical(verbose),IsError=as.logical(IsError),
-             iter = as.integer(0))
+             iter = as.integer(0), PACKAGE='limSolve')
 
     IsError<-sol$IsError
     numiter <- sol$iter
