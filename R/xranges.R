@@ -13,7 +13,7 @@
 ##==============================================================================
 
 xranges  <-  function (E = NULL, F = NULL, G = NULL, H = NULL,
-    ispos=FALSE, tol = 1e-8, central = FALSE, full=FALSE,
+    ispos = FALSE, tol = 1e-8, central = FALSE, full=FALSE,
     verbose=TRUE, lower=NULL, upper=NULL)  {
 
   ## input consistency
@@ -82,10 +82,12 @@ xranges  <-  function (E = NULL, F = NULL, G = NULL, H = NULL,
       }
     }
   } else{
-    ## First test if problem is solvable...
+    ## First test if problem is solvable... ispos = ispos added 15/05
     Sol <- lsei(E=E,F=F,G=G,H=H)
     if (Sol$residualNorm > tol)  {
-      Sol <- linp(E=E,F=F,G=G,H=H,Cost=rep(1, Nx))
+      Sol <- linp(E = E, F = F, G = G, H = H, 
+                  Cost = rep(1, Nx), 
+                  ispos = ispos)
         if (Sol$residualNorm > tol)  {
 
       warning (paste("cannot proceed: problem not solvable at requested tolerance",tol))

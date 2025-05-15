@@ -1,5 +1,5 @@
 89f989de6728a6be2931d0b0f9b256f3 *ChangeLog
-f7085420f82de1cdc9fabe532bc613c2 *DESCRIPTION
+b4fb7cf629cc7d833583cbe604a10500 *DESCRIPTION
 a7bc6345452c6ef6e768a79166034213 *NAMESPACE
 21627a2a25998c489dea470412443360 *R/Solve.R
 215de839494b619f13bf26a934db398e *R/Solve.banded.R
@@ -13,9 +13,9 @@ d8fa2c1c8e1a1ab9b735ad545359da82 *R/nnls.R
 72c915a65a9e842d5fa65caa51a351cc *R/resolution.R
 95d023be8fa0ce6ddf16ab5a21dd61ed *R/varranges.R
 7d5d16787a4777f6e1a81f6ba644d19c *R/varsample.R
-9384d3820c72138fd466b5d3ab8f69d9 *R/xranges.R
+ab29326a04d20e596ead887d5bc26d28 *R/xranges.R
 62b37d8981e68403e32846508bf54ef6 *R/xsample.R
-71d5bf14814c2eb0b42de756291043e5 *build/vignette.rds
+52f72a370ada45f6f72dd332de3c4e59 *build/vignette.rds
 f5efbe80220624aee8f227182a4d9f59 *data/Blending.rda
 367389822a67d5081e0ec704b8f89f53 *data/Chemtax.rda
 2e0e614a7fa563a330c00ff5265050de *data/E_coli.rda
@@ -27,10 +27,10 @@ d1c1a872e807d7e7f20511f1d9d66c37 *inst/CITATION
 5989c255a06a79b6583e9300198c5e23 *inst/COPYRIGHTS
 580a3d5a82174d503fb1199f5246189e *inst/doc/limSolve.R
 8b2b91013edb17bbb84b1cdb5b44ee47 *inst/doc/limSolve.Rnw
-d0a421a2172d7910453d95afa6a107df *inst/doc/limSolve.pdf
+434ff8d64e9ab79617a81b5ff1ea1ceb *inst/doc/limSolve.pdf
 17dbe1505ff61e8ff1396d3106641c51 *inst/doc/xsample.R
 431dc793b09f8a1eec8dd9556cc41d89 *inst/doc/xsample.Rnw
-17c93ea01a317295bcbb7472935970c5 *inst/doc/xsample.pdf
+f868e49ffc19cb329ab199a121a40f7c *inst/doc/xsample.pdf
 39c7cbeda5947691510e3ef8a0da958b *man/Blending.Rd
 978fd4bcbb90b0ccbae5fc192b9859d1 *man/Chemtax.Rd
 12518749251607f3754d87f4982efe3f *man/E_coli.Rd
