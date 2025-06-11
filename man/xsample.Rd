@@ -25,8 +25,8 @@ xsample(A = NULL, B = NULL, E = NULL, F =NULL,
         G = NULL, H = NULL, sdB = NULL, W = 1, 
         iter = 3000, outputlength = iter, burninlength = NULL, 
         type = "mirror", jmp = NULL, tol = sqrt(.Machine$double.eps), 
-        x0 = NULL, fulloutput = FALSE, test = TRUE, verbose=TRUE,
-        lower = NULL, upper = NULL)
+        x0 = NULL, fulloutput = FALSE, test = TRUE, ispos = FALSE, 
+        verbose = TRUE, lower = NULL, upper = NULL)
 }
 
 \arguments{
@@ -83,6 +83,9 @@ xsample(A = NULL, B = NULL, E = NULL, F =NULL,
   \item{test }{if \code{TRUE}, xsample will test for hidden equalities (see
     details). This may be necessary for large problems, but slows down
     execution a bit.
+  }
+  \item{ispos }{if \code{TRUE}, it is imposed that unknowns are positive
+    quantities. Used when generating \code{x0} by linear programming, if x0 is not given.
   }
   \item{verbose }{logical to print warnings and messages.
   }

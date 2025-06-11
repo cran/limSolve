@@ -55,7 +55,7 @@ C BANDED MATRIX SOLVER
 C************************************************************************
 
 
-      SUBROUTINE banded(abd,beta,NumABD,NumSvar,BandDown,BandUp,                 &
+      SUBROUTINE banded(abd,beta,NumABD,NumSvar,BandDown,BandUp,                
      &                  indx,info,IsError)
       INTEGER           NumABD,NumSvar,BandDown,BandUp
       INTEGER           indx(NumSvar), info
@@ -931,7 +931,7 @@ C
       if( n .lt. 6 ) go to 60
    40 mp1 = m + 1
       do 50 i = mp1,n,6
-        dtemp = dtemp + dabs(dx(i)) + dabs(dx(i + 1)) + dabs(dx(i + 2))  &
+        dtemp = dtemp + dabs(dx(i)) + dabs(dx(i + 1)) + dabs(dx(i + 2))  
      &  + dabs(dx(i + 3)) + dabs(dx(i + 4)) + dabs(dx(i + 5))
    50 continue
    60 Xdasum = dtemp
@@ -976,17 +976,17 @@ C       WE PRINT A FATAL ERROR MESSAGE AND TERMINATE FOR AN ERROR IN
 C          CALLING xXERMSG.  THE ERROR NUMBER SHOULD BE POSITIVE,
 C          AND THE LEVEL SHOULD BE BETWEEN 0 AND 2.
 C
-      IF (NERR.LT.-9999999 .OR. NERR.GT.99999999 .OR. NERR.EQ.0 .OR.     &
+      IF (NERR.LT.-9999999 .OR. NERR.GT.99999999 .OR. NERR.EQ.0 .OR.     
      &   LEVEL.LT.-1 .OR. LEVEL.GT.2) THEN
-         CALL xXERPRN (' ***', -1, 'FATAL ERROR IN...$$ ' //             &
-     &      'xXERMSG -- INVALID ERROR NUMBER OR LEVEL$$ '//               &
+         CALL xXERPRN (' ***', -1, 'FATAL ERROR IN...$$ ' //             
+     &      'xXERMSG -- INVALID ERROR NUMBER OR LEVEL$$ '//               
      &      'JOB ABORT DUE TO FATAL ERROR.', 72)
 C KS        CALL XERSVE (' ', ' ', ' ', 0, 0, 0, KDUMMY)
 
 C KS        CALL XERHLT (' ***xXERMSG -- INVALID INPUT')
          
 C         WRITE(*,*) ' ***xXERMSG -- INVALID INPUT'
-         CALL XMESSAGE                                                    &
+         CALL XMESSAGE                                                    
      & (" ***xXERMSG -- INVALID INPUT- LINPACK routine stopped")
          RETURN
 C
@@ -1077,7 +1077,7 @@ C
 C
 C       THEN WHETHER THE PROGRAM WILL CONTINUE.
 C
-         IF ((MKNTRL.EQ.2 .AND. LEVEL.GE.1) .OR.                         &
+         IF ((MKNTRL.EQ.2 .AND. LEVEL.GE.1) .OR.                         
      &       (MKNTRL.EQ.1 .AND. LEVEL.EQ.2)) THEN
             TEMP(LTEMP+1:LTEMP+14) = ' PROG ABORTED,'
             LTEMP = LTEMP + 14
@@ -1137,7 +1137,7 @@ C       SUMMARY IF THE CONTROL FLAG AND THE MAXIMUM ERROR COUNT PERMIT.
 C
       IF (LKNTRL.GT.0 .AND. KOUNT.LT.MAX(1,MAXMES)) THEN
          IF (LEVEL .EQ. 1) THEN
-            CALL xXERPRN                                                  &
+            CALL xXERPRN                                                  
      &         (' ***', -1, 'JOB ABORT DUE TO UNRECOVERED ERROR.', 72)
          ELSE
          CALL xXERPRN(' ***', -1, 'JOB ABORT DUE TO FATAL ERROR.', 72)
@@ -3106,6 +3106,8 @@ ccccccccccccccccc auxilliary functions ccccccccccccc
          END IF
       END IF
 *
+* karline: to avoid uninitialised warning
+         RMACH = EPS
       IF( LSAME( CMACH, 'E' ) ) THEN
          RMACH = EPS
       ELSE IF( LSAME( CMACH, 'S' ) ) THEN
@@ -3768,6 +3770,8 @@ C         END IF
 *     approximately to the bound that is closest to abs(EMIN).
 *     (EMAX is the exponent of the required number RMAX).
 *
+* Karline: added next statement to avoid unitialized warning
+      OLDY = ZERO
       LEXP = 1
       EXBITS = 1
    10 CONTINUE

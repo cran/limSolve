@@ -73,7 +73,8 @@
 
 \examples{
 # 1. parsimonious (simplest) solution
-pars <- lsei(E = E_coli$A, F = E_coli$B, G = E_coli$G, H = E_coli$H)$X
+pars <- lsei(E = E_coli$A, F = E_coli$B, 
+             G = E_coli$G, H = E_coli$H)$X
 
 # 2. the optimal solution - solved with linear programming
 #    some unknowns can be negative
@@ -88,6 +89,7 @@ xr   <- xranges(E = E_coli$A, F = E_coli$B, G = E_coli$G, H = E_coli$H,
 
 # the central point is a valid solution:
 X <- xr[ ,"central"]
+
 max(abs(E_coli$A\%*\%X - E_coli$B))
 min(E_coli$G\%*\%X - E_coli$H)
 
@@ -103,7 +105,8 @@ pairs(xs[ ,10:20], pch = ".", cex = 2, main = "sampling, using rda")
 # but an iteration takes more time ; it is better to start in a corner...
 # (i.e. no need to use X as starting value)
 xs <- xsample(E = E_coli$A, F = E_coli$B, G = E_coli$G, H = E_coli$H,
-              iter = 2000, out = 500, jmp = 50, type = "mirror")$X
+              iter = 2000, out = 500, jmp = 50, type = "mirror",
+              x0 = X)$X
 pairs(xs[ ,10:20], pch = ".", cex = 2, main = "sampling, using mirror")
 
 # Print results:

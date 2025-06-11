@@ -30,7 +30,7 @@ xranges(E = NULL, F = NULL, G = NULL, H = NULL,
   \item{H }{numeric vector containing the right-hand side of the inequalities.
   }
   \item{ispos }{if \code{TRUE}, it is imposed that unknowns are positive
-    quantities.
+    quantities. Used when generating \code{x0} by linear programming, if x0 is not given.
   }
   \item{tol }{tolerance for equality and inequality constraints.
   }

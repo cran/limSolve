@@ -1,5 +1,5 @@
 Package: limSolve
-Version: 1.5.7.2
+Version: 2.0
 Title: Solving Linear Inverse Models
 Authors@R: c(person("Karline","Soetaert", role = c("aut","cre"), 
                      email = "karline.soetaert@nioz.nl"),
@@ -34,6 +34,8 @@ License: GPL
 Copyright: inst/COPYRIGHTS
 LazyData: yes
 NeedsCompilation: yes
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
 Repository: CRAN
-Packaged: 2025-05-15 09:42:12 UTC; karlines
-Date/Publication: 2025-05-15 10:30:02 UTC
+Packaged: 2025-06-11 14:45:43 UTC; karlines
+Date/Publication: 2025-06-11 16:10:02 UTC

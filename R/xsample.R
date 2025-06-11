@@ -7,7 +7,7 @@ xsample <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
         sdB=NULL, W=1, iter=3000, outputlength = iter,
         burninlength = NULL, type="mirror", jmp=NULL,
         tol=sqrt(.Machine$double.eps), x0=NULL,
-        fulloutput=FALSE, test=TRUE,verbose=TRUE,lower=NULL, upper=NULL)   {
+        fulloutput=FALSE, test=TRUE, ispos = FALSE, verbose=TRUE,lower=NULL, upper=NULL)   {
 
  #####   1. definition of internal functions    #####
 
@@ -169,6 +169,12 @@ xsample <- function(A=NULL, B=NULL, E=NULL, F=NULL, G=NULL, H=NULL,
   ## find a particular solution x0
   if (is.null(x0))  {
     l <- lsei(A=A,B=B,E=E,F=F,G=G,H=H)
+    
+    if (l$residualNorm > 1e-6){   # 
+      l <- linp(E = E, F = F, G = G, H = H, 
+              Cost = rep(1, Nx), ispos = ispos)
+    }
+    
     if (l$residualNorm>1e-6)
       stop("no particular solution found;incompatible constraints")
     else
