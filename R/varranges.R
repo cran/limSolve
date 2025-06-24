@@ -76,13 +76,18 @@ varranges <- function(E=NULL, F=NULL, G=NULL, H=NULL,
   } else {
     ## First test if problem is solvable...
     Sol <- lsei(E=E,F=F,G=G,H=H)
+    
     if (Sol$residualNorm > tol)  {
       Sol <- ldei(E=E,F=F,G=G,H=H)
-        if (Sol$residualNorm > tol)  {
-
-      warning (paste("cannot proceed: problem not solvable at requested tolerance",tol))
+          if (Sol$residualNorm > tol)  {
+            Sol <- linp(E = E, F = F, G = G, H = H, 
+                        Cost = rep(1, Nx), 
+                        ispos = ispos)
+            if (Sol$residualNorm > tol)  {
+              warning (paste("cannot proceed: problem not solvable at requested tolerance",tol))
       return(Range)
-      }
+            }
+          }        
     }
     
     ## double the number of unknowns: x -> x1 -x2, x1>0 and x2>0

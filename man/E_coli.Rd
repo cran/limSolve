@@ -104,6 +104,7 @@ pairs(xs[ ,10:20], pch = ".", cex = 2, main = "sampling, using rda")
 # using mirror algorithm takes less iterations,
 # but an iteration takes more time ; it is better to start in a corner...
 # (i.e. no need to use X as starting value)
+\dontrun{
 xs <- xsample(E = E_coli$A, F = E_coli$B, G = E_coli$G, H = E_coli$H,
               iter = 2000, out = 500, jmp = 50, type = "mirror",
               x0 = X)$X
@@ -126,6 +127,7 @@ dotchart(Optimal[ii], xlim = range(xr), pch = 16)
 segments(xr[ii,1], 1:nr, xr[ii,2], 1:nr)
 mtext(side = 3, cex = 1.5, outer = TRUE, line = -1.5,
       "E coli Core Metabolism, optimal solution and ranges")
+}
 }
 
 \references{
