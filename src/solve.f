@@ -1,6 +1,8 @@
 C two problems with strings solved:
 C "INDEX" in xxerrprn and string comparison in ILAENV
 C ilaenv was completely removed.
+C KS: 03/06/2026:  in DGBTRS, DGETRS
+C CHANGED THE DECLARATION OF TRANS from CHARACTER TO CHARACTER(*) 
 
 C************************************************************************
 C TRIDIAGONAL MATRIX SOLVERS
@@ -1469,9 +1471,9 @@ CCCCCCCCCCCCCCCCCCCCC  BANDED SYSTEMS
 *     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
 *     Courant Institute, Argonne National Lab, and Rice University
 *     March 31, 1993
-*
+* ks: changed CHARACTER TRANS -> CHARACTER(*) TRANS
 *     .. Scalar Arguments ..
-      CHARACTER          TRANS
+      CHARACTER(*)       TRANS
       INTEGER            INFO, KL, KU, LDAB, LDB, N, NRHS
 *     ..
 *     .. Array Arguments ..
@@ -2439,9 +2441,9 @@ cccccccccccc banded matrices
 *  -- LAPACK routine (version 3.1) --
 *     Univ. of Tennessee, Univ. of California Berkeley and NAG Ltd..
 *     November 2006
-*
+* ks: changed CHARACTER TRANS -> CHARACTER(*) TRANS
 *     .. Scalar Arguments ..
-      CHARACTER          TRANS
+      CHARACTER(*)       TRANS
       INTEGER            INFO, LDA, LDB, N, NRHS
 *     ..
 *     .. Array Arguments ..
@@ -3016,7 +3018,7 @@ ccccccccccccccccc auxilliary functions ccccccccccccc
 *     November 2006
 *
 *     .. Scalar Arguments ..
-      CHARACTER          CMACH
+      CHARACTER (*)         CMACH
 *     ..
 *
 *  Purpose
