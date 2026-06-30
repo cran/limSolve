@@ -22,7 +22,7 @@ E <- matrix(nrow = 4, ncol = 3,
             data = c(3, 1, 2, 0, 2, 0, 0, 1, 1, 0, 2, 0))
 F <- c(2, 1, 8, 3)
 
-lsei(E = E, F = F, fulloutput = TRUE, verbose = FALSE)
+lsei(A = E, B = F, fulloutput = TRUE, verbose = FALSE)
 
 ## -----------------------------------------------------------------------------
 Solve(E, F)

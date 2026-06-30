@@ -166,7 +166,7 @@ c********************************************************************
       INTRINSIC          ABS, MAX
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           XERBLA
+C      EXTERNAL           XERBLA
 *     ..
 *     .. Executable Statements ..
 *
@@ -179,7 +179,8 @@ c********************************************************************
          INFO = -7
       END IF
       IF( INFO.NE.0 ) THEN
-         CALL XERBLA( 'DGTSV ', -INFO )
+C         CALL XERBLA( 'DGTSV ', -INFO )
+         CALL rexit( 'an error occurred in DGTSV ')
          RETURN
       END IF
 *
@@ -943,381 +944,6 @@ C
 
 
 
-      SUBROUTINE xXERMSG (LIBRAR, SUBROU, MESSG, NERR, LEVEL)
-
-C***PURPOSE  Process error messages for SLATEC and other libraries.
-
-      IMPLICIT NONE
-      CHARACTER(LEN=*)   LIBRAR, SUBROU, MESSG
-      CHARACTER(LEN=8)   XLIBR, XSUBR
-      CHARACTER(LEN=72)  TEMP
-      CHARACTER(LEN=20)  LFIRST
-      INTEGER :: LKNTRL,MAXMES,NERR,Lerr,LEVEL,LLEVEL,LTEMP,Kount
-      INTEGER :: MKNTRL,I
-
-CKARLINE:
-       IF (Level .GE. 2) THEN 
-C         WRITE(*,*) " Unrecoverable error C- program stopped"
-       CALL XMESSAGE (" Unrecoverable error C- LINPACK routine stopped")
-       RETURN
-       ENDIF
-
-
-C***FIRST EXECUTABLE STATEMENT  xXERMSG
-C KARLINE: CHANGED -ERRMSG NOT WRITTEN TO FILE
-C      LKNTRL = J4SAVE (2, 0, .FALSE.)
-C      MAXMES = J4SAVE (4, 0, .FALSE.)
-       LKNTRL = 1
-       MAXMES = 1 
-C
-C       LKNTRL IS A LOCAL COPY OF THE CONTROL FLAG KONTRL.
-C       MAXMES IS THE MAXIMUM NUMBER OF TIMES ANY PARTICULAR MESSAGE
-C          SHOULD BE PRINTED.
-C
-C       WE PRINT A FATAL ERROR MESSAGE AND TERMINATE FOR AN ERROR IN
-C          CALLING xXERMSG.  THE ERROR NUMBER SHOULD BE POSITIVE,
-C          AND THE LEVEL SHOULD BE BETWEEN 0 AND 2.
-C
-      IF (NERR.LT.-9999999 .OR. NERR.GT.99999999 .OR. NERR.EQ.0 .OR.     
-     &   LEVEL.LT.-1 .OR. LEVEL.GT.2) THEN
-         CALL xXERPRN (' ***', -1, 'FATAL ERROR IN...$$ ' //             
-     &      'xXERMSG -- INVALID ERROR NUMBER OR LEVEL$$ '//               
-     &      'JOB ABORT DUE TO FATAL ERROR.', 72)
-C KS        CALL XERSVE (' ', ' ', ' ', 0, 0, 0, KDUMMY)
-
-C KS        CALL XERHLT (' ***xXERMSG -- INVALID INPUT')
-         
-C         WRITE(*,*) ' ***xXERMSG -- INVALID INPUT'
-         CALL XMESSAGE                                                    
-     & (" ***xXERMSG -- INVALID INPUT- LINPACK routine stopped")
-         RETURN
-C
-         RETURN
-      ENDIF
-C
-C       RECORD THE MESSAGE.
-C
-C KS      I = J4SAVE (1, NERR, .TRUE.)
-C KS      CALL XERSVE (LIBRAR, SUBROU, MESSG, 1, NERR, LEVEL, KOUNT)
-C
-C       HANDLE PRINT-ONCE WARNING MESSAGES.
-C KS: 
-      KOUNT = 1 
-      IF (LEVEL.EQ.-1 .AND. KOUNT.GT.1) RETURN
-C
-C       ALLOW TEMPORARY USER OVERRIDE OF THE CONTROL FLAG.
-C
-      XLIBR  = LIBRAR
-      XSUBR  = SUBROU
-      LFIRST = MESSG
-      LERR   = NERR
-      LLEVEL = LEVEL
-C KS      CALL XERCNT (XLIBR, XSUBR, LFIRST, LERR, LLEVEL, LKNTRL)
-C
-      LKNTRL = MAX(-2, MIN(2,LKNTRL))
-      MKNTRL = ABS(LKNTRL)
-C
-C       SKIP PRINTING IF THE CONTROL FLAG VALUE AS RESET IN XERCNT IS
-C       ZERO AND THE ERROR IS NOT FATAL.
-C
-      IF (LEVEL.LT.2 .AND. LKNTRL.EQ.0) GO TO 30
-      IF (LEVEL.EQ.0 .AND. KOUNT.GT.MAXMES) GO TO 30
-      IF (LEVEL.EQ.1 .AND. KOUNT.GT.MAXMES .AND. MKNTRL.EQ.1) GO TO 30
-      IF (LEVEL.EQ.2 .AND. KOUNT.GT.MAX(1,MAXMES)) GO TO 30
-C
-C       ANNOUNCE THE NAMES OF THE LIBRARY AND SUBROUTINE BY BUILDING A
-C       MESSAGE IN CHARACTER VARIABLE TEMP (NOT EXCEEDING 66 CHARACTERS)
-C       AND SENDING IT OUT VIA XERPRN.  PRINT ONLY IF CONTROL FLAG
-C       IS NOT ZERO.
-C
-      IF (LKNTRL .NE. 0) THEN
-         TEMP(1:21) = 'MESSAGE FROM ROUTINE '
-         I = MIN(LEN(SUBROU), 16)
-         TEMP(22:21+I) = SUBROU(1:I)
-         TEMP(22+I:33+I) = ' IN LIBRARY '
-         LTEMP = 33 + I
-         I = MIN(LEN(LIBRAR), 16)
-         TEMP(LTEMP+1:LTEMP+I) = LIBRAR (1:I)
-         TEMP(LTEMP+I+1:LTEMP+I+1) = '.'
-         LTEMP = LTEMP + I + 1
-         CALL XxERPRN (' ***', -1, TEMP(1:LTEMP), 72)
-      ENDIF
-C
-C       IF LKNTRL IS POSITIVE, PRINT AN INTRODUCTORY LINE BEFORE
-C       PRINTING THE MESSAGE.  THE INTRODUCTORY LINE TELLS THE CHOICE
-C       FROM EACH OF THE FOLLOWING THREE OPTIONS.
-C       1.  LEVEL OF THE MESSAGE
-C              'INFORMATIVE MESSAGE'
-C              'POTENTIALLY RECOVERABLE ERROR'
-C              'FATAL ERROR'
-C       2.  WHETHER CONTROL FLAG WILL ALLOW PROGRAM TO CONTINUE
-C              'PROG CONTINUES'
-C              'PROG ABORTED'
-C       3.  WHETHER OR NOT A TRACEBACK WAS REQUESTED.  (THE TRACEBACK
-C           MAY NOT BE IMPLEMENTED AT SOME SITES, SO THIS ONLY TELLS
-C           WHAT WAS REQUESTED, NOT WHAT WAS DELIVERED.)
-C              'TRACEBACK REQUESTED'
-C              'TRACEBACK NOT REQUESTED'
-C       NOTICE THAT THE LINE INCLUDING FOUR PREFIX CHARACTERS WILL NOT
-C       EXCEED 74 CHARACTERS.
-C       WE SKIP THE NEXT BLOCK IF THE INTRODUCTORY LINE IS NOT NEEDED.
-C
-      IF (LKNTRL .GT. 0) THEN
-C
-C       THE FIRST PART OF THE MESSAGE TELLS ABOUT THE LEVEL.
-C
-         IF (LEVEL .LE. 0) THEN
-            TEMP(1:20) = 'INFORMATIVE MESSAGE,'
-            LTEMP = 20
-         ELSEIF (LEVEL .EQ. 1) THEN
-            TEMP(1:30) = 'POTENTIALLY RECOVERABLE ERROR,'
-            LTEMP = 30
-         ELSE
-            TEMP(1:12) = 'FATAL ERROR,'
-            LTEMP = 12
-         ENDIF
-C
-C       THEN WHETHER THE PROGRAM WILL CONTINUE.
-C
-         IF ((MKNTRL.EQ.2 .AND. LEVEL.GE.1) .OR.                         
-     &       (MKNTRL.EQ.1 .AND. LEVEL.EQ.2)) THEN
-            TEMP(LTEMP+1:LTEMP+14) = ' PROG ABORTED,'
-            LTEMP = LTEMP + 14
-         ELSE
-            TEMP(LTEMP+1:LTEMP+16) = ' PROG CONTINUES,'
-            LTEMP = LTEMP + 16
-         ENDIF
-C
-C       FINALLY TELL WHETHER THERE SHOULD BE A TRACEBACK.
-C
-         IF (LKNTRL .GT. 0) THEN
-            TEMP(LTEMP+1:LTEMP+20) = ' TRACEBACK REQUESTED'
-            LTEMP = LTEMP + 20
-         ELSE
-            TEMP(LTEMP+1:LTEMP+24) = ' TRACEBACK NOT REQUESTED'
-            LTEMP = LTEMP + 24
-         ENDIF
-         CALL xXERPRN (' ***', -1, TEMP(1:LTEMP), 72)
-      ENDIF
-C
-C       NOW SEND OUT THE MESSAGE.
-C
-      CALL xXERPRN (' *  ', -1, MESSG, 72)
-C
-C       IF LKNTRL IS POSITIVE, WRITE THE ERROR NUMBER AND REQUEST A
-C          TRACEBACK.
-C
-      IF (LKNTRL .GT. 0) THEN
-C KARLINE: REMOVED WRITE         
-         CALL rwarn ('An error occurred')
-
-C         WRITE (TEMP, '(''ERROR NUMBER = '', I8)') NERR
-C         DO 10 I=16,22
-C            IF (TEMP(I:I) .NE. ' ') GO TO 20
-C   10    CONTINUE
-C
-C   20    CALL xXERPRN (' *  ', -1, TEMP(1:15) // TEMP(I:23), 72)
-C KS         CALL FDUMP
-      ENDIF
-C
-C       IF LKNTRL IS NOT ZERO, PRINT A BLANK LINE AND AN END OF MESSAGE.
-C
-      IF (LKNTRL .NE. 0) THEN
-         CALL xXERPRN (' *  ', -1, ' ', 72)
-         CALL xXERPRN (' ***', -1, 'END OF MESSAGE', 72)
-         CALL xXERPRN ('    ',  0, ' ', 72)
-      ENDIF
-C
-C       IF THE ERROR IS NOT FATAL OR THE ERROR IS RECOVERABLE AND THE
-C       CONTROL FLAG IS SET FOR RECOVERY, THEN RETURN.
-C
-   30 IF (LEVEL.LE.0 .OR. (LEVEL.EQ.1 .AND. MKNTRL.LE.1)) RETURN
-C
-C       THE PROGRAM WILL BE STOPPED DUE TO AN UNRECOVERED ERROR OR A
-C       FATAL ERROR.  PRINT THE REASON FOR THE ABORT AND THE ERROR
-C       SUMMARY IF THE CONTROL FLAG AND THE MAXIMUM ERROR COUNT PERMIT.
-C
-      IF (LKNTRL.GT.0 .AND. KOUNT.LT.MAX(1,MAXMES)) THEN
-         IF (LEVEL .EQ. 1) THEN
-            CALL xXERPRN                                                  
-     &         (' ***', -1, 'JOB ABORT DUE TO UNRECOVERED ERROR.', 72)
-         ELSE
-         CALL xXERPRN(' ***', -1, 'JOB ABORT DUE TO FATAL ERROR.', 72)
-         ENDIF
-C KS      CALL XERSVE (' ', ' ', ' ', -1, 0, 0, KDUMMY)
-C         CALL XERHLT (' ')
-c         STOP
-C
-          call rexit("STOPPED")
-      ELSE
-C         CALL XERHLT (MESSG)
-C         WRITE(*,*) MESSG
-          CALL rexit ("STOPPED")
-
-C         STOP
-C
-      ENDIF
-      RETURN
-      END SUBROUTINE xXERMSG
-
-C*********************************************************************
-
-      SUBROUTINE XXERPRN (PREFIX, NPREF, MESSG, NWRAP)
-
-CC***PURPOSE  Print error messages processed by xXERMSG.
-C KARLINE: DO NOT PRINT TO SCREEN ->          CALL XMESSAGE 
-
-      IMPLICIT NONE
-      CHARACTER(LEN=*)   PREFIX, MESSG
-      INTEGER            NPREF, NWRAP
-      CHARACTER(LEN=148) CBUFF
-      CHARACTER(LEN=2)   NEWLIN
-      PARAMETER (NEWLIN = '$$')
-      INTEGER :: LPREF,LWRAP,LENMSG,NEXTC,LPIECE,IDELTA,I,N
-
-C KARLINE: RETURN
-C      RETURN
-
-C       LPREF IS THE LENGTH OF THE PREFIX.  THE PREFIX IS PLACED AT THE
-C       BEGINNING OF CBUFF, THE CHARACTER BUFFER, AND KEPT THERE DURING
-C       THE REST OF THIS ROUTINE.
-C
-      IF ( NPREF .LT. 0 ) THEN
-         LPREF = LEN(PREFIX)
-      ELSE
-         LPREF = NPREF
-      ENDIF
-      LPREF = MIN(16, LPREF)
-      IF (LPREF .NE. 0) CBUFF(1:LPREF) = PREFIX
-C
-C       LWRAP IS THE MAXIMUM NUMBER OF CHARACTERS WE WANT TO TAKE AT ONE
-C       TIME FROM MESSG TO PRINT ON ONE LINE.
-C
-      LWRAP = MAX(16, MIN(132, NWRAP))
-C
-C       SET LENMSG TO THE LENGTH OF MESSG, IGNORE ANY TRAILING BLANKS.
-C
-      LENMSG = LEN(MESSG)
-      N = LENMSG
-      DO 20 I=1,N
-         IF (MESSG(LENMSG:LENMSG) .NE. ' ') GO TO 30
-         LENMSG = LENMSG - 1
-   20 CONTINUE
-   30 CONTINUE
-C
-C       IF THE MESSAGE IS ALL BLANKS, THEN PRINT ONE BLANK LINE.
-C
-      IF (LENMSG .EQ. 0) THEN
-         CBUFF(LPREF+1:LPREF+1) = ' '
-C            WRITE(*, '(A)') CBUFF(1:LPREF+1)
-         CALL XMESSAGE (CBUFF(1:LPREF+1))
-
-         RETURN
-      ENDIF
-C
-C       SET NEXTC TO THE POSITION IN MESSG WHERE THE NEXT SUBSTRING
-C       STARTS.  FROM THIS POSITION WE SCAN FOR THE NEW LINE SENTINEL.
-C       WHEN NEXTC EXCEEDS LENMSG, THERE IS NO MORE TO PRINT.
-C       WE LOOP BACK TO LABEL 50 UNTIL ALL PIECES HAVE BEEN PRINTED.
-C
-C       WE LOOK FOR THE NEXT OCCURRENCE OF THE NEW LINE SENTINEL.  THE
-C       INDEX INTRINSIC FUNCTION RETURNS ZERO IF THERE IS NO OCCURRENCE
-C       OR IF THE LENGTH OF THE FIRST ARGUMENT IS LESS THAN THE LENGTH
-C       OF THE SECOND ARGUMENT.
-C
-C       THERE ARE SEVERAL CASES WHICH SHOULD BE CHECKED FOR IN THE
-C       FOLLOWING ORDER.  WE ARE ATTEMPTING TO SET LPIECE TO THE NUMBER
-C       OF CHARACTERS THAT SHOULD BE TAKEN FROM MESSG STARTING AT
-C       POSITION NEXTC.
-C
-C       LPIECE .EQ. 0   THE NEW LINE SENTINEL DOES NOT OCCUR IN THE
-C                       REMAINDER OF THE CHARACTER STRING.  LPIECE
-C                       SHOULD BE SET TO LWRAP OR LENMSG+1-NEXTC,
-C                       WHICHEVER IS LESS.
-C
-C       LPIECE .EQ. 1   THE NEW LINE SENTINEL STARTS AT MESSG(NEXTC:
-C                       NEXTC).  LPIECE IS EFFECTIVELY ZERO, AND WE
-C                       PRINT NOTHING TO AVOID PRODUCING UNNECESSARY
-C                       BLANK LINES.  THIS TAKES CARE OF THE SITUATION
-C                       WHERE THE LIBRARY ROUTINE HAS A MESSAGE OF
-C                       EXACTLY 72 CHARACTERS FOLLOWED BY A NEW LINE
-C                       SENTINEL FOLLOWED BY MORE CHARACTERS.  NEXTC
-C                       SHOULD BE INCREMENTED BY 2.
-C
-C       LPIECE .GT. LWRAP+1  REDUCE LPIECE TO LWRAP.
-C
-C       ELSE            THIS LAST CASE MEANS 2 .LE. LPIECE .LE. LWRAP+1
-C                       RESET LPIECE = LPIECE-1.  NOTE THAT THIS
-C                       PROPERLY HANDLES THE END CASE WHERE LPIECE .EQ.
-C                       LWRAP+1.  THAT IS, THE SENTINEL FALLS EXACTLY
-C                       AT THE END OF A LINE.
-C
-      NEXTC = 1
-
-C KARLINE: The INDEX function triggers a "note" in gfortran, so it is removed
-   50 LPIECE = 1 
-C   50 LPIECE = INDEX(MESSG(NEXTC:LENMSG), NEWLIN)
-      IF (LPIECE .EQ. 0) THEN
-C
-C       THERE WAS NO NEW LINE SENTINEL FOUND.
-C
-         IDELTA = 0
-         LPIECE = MIN(LWRAP, LENMSG+1-NEXTC)
-         IF (LPIECE .LT. LENMSG+1-NEXTC) THEN
-            DO 52 I=LPIECE+1,2,-1
-               IF (MESSG(NEXTC+I-1:NEXTC+I-1) .EQ. ' ') THEN
-                  LPIECE = I-1
-                  IDELTA = 1
-                  GOTO 54
-               ENDIF
-   52       CONTINUE
-         ENDIF
-   54    CBUFF(LPREF+1:LPREF+LPIECE) = MESSG(NEXTC:NEXTC+LPIECE-1)
-         NEXTC = NEXTC + LPIECE + IDELTA
-      ELSEIF (LPIECE .EQ. 1) THEN
-C
-C       WE HAVE A NEW LINE SENTINEL AT MESSG(NEXTC:NEXTC+1).
-C       DON'T PRINT A BLANK LINE.
-C
-         NEXTC = NEXTC + 2
-         GO TO 50
-      ELSEIF (LPIECE .GT. LWRAP+1) THEN
-C
-C       LPIECE SHOULD BE SET DOWN TO LWRAP.
-C
-         IDELTA = 0
-         LPIECE = LWRAP
-         DO 56 I=LPIECE+1,2,-1
-            IF (MESSG(NEXTC+I-1:NEXTC+I-1) .EQ. ' ') THEN
-               LPIECE = I-1
-               IDELTA = 1
-               GOTO 58
-            ENDIF
-   56    CONTINUE
-   58    CBUFF(LPREF+1:LPREF+LPIECE) = MESSG(NEXTC:NEXTC+LPIECE-1)
-         NEXTC = NEXTC + LPIECE + IDELTA
-      ELSE
-C
-C       IF WE ARRIVE HERE, IT MEANS 2 .LE. LPIECE .LE. LWRAP+1.
-C       WE SHOULD DECREMENT LPIECE BY ONE.
-C
-         LPIECE = LPIECE - 1
-         CBUFF(LPREF+1:LPREF+LPIECE) = MESSG(NEXTC:NEXTC+LPIECE-1)
-         NEXTC  = NEXTC + LPIECE + 2
-      ENDIF
-C
-C       PRINT
-C
-C         WRITE(*, '(A)') CBUFF(1:LPREF+LPIECE)
-         CALL XMESSAGE (CBUFF(1:LPREF+LPIECE))
-C
-      IF (NEXTC .LE. LENMSG) GO TO 50
-      RETURN
-
-      END SUBROUTINE XXERPRN
-
-
-
 CCCCCCCCCCCCCCCCCCCCC  BANDED SYSTEMS
 
       SUBROUTINE DGBSV( N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB, INFO )
@@ -1420,7 +1046,7 @@ CCCCCCCCCCCCCCCCCCCCC  BANDED SYSTEMS
 *  =====================================================================
 *
 *     .. External Subroutines ..
-      EXTERNAL           DGBTRF, DGBTRS, XERBLA
+      EXTERNAL           DGBTRF, DGBTRS !, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX
@@ -1444,7 +1070,9 @@ CCCCCCCCCCCCCCCCCCCCC  BANDED SYSTEMS
          INFO = -9
       END IF
       IF( INFO.NE.0 ) THEN
-         CALL XERBLA( 'DGBSV ', -INFO )
+!         CALL XERBLA( 'DGBSV ', -INFO )
+         CALL rexit( 'an error occurred in DGBSV')
+
          RETURN
       END IF
 *
@@ -1551,7 +1179,7 @@ CCCCCCCCCCCCCCCCCCCCC  BANDED SYSTEMS
       EXTERNAL           LSAME
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           DGEMV, DGER, DSWAP, DTBSV, XERBLA
+      EXTERNAL           DGEMV, DGER, DSWAP, DTBSV !, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
@@ -1579,7 +1207,8 @@ CCCCCCCCCCCCCCCCCCCCC  BANDED SYSTEMS
          INFO = -10
       END IF
       IF( INFO.NE.0 ) THEN
-         CALL XERBLA( 'DGBTRS', -INFO )
+         CALL rexit( 'an error occurred in DGBTRS')
+!         CALL XERBLA( 'DGBTRS', -INFO )
          RETURN
       END IF
 *
@@ -1760,7 +1389,7 @@ CCCCCCCCCCCCCCCCCCCCC  BANDED SYSTEMS
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           DCOPY, DGBTF2, DGEMM, DGER, DLASWP, DSCAL,
-     $                   DSWAP, DTRSM, XERBLA
+     $                   DSWAP, DTRSM !, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
@@ -1787,7 +1416,8 @@ CCCCCCCCCCCCCCCCCCCCC  BANDED SYSTEMS
          INFO = -6
       END IF
       IF( INFO.NE.0 ) THEN
-         CALL XERBLA( 'DGBTRF', -INFO )
+!         CALL XERBLA( 'DGBTRF', -INFO )
+         CALL rexit( 'an error occurred in DGBTRF')
          RETURN
       END IF
 *
@@ -2202,7 +1832,7 @@ C KARLINE-END
       EXTERNAL           IDAMAX
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           DGER, DSCAL, DSWAP, XERBLA
+      EXTERNAL           DGER, DSCAL, DSWAP !, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
@@ -2229,7 +1859,9 @@ C KARLINE-END
          INFO = -6
       END IF
       IF( INFO.NE.0 ) THEN
-         CALL XERBLA( 'DGBTF2', -INFO )
+!         CALL XERBLA( 'DGBTF2', -INFO )
+         CALL rexit( 'an error occurred in DGBTF2')
+
          RETURN
       END IF
 *
@@ -2511,7 +2143,7 @@ cccccccccccc banded matrices
       EXTERNAL           LSAME
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           DLASWP, DTRSM, XERBLA
+      EXTERNAL           DLASWP, DTRSM !, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX
@@ -2535,7 +2167,8 @@ cccccccccccc banded matrices
          INFO = -8
       END IF
       IF( INFO.NE.0 ) THEN
-         CALL XERBLA( 'DGETRS', -INFO )
+!         CALL XERBLA( 'DGETRS', -INFO )
+         CALL rexit( 'an error occurred in DGETRS')
          RETURN
       END IF
 *
@@ -2652,7 +2285,7 @@ cccccccccccc banded matrices
       INTEGER            I, IINFO, J, JB, NB
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           DGEMM, DGETF2, DLASWP, DTRSM, XERBLA
+      EXTERNAL           DGEMM, DGETF2, DLASWP, DTRSM !, XERBLA
 *     ..
 *     .. External Functions ..
 C     INTEGER            ILAENV
@@ -2674,7 +2307,8 @@ C      EXTERNAL           ILAENV
          INFO = -4
       END IF
       IF( INFO.NE.0 ) THEN
-         CALL XERBLA( 'DGETRF', -INFO )
+!         CALL XERBLA( 'DGETRF', -INFO )
+         CALL rexit( 'an error occurred in DGETRF')
          RETURN
       END IF
 *
@@ -2819,7 +2453,7 @@ C      NB = ILAENV( 1, 'DGETRF', ' ', M, N, -1, -1 )
       EXTERNAL           DLAMCH, IDAMAX
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           DGER, DSCAL, DSWAP, XERBLA
+      EXTERNAL           DGER, DSCAL, DSWAP !, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
@@ -2837,7 +2471,8 @@ C      NB = ILAENV( 1, 'DGETRF', ' ', M, N, -1, -1 )
          INFO = -4
       END IF
       IF( INFO.NE.0 ) THEN
-         CALL XERBLA( 'DGETF2', -INFO )
+!         CALL XERBLA( 'DGETF2', -INFO )
+         CALL rexit( 'an error occurred in DGETF2')
          RETURN
       END IF
 *
@@ -2961,7 +2596,7 @@ C      NB = ILAENV( 1, 'DGETRF', ' ', M, N, -1, -1 )
 *  =====================================================================
 *
 *     .. External Subroutines ..
-      EXTERNAL           DGETRF, DGETRS, XERBLA
+      EXTERNAL           DGETRF, DGETRS !, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX
@@ -2981,7 +2616,8 @@ C      NB = ILAENV( 1, 'DGETRF', ' ', M, N, -1, -1 )
          INFO = -7
       END IF
       IF( INFO.NE.0 ) THEN
-         CALL XERBLA( 'DGESV ', -INFO )
+!         CALL XERBLA( 'DGESV ', -INFO )
+         CALL rexit( 'an error occurred in DGESV')
          RETURN
       END IF
 *
@@ -3075,15 +2711,16 @@ ccccccccccccccccc auxilliary functions ccccccccccccc
       EXTERNAL           DLAMC2
 *     ..
 *     .. Save statement ..
-      SAVE               FIRST, EPS, SFMIN, BASE, T, RND, EMIN, RMIN,
-     $                   EMAX, RMAX, PREC
+C      SAVE               FIRST, EPS, SFMIN, BASE, T, RND, EMIN, RMIN,
+C     $                   EMAX, RMAX, PREC
 *     ..
 *     .. Data statements ..
-      DATA               FIRST / .TRUE. /
+C      DATA               FIRST / .TRUE. /
 *     ..
 *     .. Executable Statements ..
 *
-      IF( FIRST ) THEN
+C      IF( FIRST ) THEN
+         FIRST = .TRUE.
          CALL DLAMC2( BETA, IT, LRND, EPS, IMIN, RMIN, IMAX, RMAX )
          BASE = BETA
          T = IT
@@ -3106,7 +2743,7 @@ ccccccccccccccccc auxilliary functions ccccccccccccc
 *
             SFMIN = SMALL*( ONE+EPS )
          END IF
-      END IF
+C      END IF
 *
 * karline: to avoid uninitialised warning
          RMACH = EPS
@@ -3133,14 +2770,13 @@ ccccccccccccccccc auxilliary functions ccccccccccccc
       END IF
 *
       DLAMCH = RMACH
-      FIRST  = .FALSE.
+C      FIRST  = .FALSE.
       RETURN
 *
 *     End of DLAMCH
 *
       END
 *
-
 
 
 
@@ -3401,6 +3037,8 @@ C         END IF
 *
       END
 
+
+
       SUBROUTINE DLAMC1( BETA, T, RND, IEEE1 )
 *
 *  -- LAPACK auxiliary routine (version 3.0) --
@@ -3463,14 +3101,14 @@ C         END IF
       EXTERNAL           DLAMC3
 *     ..
 *     .. Save statement ..
-      SAVE               FIRST, LIEEE1, LBETA, LRND, LT
+C      SAVE               FIRST, LIEEE1, LBETA, LRND, LT
 *     ..
 *     .. Data statements ..
-      DATA               FIRST / .TRUE. /
+C      DATA               FIRST / .TRUE. /
 *     ..
 *     .. Executable Statements ..
 *
-      IF( FIRST ) THEN
+C      IF( FIRST ) THEN
          FIRST = .FALSE.
          ONE = 1
 *
@@ -3574,7 +3212,7 @@ C         END IF
          END IF
 *+       END WHILE
 *
-      END IF
+C      END IF
 *
       BETA = LBETA
       T = LT

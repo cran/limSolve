@@ -272,7 +272,7 @@ C
         INTEGER INCRJ,IPLUSN,INCRN,IRWBLK,IPVBLK,JRWBLK
         DIMENSION TOPBLK(NRWTOP,*),ARRAY(NRWBLK,NCLBLK,*),
      *          BOTBLK(NRWBOT,*)
-        DATA ZERO/0.0D0/
+C        DATA ZERO/0.0D0/
 C
 C***************************************************************
 C
@@ -280,6 +280,7 @@ C          ****  DEFINE THE CONSTANTS USED THROUGHOUT  ****
 C
 C***************************************************************
 C
+        ZERO  = 0.D0
         IFLAG = 0
         PIVMAX = ZERO
         NRWTP1 = NRWTOP+1

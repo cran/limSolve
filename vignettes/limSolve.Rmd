@@ -31,7 +31,7 @@ abstract: >
   
   Package limSolve contains examples of these four application domains.
   In addition, limSolve also contains special-purpose solvers for sparse
-  linear equations (banded, tridiagonal, block diagonal)."
+  linear equations (banded, tridiagonal, block diagonal).
   Amongst the possible scientific applications are: food web quantification
 editor_options: 
   markdown: 
@@ -196,7 +196,7 @@ E <- matrix(nrow = 4, ncol = 3,
             data = c(3, 1, 2, 0, 2, 0, 0, 1, 1, 0, 2, 0))
 F <- c(2, 1, 8, 3)
 
-lsei(E = E, F = F, fulloutput = TRUE, verbose = FALSE)
+lsei(A = E, B = F, fulloutput = TRUE, verbose = FALSE)
 ```
 
 Here the *residualNorm* is the sum of absolute values of the

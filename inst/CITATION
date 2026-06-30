@@ -21,7 +21,6 @@ bibentry(bibtype="article",
   year = 	"2009",
   CODEN =	"JSSOBK",
   ISSN = 	"1548-7660",
-  URL =  	"https://www.jstatsoft.org/v30/c01",
   textVersion = paste("Van den Meersche, K., Soetaert K., van Oevelen, D. (2009). xsample(): An R Function for Sampling Linear Inverse Problems.
    Journal of Statistical Software, Code Snippets, vol 30, 1-15")  
 )

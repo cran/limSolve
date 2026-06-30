@@ -160,12 +160,17 @@ lsei(E = E, F = F, A = A, B = B, G = G, H = H)
 # ------------------------------------------------------------------------------
 # example 3: bounds added
 # ------------------------------------------------------------------------------
-
+# 
 lsei(E = E, F = F, A = A, B = B, G = G, H = H, 
      lower = c(2, NA, 0))
+
+# this cannot be solved
 lsei(E = E, F = F, A = A, B = B, G = G, H = H, 
      upper = 2)
 
+# this can
+lsei(E = E, F = F, A = A, B = B, G = G, H = H, 
+     upper = 3)
 }
 
 \references{

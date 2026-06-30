@@ -27,7 +27,6 @@ Van den Meersche K, Soetaert K, Van Oevelen D (2009). xsample(): An R Function f
 Sampling Linear Inverse Problems.
 Journal of Statistical Software, Code Snippets, 30(1), 1-15.
 
-\url{https://www.jstatsoft.org/v30/c01/}
 }
 
 \details{
